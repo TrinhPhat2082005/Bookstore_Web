@@ -50,9 +50,9 @@ Dự án tuân thủ cấu trúc MVC chuẩn:
    - Truy cập qua trình duyệt: `http://localhost/bookstore_web/public/`
 
 ## 👥 Nhóm phát triển
-- **Lê Trình Phát**
-- **Tâm**
-- **Khang**
+- **Trịnh Nguyên Phát**
+- **Đức Tâm**
+- **Dương Bá Khang**
 
 ---
 *Dự án Bài tập lớn - Môn Lập trình Web - HK252*
