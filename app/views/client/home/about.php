@@ -1,25 +1,44 @@
 <?php require_once '../app/views/client/layout/header.php'; ?>
 
-<main>
+<main class="py-5">
     <section>
         <div class="container">
-            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-                <h1 style="font-size: 48px; margin-bottom: 40px;">Câu chuyện của chúng tôi</h1>
-                <div style="text-align: left; background: var(--white); padding: 50px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.05);">
-                    <p style="font-size: 18px; color: var(--gray); margin-bottom: 30px;">
-                        <?php echo nl2br($data['settings']['about_content']); ?>
-                    </p>
-                    <p style="font-size: 18px; color: var(--gray); margin-bottom: 30px;">
-                        Được thành lập với niềm đam mê đọc sách, chúng tôi không chỉ bán những trang giấy, chúng tôi mang đến những hành trình, cảm hứng và tri thức cho cộng đồng.
-                    </p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 50px;">
-                        <div style="border-left: 4px solid var(--primary); padding-left: 20px;">
-                            <h4 style="font-size: 24px; color: var(--primary);">5000+</h4>
-                            <p style="color: var(--gray);">Đầu sách đa dạng</p>
-                        </div>
-                        <div style="border-left: 4px solid var(--primary); padding-left: 20px;">
-                            <h4 style="font-size: 24px; color: var(--primary);">10,000+</h4>
-                            <p style="color: var(--gray);">Khách hàng tin tưởng</p>
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-xl-8">
+                    <div class="text-center mb-5">
+                        <h1 class="display-4 fw-bold mb-3">Câu chuyện của chúng tôi</h1>
+                        <p class="lead text-secondary">Hành trình mang tri thức đến với mọi nhà</p>
+                    </div>
+
+                    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                        <div class="card-body p-4 p-md-5">
+                            <div class="content mb-5 text-secondary" style="line-height: 1.8; font-size: 1.1rem;">
+                                <?php echo nl2br($data['settings']['about_content']); ?>
+                            </div>
+
+                            <div class="p-4 bg-light rounded-4 mb-5">
+                                <p class="mb-0 text-dark fw-medium italic">
+                                    "Được thành lập với niềm đam mê đọc sách, chúng tôi không chỉ bán những trang giấy,
+                                    chúng tôi mang đến những hành trình, cảm hứng và tri thức cho cộng đồng."
+                                </p>
+                            </div>
+
+                            <div class="row g-4 text-center">
+                                <div class="col-6">
+                                    <div
+                                        class="p-4 border-start border-primary border-4 bg-primary bg-opacity-10 rounded-end-4">
+                                        <h3 class="display-6 fw-bold text-primary mb-1">5,000+</h3>
+                                        <p class="text-secondary mb-0 fw-medium">Đầu sách đa dạng</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div
+                                        class="p-4 border-start border-primary border-4 bg-primary bg-opacity-10 rounded-end-4">
+                                        <h3 class="display-6 fw-bold text-primary mb-1">10,000+</h3>
+                                        <p class="text-secondary mb-0 fw-medium">Khách hàng tin tưởng</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

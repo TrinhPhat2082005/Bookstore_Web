@@ -29,7 +29,11 @@ class Database {
 
     // chuẩn bị câu truy vấn
     public function query($sql) {
-        $this->stmt = $this->dbh->prepare($sql);
+        if ($this->dbh) {
+            $this->stmt = $this->dbh->prepare($sql);
+        } else {
+            die("Database connection failed. Please check your configuration and ensure the database exists.");
+        }
     }
 
     // bind các giá trị

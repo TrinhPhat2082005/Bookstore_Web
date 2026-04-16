@@ -1,16 +1,21 @@
 <?php
 // bookstore_web/app/controllers/HomeController.php
 
-class HomeController extends Controller {
+class HomeController extends Controller
+{
     private $settingModel;
     private $contactModel;
+    private $faqModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->settingModel = $this->model('Setting');
         $this->contactModel = $this->model('Contact');
+        $this->faqModel = $this->model('Faq');
     }
 
-    public function index() {
+    public function index()
+    {
         $settings = $this->settingModel->getAll();
         $data = [
             'settings' => $settings,
@@ -19,7 +24,8 @@ class HomeController extends Controller {
         $this->view('client/home/index', $data);
     }
 
-    public function about() {
+    public function about()
+    {
         $settings = $this->settingModel->getAll();
         $data = [
             'settings' => $settings,
@@ -28,13 +34,14 @@ class HomeController extends Controller {
         $this->view('client/home/about', $data);
     }
 
-    public function contact() {
+    public function contact()
+    {
         $settings = $this->settingModel->getAll();
-        
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize input
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            
+
             $data = [
                 'name' => trim($_POST['name']),
                 'email' => trim($_POST['email']),
@@ -47,9 +54,12 @@ class HomeController extends Controller {
             ];
 
             // Server-side Validation
-            if (empty($data['name'])) $data['name_err'] = 'Vui lòng nhập tên.';
-            if (empty($data['email'])) $data['email_err'] = 'Vui lòng nhập email.';
-            if (empty($data['message'])) $data['message_err'] = 'Vui lòng nhập nội dung.';
+            if (empty($data['name']))
+                $data['name_err'] = 'Vui lòng nhập tên.';
+            if (empty($data['email']))
+                $data['email_err'] = 'Vui lòng nhập email.';
+            if (empty($data['message']))
+                $data['message_err'] = 'Vui lòng nhập nội dung.';
 
             if (empty($data['name_err']) && empty($data['email_err']) && empty($data['message_err'])) {
                 if ($this->contactModel->add($data)) {
@@ -60,7 +70,7 @@ class HomeController extends Controller {
                     die('Đã xảy ra lỗi.');
                 }
             }
-            
+
             $this->view('client/home/contact', $data);
         } else {
             $data = [
@@ -78,8 +88,17 @@ class HomeController extends Controller {
         }
     }
 
-    public function faq() {
-        # KHANG's task - placeholder
-        $this->view('client/home/faq');
+    public function faq()
+    {
+        $settings = $this->settingModel->getAll();
+        $faqs = $this->faqModel->getAll();
+
+        $data = [
+            'settings' => $settings,
+            'faqs' => $faqs,
+            'title' => 'Hỏi đáp (FAQ)'
+        ];
+
+        $this->view('client/home/faq', $data);
     }
 }

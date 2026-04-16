@@ -1,21 +1,75 @@
 <?php
 // bookstore_web/app/controllers/NewsController.php
 
-class NewsController extends Controller {
-    public function index() {
-        # [Danh sách bài viết - KHANG]
-        # todo: Tìm kiếm bài viết theo từ khóa
-        $this->view('client/news/index');
+class NewsController extends Controller
+{
+    private $articleModel;
+    private $settingModel;
+    private $commentModel;
+
+    public function __construct()
+    {
+        $this->articleModel = $this->model('Article');
+        $this->settingModel = $this->model('Setting');
+        $this->commentModel = $this->model('Comment');
     }
 
-    public function detail($id) {
-        # [Chi tiết bài viết - KHANG]
-        # todo: Xây dựng trang đọc bài viết chi tiết
-        $this->view('client/news/detail');
+    public function index()
+    {
+        $settings = $this->settingModel->getAll();
+        $articles = $this->articleModel->list();
+
+        $data = [
+            'settings' => $settings,
+            'articles' => $articles,
+            'title' => 'Tin tức'
+        ];
+
+        $this->view('client/news/index', $data);
     }
 
-    public function comment() {
-        # [Bình luận - KHANG]
-        # todo: Thành viên bình luận trên bài viết
+    public function detail($id)
+    {
+        $settings = $this->settingModel->getAll();
+        $article = $this->articleModel->getDetail($id);
+
+        if (!$article) {
+            // Handle not found
+            header('Location: ' . BASE_URL . 'news');
+            exit;
+        }
+
+        $comments = $this->commentModel->getByArticle($id);
+
+        $data = [
+            'settings' => $settings,
+            'article' => $article,
+            'comments' => $comments,
+            'title' => $article->title
+        ];
+
+        $this->view('client/news/detail', $data);
+    }
+
+    public function comment($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+            $data = [
+                'article_id' => $id,
+                'name' => trim($_POST['name']),
+                'content' => trim($_POST['content'])
+            ];
+
+            if (!empty($data['name']) && !empty($data['content'])) {
+                if ($this->commentModel->add($data)) {
+                    // Success, redirect back
+                    header('Location: ' . BASE_URL . 'news/detail/' . $id . '?success=1');
+                    exit;
+                }
+            }
+        }
+        header('Location: ' . BASE_URL . 'news/detail/' . $id);
     }
 }
