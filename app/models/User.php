@@ -43,4 +43,9 @@ class User {
         # todo: Reset mật khẩu về mặc định cho user
         return false;
     }
+
+    public function countAll() {
+        $this->db->query("SELECT COUNT(*) as total FROM users");
+        return $this->db->single()->total;
+    }
 }

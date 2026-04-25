@@ -1,61 +1,87 @@
+<?php require_once '../app/views/admin/layout/header.php'; ?>
 <?php require_once '../app/views/admin/layout/sidebar.php'; ?>
 
-<div class="card">
-    <?php if(isset($_GET['success'])): ?>
-        <div style="background: #dcfce7; color: #166534; padding: 15px; border-radius: 8px; margin-bottom: 25px;">
-            <i class="fas fa-check-circle"></i> Cấu hình đã được cập nhật thành công!
-        </div>
-    <?php endif; ?>
+<div class="row">
+    <div class="col-12">
+        <div class="table-container p-4">
+            <h4 class="mb-4">Cấu hình Website</h4>
 
-    <form action="<?php echo BASE_URL; ?>admin/manageInfo" method="POST" enctype="multipart/form-data">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-            <div>
-                <div style="margin-bottom: 25px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Tên website</label>
-                    <input type="text" name="site_name" value="<?php echo $data['settings']['site_name']; ?>" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px;">
+            <?php if (isset($_GET['success'])): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i> Cấu hình đã được cập nhật thành công!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                <div style="margin-bottom: 25px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Khẩu hiệu / Giới thiệu ngắn</label>
-                    <input type="text" name="site_intro" value="<?php echo $data['settings']['site_intro']; ?>" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px;">
-                </div>
-                <div style="margin-bottom: 25px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Địa chỉ</label>
-                    <input type="text" name="site_address" value="<?php echo $data['settings']['site_address']; ?>" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px;">
-                </div>
-                <div style="margin-bottom: 25px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Điện thoại</label>
-                    <input type="text" name="site_phone" value="<?php echo $data['settings']['site_phone']; ?>" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px;">
-                </div>
-                <div style="margin-bottom: 25px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Email</label>
-                    <input type="email" name="site_email" value="<?php echo $data['settings']['site_email']; ?>" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px;">
-                </div>
-            </div>
+            <?php endif; ?>
 
-            <div>
-                <div style="margin-bottom: 25px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Logo website</label>
-                    <?php if(!empty($data['settings']['site_logo'])): ?>
-                        <div style="margin-bottom: 15px; background: #eee; padding: 20px; border-radius: 8px; text-align: center;">
-                            <img src="<?php echo BASE_URL; ?>public/uploads/<?php echo $data['settings']['site_logo']; ?>" alt="Logo" style="max-height: 100px;">
+            <form action="<?php echo BASE_URL; ?>admin/manageInfo" method="POST" enctype="shortcut/form-data">
+                <div class="row g-4">
+                    <div class="col-lg-7">
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold font-sm">Tên website</label>
+                            <input type="text" name="site_name" class="form-control"
+                                value="<?php echo $data['settings']['site_name']; ?>">
                         </div>
-                    <?php endif; ?>
-                    <input type="file" name="site_logo" style="width: 100%; padding: 12px; border: 1px dashed #d1d5db; border-radius: 8px;">
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold font-sm">Khẩu hiệu / Giới thiệu ngắn</label>
+                            <input type="text" name="site_intro" class="form-control"
+                                value="<?php echo $data['settings']['site_intro']; ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold font-sm">Địa chỉ</label>
+                            <input type="text" name="site_address" class="form-control"
+                                value="<?php echo $data['settings']['site_address']; ?>">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label font-weight-bold font-sm">Điện thoại</label>
+                                <input type="text" name="site_phone" class="form-control"
+                                    value="<?php echo $data['settings']['site_phone']; ?>">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label font-weight-bold font-sm">Email</label>
+                                <input type="email" name="site_email" class="form-control"
+                                    value="<?php echo $data['settings']['site_email']; ?>">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold font-sm">Nội dung trang Giới thiệu</label>
+                            <textarea name="about_content" class="form-control"
+                                rows="8"><?php echo $data['settings']['about_content']; ?></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="admin-card bg-light border">
+                            <label class="form-label font-weight-bold font-sm">Logo hiện tại</label>
+                            <?php if (!empty($data['settings']['site_logo'])): ?>
+                                <div class="text-center p-4 mb-3 rounded bg-white border">
+                                    <img src="<?php echo BASE_URL; ?>uploads/<?php echo $data['settings']['site_logo']; ?>"
+                                        alt="Logo" style="max-height: 80px;">
+                                </div>
+                            <?php endif; ?>
+                            <div class="mb-4">
+                                <label class="form-label font-sm">Thay đổi Logo</label>
+                                <input type="file" name="site_logo" class="form-control border-dashed">
+                                <small class="text-muted d-block mt-1">Hỗ trợ JPG, PNG. Dung lượng tối đa 2MB.</small>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <i class="fa-solid fa-circle-info text-primary me-2"></i>
+                            <span class="small text-muted">Các cài đặt này sẽ ảnh hưởng trực tiếp đến giao diện bên
+                                ngoài.</span>
+                        </div>
+                    </div>
                 </div>
-                <div style="margin-bottom: 25px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Nội dung trang Giới thiệu</label>
-                    <textarea name="about_content" rows="10" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-family: inherit;"><?php echo $data['settings']['about_content']; ?></textarea>
+
+                <div class="mt-5 border-top pt-4">
+                    <button type="submit" class="btn btn-primary px-5 btn-lg">
+                        <i class="fas fa-save me-2"></i> Lưu thay đổi
+                    </button>
                 </div>
-            </div>
+            </form>
         </div>
-        
-        <div style="margin-top: 30px; border-top: 1px solid #e5e7eb; padding-top: 30px;">
-            <button type="submit" style="background: var(--admin-accent); color: white; padding: 15px 40px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
-                <i class="fas fa-save" style="margin-right: 10px;"></i> Lưu thay đổi
-            </button>
-        </div>
-    </form>
+    </div>
 </div>
 
-</body>
-</html>
+<?php require_once '../app/views/admin/layout/footer.php'; ?>

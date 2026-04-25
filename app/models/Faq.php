@@ -29,10 +29,25 @@ class Faq
         return $this->db->execute();
     }
 
+    public function getDetail($id)
+    {
+        $this->db->query("SELECT * FROM faqs WHERE id = :id");
+        $this->db->bind(':id', $id);
+        return $this->db->single();
+    }
+
+    public function update($id, $data)
+    {
+        $this->db->query("UPDATE faqs SET question = :question, answer = :answer, category = :category WHERE id = :id");
+        $this->db->bind(':question', $data['question']);
+        $this->db->bind(':answer', $data['answer']);
+        $this->db->bind(':category', $data['category'] ?? 'General');
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
+    }
+
     public function delete($id)
     {
-        # [Quản lý Hỏi/Đáp - KHANG]
-        # todo: Xóa câu hỏi/đáp
         $this->db->query("DELETE FROM faqs WHERE id = :id");
         $this->db->bind(':id', $id);
         return $this->db->execute();
