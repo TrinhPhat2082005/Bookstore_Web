@@ -13,8 +13,12 @@
             <i class="fa-solid fa-gauge"></i> Dashboard
         </a>
         <a href="<?php echo BASE_URL; ?>admin/manageProducts"
-            class="list-group-item list-group-item-action <?php echo (strpos($title, 'Sản phẩm') !== false) ? 'active' : ''; ?>">
+            class="list-group-item list-group-item-action <?php echo (strpos($title, 'Sản phẩm') !== false || strpos($title, 'sách') !== false) ? 'active' : ''; ?>">
             <i class="fa-solid fa-book"></i> Quản lý Sách
+        </a>
+        <a href="<?php echo BASE_URL; ?>admin/manageOrders"
+            class="list-group-item list-group-item-action <?php echo (strpos($title, 'Đơn hàng') !== false) ? 'active' : ''; ?>">
+            <i class="fa-solid fa-box"></i> Quản lý Đơn hàng
         </a>
         <a href="<?php echo BASE_URL; ?>admin/manageNews"
             class="list-group-item list-group-item-action <?php echo (strpos($title, 'Tin tức') !== false || strpos($title, 'bài viết') !== false) ? 'active' : ''; ?>">

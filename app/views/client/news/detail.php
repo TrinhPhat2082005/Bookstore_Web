@@ -18,8 +18,8 @@
                 <!-- Featured Image -->
                 <?php if ($data['article']->image): ?>
                     <div class="mb-5 rounded-4 overflow-hidden shadow-sm">
-                        <img src="<?php echo BASE_URL . $data['article']->image; ?>" class="img-fluid w-100"
-                            alt="<?php echo $data['article']->title; ?>">
+                        <img src="<?php echo BASE_URL ?>uploads/<?php echo $data['article']->image; ?>"
+                            class="img-fluid w-100" alt="<?php echo $data['article']->title; ?>">
                     </div>
                 <?php endif; ?>
 

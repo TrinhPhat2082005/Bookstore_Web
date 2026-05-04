@@ -8,6 +8,8 @@ class AdminController extends Controller
     private $articleModel;
     private $commentModel;
     private $faqModel;
+    private $productModel;
+    private $orderModel;
 
     public function __construct()
     {
@@ -17,6 +19,8 @@ class AdminController extends Controller
         $this->articleModel = $this->model('Article');
         $this->commentModel = $this->model('Comment');
         $this->faqModel = $this->model('Faq');
+        $this->productModel = $this->model('Product');
+        $this->orderModel   = $this->model('Order');
     }
 
     public function index()
@@ -47,7 +51,7 @@ class AdminController extends Controller
             // Xử lý upload Logo (Nếu có)
             if (!empty($_FILES['site_logo']['name'])) {
                 $filename = time() . '_' . $_FILES['site_logo']['name'];
-                $destination = 'public/uploads/' . $filename;
+                $destination = 'uploads/' . $filename;
                 if (move_uploaded_file($_FILES['site_logo']['tmp_name'], $destination)) {
                     $this->settingModel->update('site_logo', $filename);
                 }
@@ -95,14 +99,150 @@ class AdminController extends Controller
     // --- TÂM: Sản phẩm & Giỏ hàng ---
     public function manageProducts()
     {
-        # [Quản lý sản phẩm - TÂM]
-        # todo: Thêm, sửa, xóa, tìm kiếm sản phẩm
+        $page    = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $limit   = 10;
+        $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+
+        // Xử lý xóa sản phẩm
+        if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
+            $this->productModel->delete((int) $_GET['id']);
+            header('Location: ' . BASE_URL . 'admin/manageProducts?success=deleted');
+            exit();
+        }
+
+        $products    = $this->productModel->getAllAdmin($page, $limit);
+        $total       = $this->productModel->countAll();
+
+        $data = [
+            'products'     => $products,
+            'current_page' => $page,
+            'total_pages'  => ceil($total / $limit),
+            'keyword'      => $keyword,
+            'title'        => 'Quản lý Sản phẩm'
+        ];
+        $this->view('admin/products/index', $data);
+    }
+
+    public function addProduct()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'name'        => trim($_POST['name']),
+                'author'      => trim($_POST['author']),
+                'description' => trim($_POST['description']),
+                'price'       => (float) $_POST['price'],
+                'stock'       => (int) $_POST['stock'],
+                'category'    => trim($_POST['category']),
+                'status'      => $_POST['status'],
+                'name_err'    => '',
+                'price_err'   => ''
+            ];
+
+            if (empty($data['name'])) $data['name_err'] = 'Vui lòng nhập tên sách.';
+            if ($data['price'] <= 0)  $data['price_err'] = 'Giá phải lớn hơn 0.';
+
+            if (empty($data['name_err']) && empty($data['price_err'])) {
+                // Xử lý upload ảnh
+                if (!empty($_FILES['image']['name'])) {
+                    $filename = time() . '_' . basename($_FILES['image']['name']);
+                    if (move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $filename)) {
+                        $data['image'] = $filename;
+                    }
+                }
+                if ($this->productModel->add($data)) {
+                    header('Location: ' . BASE_URL . 'admin/manageProducts?success=added');
+                    exit();
+                }
+            }
+
+            $data['title'] = 'Thêm sách mới';
+            $this->view('admin/products/add', $data);
+        } else {
+            $data = ['title' => 'Thêm sách mới'];
+            $this->view('admin/products/add', $data);
+        }
+    }
+
+    public function editProduct($id)
+    {
+        $product = $this->productModel->getById($id);
+        if (!$product) {
+            header('Location: ' . BASE_URL . 'admin/manageProducts');
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'name'        => trim($_POST['name']),
+                'author'      => trim($_POST['author']),
+                'description' => trim($_POST['description']),
+                'price'       => (float) $_POST['price'],
+                'stock'       => (int) $_POST['stock'],
+                'category'    => trim($_POST['category']),
+                'status'      => $_POST['status'],
+                'image'       => $product->image
+            ];
+
+            // Xử lý upload ảnh mới (nếu có)
+            if (!empty($_FILES['image']['name'])) {
+                $filename = time() . '_' . basename($_FILES['image']['name']);
+                if (move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $filename)) {
+                    $data['image'] = $filename;
+                }
+            }
+
+            if ($this->productModel->update($id, $data)) {
+                header('Location: ' . BASE_URL . 'admin/manageProducts?success=updated');
+                exit();
+            }
+        }
+
+        $data = [
+            'product' => $product,
+            'title'   => 'Chỉnh sửa sách'
+        ];
+        $this->view('admin/products/edit', $data);
     }
 
     public function manageOrders()
     {
-        # [Quản lý giỏ hàng và đơn hàng - TÂM]
-        # todo: Xem và cập nhật trạng thái đơn hàng
+        $page  = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $limit = 10;
+
+        // Cập nhật trạng thái đơn hàng
+        if (isset($_GET['action']) && $_GET['action'] == 'update_status' && isset($_GET['id']) && isset($_GET['status'])) {
+            $this->orderModel->updateStatus((int) $_GET['id'], $_GET['status']);
+            header('Location: ' . BASE_URL . 'admin/manageOrders?success=1');
+            exit();
+        }
+
+        $orders = $this->orderModel->getAll($page, $limit);
+        $total  = $this->orderModel->countAll();
+
+        $data = [
+            'orders'       => $orders,
+            'total'        => $total,
+            'current_page' => $page,
+            'total_pages'  => ceil($total / $limit),
+            'title'        => 'Quản lý Đơn hàng'
+        ];
+        $this->view('admin/orders/index', $data);
+    }
+
+    public function viewOrder($id)
+    {
+        $order = $this->orderModel->getDetail($id);
+        if (!$order) {
+            header('Location: ' . BASE_URL . 'admin/manageOrders');
+            exit();
+        }
+        $items = $this->orderModel->getItems($id);
+        $data  = [
+            'order' => $order,
+            'items' => $items,
+            'title' => 'Chi tiết đơn hàng #' . $id
+        ];
+        $this->view('admin/orders/detail', $data);
     }
 
     // --- KHANG: Tin tức, Bình luận & Hỏi/Đáp ---
@@ -146,7 +286,7 @@ class AdminController extends Controller
             // Xử lý upload ảnh
             if (!empty($_FILES['image']['name'])) {
                 $filename = time() . '_' . $_FILES['image']['name'];
-                if (move_uploaded_file($_FILES['image']['tmp_name'], 'public/uploads/' . $filename)) {
+                if (move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $filename)) {
                     $data['image'] = $filename;
                 }
             }
@@ -183,7 +323,7 @@ class AdminController extends Controller
 
             if (!empty($_FILES['image']['name'])) {
                 $filename = time() . '_' . $_FILES['image']['name'];
-                if (move_uploaded_file($_FILES['image']['tmp_name'], 'public/uploads/' . $filename)) {
+                if (move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $filename)) {
                     $data['image'] = $filename;
                 }
             }

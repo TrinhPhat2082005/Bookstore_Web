@@ -12,7 +12,7 @@
                 <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden transition-hover">
                     <div class="article-image position-relative" style="height: 220px; background: #f1f5f9;">
                         <?php if ($article->image): ?>
-                            <img src="<?php echo BASE_URL . $article->image; ?>"
+                            <img src="<?php echo BASE_URL?>uploads/<?php echo $article->image; ?>"
                                 class="card-img-top h-100 w-100 object-fit-cover" alt="<?php echo $article->title; ?>">
                         <?php else: ?>
                             <div class="d-flex align-items-center justify-content-center h-100 opacity-25">

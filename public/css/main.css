@@ -9,7 +9,7 @@
 }
 
 body {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     background-color: var(--light-bg);
     color: var(--dark-color);
 }
@@ -87,5 +87,122 @@ section {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* ================================
+   RESPONSIVE FIXES
+   ================================ */
+
+/* Tablets and below (< 992px) */
+@media (max-width: 991.98px) {
+    section {
+        padding: 50px 0;
+    }
+
+    /* Hero section: hide the decorative circle & image on tablets */
+    .hero-image-wrapper {
+        display: none;
+    }
+
+    /* Cart table: reduce font size */
+    .table th,
+    .table td {
+        font-size: 0.85rem;
+        padding: 0.5rem;
+    }
+}
+
+/* Mobile phones (< 768px) */
+@media (max-width: 767.98px) {
+    section {
+        padding: 40px 0;
+    }
+
+    /* Scale down large headings */
+    .display-3 {
+        font-size: 2rem;
+    }
+
+    .display-4 {
+        font-size: 1.75rem;
+    }
+
+    .display-5 {
+        font-size: 1.5rem;
+    }
+
+    /* Navbar collapsed menu spacing */
+    .navbar-collapse {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .navbar-collapse .d-flex {
+        margin-top: 0.75rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    /* Product detail: stack price/stock vertically */
+    .price-stock-bar {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+    }
+
+    .price-stock-bar .vr {
+        display: none;
+    }
+
+    /* Hover effects: disable on touch devices */
+    .transition-hover:hover {
+        transform: none;
+    }
+
+    /* Cart table: stack items on very small screens */
+    .table th:nth-child(n+3),
+    .table td:nth-child(n+3) {
+        font-size: 0.8rem;
+    }
+
+    /* Checkout form: tighter padding */
+    .card-body.p-md-5 {
+        padding: 1.25rem !important;
+    }
+
+    /* Footer columns */
+    footer .col-md-4 {
+        text-align: center;
+    }
+
+    /* Buttons: full width on mobile */
+    .btn-lg {
+        font-size: 1rem;
+        padding: 0.625rem 1.5rem;
+    }
+}
+
+/* Very small phones (< 576px) */
+@media (max-width: 575.98px) {
+    section {
+        padding: 30px 0;
+    }
+
+    .display-3 {
+        font-size: 1.75rem;
+    }
+
+    .display-5 {
+        font-size: 1.35rem;
+    }
+
+    /* Cart action buttons: stack vertically */
+    .cart-actions {
+        flex-direction: column;
+    }
+
+    .cart-actions .d-flex {
+        flex-wrap: wrap;
     }
 }

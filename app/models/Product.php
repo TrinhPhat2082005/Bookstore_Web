@@ -9,38 +9,91 @@ class Product {
     }
 
     public function getAll() {
-        # [Danh sách sản phẩm - TÂM]
-        # todo: Lấy toàn bộ danh sách sản phẩm
-        return [];
+        $this->db->query("SELECT * FROM products WHERE status = 'active' ORDER BY created_at DESC");
+        return $this->db->resultSet();
     }
 
     public function getById($id) {
-        # [Chi tiết sản phẩm - TÂM]
-        # todo: Lấy thông tin 1 sản phẩm theo ID
-        return null;
+        $this->db->query("SELECT * FROM products WHERE id = :id");
+        $this->db->bind(':id', $id);
+        return $this->db->single();
     }
 
+    // [Tìm kiếm sản phẩm - TÂM] Tìm kiếm theo tên, tác giả hoặc mô tả
     public function searchByKeyword($keyword) {
-        # [Tìm kiếm sản phẩm - TÂM]
-        # todo: Tìm kiếm sản phẩm theo tên hoặc mô tả
-        return [];
+        $this->db->query("SELECT * FROM products WHERE status = 'active' AND (name LIKE :keyword OR author LIKE :keyword OR description LIKE :keyword OR category LIKE :keyword) ORDER BY created_at DESC");
+        $this->db->bind(':keyword', '%' . $keyword . '%');
+        return $this->db->resultSet();
+    }
+
+    // Lấy sản phẩm theo danh mục
+    public function getByCategory($category) {
+        $this->db->query("SELECT * FROM products WHERE status = 'active' AND category = :category ORDER BY created_at DESC");
+        $this->db->bind(':category', $category);
+        return $this->db->resultSet();
+    }
+
+    // Lấy danh sách danh mục
+    public function getCategories() {
+        $this->db->query("SELECT DISTINCT category FROM products WHERE status = 'active' AND category IS NOT NULL ORDER BY category");
+        return $this->db->resultSet();
+    }
+
+    // [Quản lý sản phẩm - Admin] Lấy toàn bộ danh sách sản phẩm với phân trang
+    public function getAllAdmin($page = 1, $limit = 10) {
+        $offset = ($page - 1) * $limit;
+        $this->db->query("SELECT * FROM products ORDER BY created_at DESC LIMIT :offset, :limit");
+        $this->db->bind(':offset', $offset, PDO::PARAM_INT);
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
+        return $this->db->resultSet();
+    }
+
+    // Đếm tổng số sản phẩm
+    public function countAll() {
+        $this->db->query("SELECT COUNT(*) as total FROM products");
+        return $this->db->single()->total;
     }
 
     public function add($data) {
-        # [Quản lý sản phẩm - TÂM]
-        # todo: Thêm sản phẩm mới
-        return false;
+        $this->db->query("INSERT INTO products (name, author, description, price, stock, image, category, status) 
+                          VALUES (:name, :author, :description, :price, :stock, :image, :category, :status)");
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':author', $data['author'] ?? null);
+        $this->db->bind(':description', $data['description'] ?? null);
+        $this->db->bind(':price', $data['price']);
+        $this->db->bind(':stock', $data['stock'] ?? 0);
+        $this->db->bind(':image', $data['image'] ?? null);
+        $this->db->bind(':category', $data['category'] ?? null);
+        $this->db->bind(':status', $data['status'] ?? 'active');
+        return $this->db->execute();
     }
 
     public function update($id, $data) {
-        # [Quản lý sản phẩm - TÂM]
-        # todo: Cập nhật thông tin sản phẩm
-        return false;
+        $this->db->query("UPDATE products SET 
+                          name = :name, 
+                          author = :author, 
+                          description = :description, 
+                          price = :price, 
+                          stock = :stock, 
+                          image = :image, 
+                          category = :category, 
+                          status = :status 
+                          WHERE id = :id");
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':author', $data['author'] ?? null);
+        $this->db->bind(':description', $data['description'] ?? null);
+        $this->db->bind(':price', $data['price']);
+        $this->db->bind(':stock', $data['stock'] ?? 0);
+        $this->db->bind(':image', $data['image'] ?? null);
+        $this->db->bind(':category', $data['category'] ?? null);
+        $this->db->bind(':status', $data['status'] ?? 'active');
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
     }
 
     public function delete($id) {
-        # [Quản lý sản phẩm - TÂM]
-        # todo: Xóa sản phẩm khỏi database
-        return false;
+        $this->db->query("DELETE FROM products WHERE id = :id");
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
     }
 }

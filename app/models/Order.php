@@ -9,26 +9,83 @@ class Order {
     }
 
     public function create($data) {
-        # [Thanh toán - TÂM]
-        # todo: Tạo đơn hàng và chi tiết đơn hàng mới
-        return false;
+        // 1. Tạo đơn hàng
+        $this->db->query("INSERT INTO orders (customer_name, customer_email, customer_phone, customer_address, total_amount, note, status) 
+                          VALUES (:customer_name, :customer_email, :customer_phone, :customer_address, :total_amount, :note, 'pending')");
+        $this->db->bind(':customer_name', $data['customer_name']);
+        $this->db->bind(':customer_email', $data['customer_email']);
+        $this->db->bind(':customer_phone', $data['customer_phone'] ?? null);
+        $this->db->bind(':customer_address', $data['customer_address']);
+        $this->db->bind(':total_amount', $data['total_amount']);
+        $this->db->bind(':note', $data['note'] ?? null);
+        
+        if (!$this->db->execute()) {
+            return false;
+        }
+
+        // 2. Lấy ID đơn hàng vừa tạo
+        $this->db->query("SELECT LAST_INSERT_ID() as id"); // Lấy id vừa mới insert xong
+        $row = $this->db->single();
+        $order_id = $row->id;
+
+        // 3. Thêm chi tiết từng sản phẩm trong đơn
+        foreach ($data['items'] as $item) {
+            $this->db->query("INSERT INTO order_items (order_id, product_id, quantity, price) 
+                              VALUES (:order_id, :product_id, :quantity, :price)");
+            $this->db->bind(':order_id', $order_id);
+            $this->db->bind(':product_id', $item['product_id']);
+            $this->db->bind(':quantity', $item['quantity']);
+            $this->db->bind(':price', $item['price']);
+            $this->db->execute();
+        }
+
+        return $order_id;
     }
 
-    public function getByUser($user_id) {
-        # [Lịch sử mua hàng - TÂM]
-        # todo: Lấy danh sách đơn hàng của 1 user
-        return [];
+    // [Lịch sử mua hàng - TÂM] Lấy danh sách đơn hàng theo email
+    public function getByEmail($email) {
+        $this->db->query("SELECT * FROM orders WHERE customer_email = :email ORDER BY created_at DESC");
+        $this->db->bind(':email', $email);
+        return $this->db->resultSet();
     }
 
-    public function getAll() {
-        # [Quản lý giỏ hàng và đơn hàng - TÂM]
-        # todo: Lấy toàn bộ danh sách đơn hàng hệ thống
-        return [];
+    // Lấy chi tiết một đơn hàng kèm sản phẩm
+    public function getDetail($id) {
+        $this->db->query("SELECT * FROM orders WHERE id = :id");
+        $this->db->bind(':id', $id);
+        return $this->db->single();
     }
 
+    // Lấy các item của một đơn hàng
+    public function getItems($order_id) {
+        $this->db->query("SELECT oi.*, p.name as product_name, p.image as product_image 
+                          FROM order_items oi 
+                          JOIN products p ON oi.product_id = p.id 
+                          WHERE oi.order_id = :order_id");
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->resultSet();
+    }
+
+    // [Quản lý giỏ hàng và đơn hàng - TÂM] Lấy toàn bộ danh sách đơn hàng (Admin)
+    public function getAll($page = 1, $limit = 10) {
+        $offset = ($page - 1) * $limit;
+        $this->db->query("SELECT * FROM orders ORDER BY created_at DESC LIMIT :offset, :limit");
+        $this->db->bind(':offset', $offset, PDO::PARAM_INT);
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
+        return $this->db->resultSet();
+    }
+
+    // Đếm tổng số đơn hàng
+    public function countAll() {
+        $this->db->query("SELECT COUNT(*) as total FROM orders");
+        return $this->db->single()->total;
+    }
+
+    // [Quản lý giỏ hàng và đơn hàng - TÂM] Cập nhật trạng thái đơn hàng
     public function updateStatus($id, $status) {
-        # [Quản lý giỏ hàng và đơn hàng - TÂM]
-        # todo: Cập nhật trạng thái đơn hàng (Đã xử lý, đang giao,...)
-        return false;
+        $this->db->query("UPDATE orders SET status = :status WHERE id = :id");
+        $this->db->bind(':status', $status);
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
     }
 }

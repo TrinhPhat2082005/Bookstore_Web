@@ -1,3 +1,4 @@
+<?php // session is started in public/index.php ?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -38,7 +39,19 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo BASE_URL; ?>home/contact">Liên hệ</a>
                         </li>
                     </ul>
-                    <div class="d-flex">
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="<?php echo BASE_URL; ?>cart"
+                            class="btn btn-outline-primary position-relative rounded-pill px-3">
+                            <i class="fas fa-shopping-cart"></i>
+                            <?php $cartCount = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'], 'quantity')) : 0; ?>
+                            <?php if ($cartCount > 0): ?>
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                    style="font-size: 0.65rem;">
+                                    <?php echo $cartCount; ?>
+                                </span>
+                            <?php endif; ?>
+                        </a>
                         <a href="<?php echo BASE_URL; ?>auth/login" class="btn btn-primary px-4 rounded-pill">Đăng
                             nhập</a>
                     </div>

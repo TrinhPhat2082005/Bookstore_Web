@@ -2,8 +2,7 @@
 
 <main>
     <!-- Hero Section -->
-    <section class="py-5"
-        style="background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%); min-height: 80vh; display: flex; align-items: center;">
+    <section class="py-5" style="background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%); min-height: 60vh; display: flex; align-items: center; overflow: hidden;">
         <div class="container">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
@@ -20,13 +19,13 @@
                             class="btn btn-outline-secondary btn-lg px-5 rounded-pill">Về chúng tôi</a>
                     </div>
                 </div>
-                <div class="col-lg-6 text-center">
+                <div class="col-lg-6 text-center d-none d-lg-block hero-image-wrapper">
                     <div class="position-relative">
                         <div class="bg-primary rounded-circle position-absolute top-50 start-50 translate-middle opacity-10"
-                            style="width: 400px; height: 400px;"></div>
-                        <img src="<?php echo BASE_URL; ?>public/assets/hero-books.png" alt="Books Hero"
+                            style="width: 100%; max-width: 400px; aspect-ratio: 1/1;"></div>
+                        <img src="<?php echo BASE_URL; ?>assets/hero-books.png" alt="Books Hero"
                             class="img-fluid position-relative z-1"
-                            style="max-height: 500px; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.1));">
+                            style="max-height: 400px; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.1));">
                     </div>
                 </div>
             </div>
