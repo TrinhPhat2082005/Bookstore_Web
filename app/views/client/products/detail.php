@@ -95,8 +95,7 @@
                     <?php if ($product->description): ?>
                         <div class="mb-5">
                             <h5 class="fw-bold mb-3 border-bottom pb-2">Mô tả sách</h5>
-                            <p class="text-secondary lh-lg"><?php echo nl2br(htmlspecialchars($product->description)); ?>
-                            </p>
+                            <div class="text-secondary lh-lg"><?php echo $product->description; ?></div>
                         </div>
                     <?php endif; ?>
 

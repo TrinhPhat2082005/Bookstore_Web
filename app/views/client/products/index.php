@@ -1,171 +1,423 @@
 <?php require_once '../app/views/client/layout/header.php'; ?>
 
-<main>
-    <!-- Page Header -->
-    <section class="py-5" style="background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%);">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h1 class="display-5 fw-bold mb-2">Danh sách sách</h1>
-                    <p class="text-secondary mb-0">Khám phá hàng ngàn đầu sách chọn lọc của chúng tôi</p>
-                </div>
-                <div class="col-md-4 text-md-end">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-md-end mb-0">
-                            <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>"
-                                    class="text-decoration-none">Trang chủ</a></li>
-                            <li class="breadcrumb-item active">Sản phẩm</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </section>
+<style>
+    :root {
+        --th-primary: #1a1a1a;
+        --th-accent: #3b82f6;
+        --th-bg: #f9fafb;
+    }
 
-    <section class="py-5">
-        <div class="container">
-            <!-- Search & Filter Bar -->
-            <div class="card border-0 shadow-sm rounded-4 mb-5 p-4">
-                <form method="GET" action="<?php echo BASE_URL; ?>product" class="row g-3 align-items-end">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold small text-uppercase text-secondary">Tìm kiếm sách</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-white border-end-0"><i
-                                    class="fas fa-search text-secondary"></i></span>
-                            <input type="text" name="keyword" class="form-control border-start-0 ps-0"
-                                placeholder="Tên sách, tác giả..."
-                                value="<?php echo htmlspecialchars($data['keyword']); ?>">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-semibold small text-uppercase text-secondary">Danh mục</label>
-                        <select name="category" class="form-select">
-                            <option value="">Tất cả danh mục</option>
-                            <?php foreach ($data['categories'] as $cat): ?>
-                                <?php $isSelected = ($data['category'] === $cat->category) ? 'selected' : ''; ?>
-                                <option value="<?php echo htmlspecialchars($cat->category); ?>" <?php echo $isSelected; ?>>
-                                    <?php echo htmlspecialchars($cat->category); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100 rounded-3">
-                            <i class="fas fa-filter me-1"></i> Lọc
-                        </button>
-                    </div>
-                </form>
-            </div>
+    .products-container {
+        background-color: var(--th-bg);
+        min-height: 100vh;
+    }
 
-            <!-- Result Summary -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="text-secondary mb-0">
-                    <?php if (!empty($data['keyword'])): ?>
-                        Kết quả tìm kiếm cho "<strong><?php echo htmlspecialchars($data['keyword']); ?></strong>":
-                    <?php elseif (!empty($data['category'])): ?>
-                        Danh mục: <strong><?php echo htmlspecialchars($data['category']); ?></strong>:
-                    <?php endif; ?>
-                    <span class="badge bg-primary ms-1"><?php echo count($data['products']); ?> sách</span>
-                </p>
-                <?php if (!empty($data['keyword']) || !empty($data['category'])): ?>
-                    <a href="<?php echo BASE_URL; ?>product" class="btn btn-sm btn-outline-secondary rounded-pill">
-                        <i class="fas fa-times me-1"></i>Xóa bộ lọc
-                    </a>
-                <?php endif; ?>
-            </div>
+    .sidebar-sticky {
+        position: sticky;
+        top: 100px;
+        height: calc(100vh - 120px);
+        overflow-y: auto;
+    }
 
-            <!-- Toast notification -->
-            <?php if (isset($_GET['added'])): ?>
-                <div class="alert alert-success alert-dismissible fade show rounded-4 mb-4" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>Đã thêm sách vào giỏ hàng!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            <?php endif; ?>
+    .glass-sidebar {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 1.5rem;
+    }
 
-            <!-- Products Grid -->
-            <?php if (empty($data['products'])): ?>
-                <div class="text-center py-5">
-                    <i class="fas fa-book-open fa-4x text-secondary opacity-25 mb-4"></i>
-                    <h4 class="text-secondary">Không tìm thấy sách nào</h4>
-                    <p class="text-secondary">Hãy thử từ khóa khác hoặc duyệt tất cả sách.</p>
-                    <a href="<?php echo BASE_URL; ?>product" class="btn btn-primary rounded-pill px-4">Xem tất cả sách</a>
-                </div>
-            <?php else: ?>
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                    <?php foreach ($data['products'] as $product): ?>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm rounded-4 transition-hover">
-                                <!-- Book Image -->
-                                <div class="position-relative">
-                                    <?php if ($product->image): ?>
-                                        <img src="<?php echo BASE_URL; ?>uploads/<?php echo htmlspecialchars($product->image); ?>"
-                                            class="card-img-top rounded-top-4" alt="<?php echo htmlspecialchars($product->name); ?>"
-                                            style="height: 220px; object-fit: cover;">
-                                    <?php else: ?>
-                                        <div class="rounded-top-4 d-flex align-items-center justify-content-center bg-primary bg-opacity-10"
-                                            style="height: 220px;">
-                                            <i class="fas fa-book fa-4x text-primary opacity-50"></i>
-                                        </div>
-                                    <?php endif; ?>
-                                    <!-- Category Badge -->
-                                    <?php if ($product->category): ?>
-                                        <span class="position-absolute top-0 start-0 m-2 badge rounded-pill"
-                                            style="background-color: var(--primary-color);">
-                                            <?php echo htmlspecialchars($product->category); ?>
-                                        </span>
-                                    <?php endif; ?>
-                                    <!-- Stock badge -->
-                                    <?php if ($product->stock <= 5 && $product->stock > 0): ?>
-                                        <span class="position-absolute top-0 end-0 m-2 badge bg-warning text-dark">
-                                            Còn <?php echo $product->stock; ?>
-                                        </span>
-                                    <?php elseif ($product->stock == 0): ?>
-                                        <span class="position-absolute top-0 end-0 m-2 badge bg-danger">Hết hàng</span>
-                                    <?php endif; ?>
+    .filter-section {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .filter-section:last-child {
+        border-bottom: none;
+    }
+
+    .filter-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--th-primary);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: 1rem;
+    }
+
+    .product-card {
+        border: none;
+        background: transparent;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .product-card .image-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: 1rem;
+        aspect-ratio: 2/3;
+        background: #fff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .product-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .product-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .quick-add {
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+        transition: bottom 0.3s ease;
+    }
+
+    .image-wrapper:hover .quick-add {
+        bottom: 0;
+    }
+
+    .product-title {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 0.25rem;
+        color: var(--th-primary);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .product-author {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+
+    .product-price {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--th-accent);
+    }
+
+    .custom-checkbox .form-check-input:checked {
+        background-color: var(--th-primary);
+        border-color: var(--th-primary);
+    }
+
+    .btn-apply {
+        background: var(--th-primary);
+        color: white;
+        border-radius: 2rem;
+        padding: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-apply:hover {
+        background: #333;
+        transform: scale(1.02);
+    }
+
+    .sort-select {
+        border-radius: 2rem;
+        padding-left: 1.25rem;
+        padding-right: 2.5rem;
+        background-color: white;
+        border: 1px solid #eee;
+    }
+
+    /* Custom Scrollbar for Sidebar */
+    .sidebar-sticky::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .sidebar-sticky::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .sidebar-sticky::-webkit-scrollbar-thumb {
+        background: #ddd;
+        border-radius: 10px;
+    }
+
+    .category-list {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .category-item {
+        display: block;
+        padding: 0.25rem 0;
+        color: #555;
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: color 0.2s ease;
+    }
+
+    .category-item:hover,
+    .category-item.active {
+        color: var(--th-accent);
+        font-weight: 600;
+    }
+</style>
+
+<main class="products-container py-5">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <div class="sidebar-sticky">
+                    <div class="glass-sidebar p-4 shadow-sm">
+                        <form action="<?php echo BASE_URL; ?>product" method="GET" id="filter-form">
+                            <!-- Availability -->
+                            <div class="filter-section">
+                                <div class="filter-title" data-bs-toggle="collapse" data-bs-target="#avail-collapse">
+                                    Tình trạng <i class="fas fa-chevron-down small"></i>
                                 </div>
-
-                                <div class="card-body d-flex flex-column p-3">
-                                    <h6 class="card-title fw-bold mb-1 line-clamp-2" style="-webkit-line-clamp:2;">
-                                        <?php echo htmlspecialchars($product->name); ?>
-                                    </h6>
-                                    <?php if ($product->author): ?>
-                                        <p class="text-secondary small mb-2">
-                                            <i
-                                                class="fas fa-pen-nib me-1 opacity-50"></i><?php echo htmlspecialchars($product->author); ?>
-                                        </p>
-                                    <?php endif; ?>
-                                    <p class="text-secondary small mb-3 line-clamp-3 flex-grow-1">
-                                        <?php echo htmlspecialchars(mb_substr($product->description ?? '', 0, 80)); ?>...
-                                    </p>
-                                    <div class="d-flex justify-content-between align-items-center mt-auto">
-                                        <span class="fw-bold fs-5" style="color: var(--primary-color);">
-                                            <?php echo number_format($product->price, 0, ',', '.'); ?>₫
-                                        </span>
+                                <div class="collapse show" id="avail-collapse">
+                                    <div class="form-check custom-checkbox mb-2">
+                                        <input class="form-check-input" type="radio" name="availability" value=""
+                                            id="avail-all" <?php echo empty($data['filters']['availability']) ? 'checked' : ''; ?>>
+                                        <label class="form-check-label" for="avail-all">Tất cả</label>
                                     </div>
-                                    <div class="d-grid gap-2 mt-3">
-                                        <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"
-                                            class="btn btn-outline-primary btn-sm rounded-3">
-                                            <i class="fas fa-eye me-1"></i>Xem chi tiết
-                                        </a>
-                                        <?php if ($product->stock > 0): ?>
-                                            <a href="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>"
-                                                class="btn btn-primary btn-sm rounded-3">
-                                                <i class="fas fa-cart-plus me-1"></i>Thêm vào giỏ
-                                            </a>
-                                        <?php else: ?>
-                                            <button class="btn btn-secondary btn-sm rounded-3" disabled>
-                                                <i class="fas fa-ban me-1"></i>Hết hàng
-                                            </button>
-                                        <?php endif; ?>
+                                    <div class="form-check custom-checkbox mb-2">
+                                        <input class="form-check-input" type="radio" name="availability"
+                                            value="in_stock" id="avail-in" <?php echo $data['filters']['availability'] === 'in_stock' ? 'checked' : ''; ?>>
+                                        <label class="form-check-label" for="avail-in">Còn hàng</label>
+                                    </div>
+                                    <div class="form-check custom-checkbox">
+                                        <input class="form-check-input" type="radio" name="availability"
+                                            value="out_of_stock" id="avail-out" <?php echo $data['filters']['availability'] === 'out_of_stock' ? 'checked' : ''; ?>>
+                                        <label class="form-check-label" for="avail-out">Hết hàng</label>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+
+                            <!-- Categories -->
+                            <div class="filter-section">
+                                <div class="filter-title" data-bs-toggle="collapse" data-bs-target="#cat-collapse">
+                                    Danh mục <i class="fas fa-chevron-down small"></i>
+                                </div>
+                                <div class="collapse show" id="cat-collapse">
+                                    <div class="category-list">
+                                        <a href="#"
+                                            class="category-item <?php echo empty($data['filters']['category']) ? 'active' : ''; ?>"
+                                            data-value="">Tất cả</a>
+                                        <?php foreach ($data['categories'] as $cat): ?>
+                                            <a href="#"
+                                                class="category-item <?php echo $data['filters']['category'] === $cat->category ? 'active' : ''; ?>"
+                                                data-value="<?php echo htmlspecialchars($cat->category); ?>">
+                                                <?php echo htmlspecialchars($cat->category); ?>
+                                            </a>
+                                        <?php endforeach; ?>
+                                        <input type="hidden" name="category" id="category-input"
+                                            value="<?php echo htmlspecialchars($data['filters']['category']); ?>">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Price Range -->
+                            <div class="filter-section">
+                                <div class="filter-title" data-bs-toggle="collapse" data-bs-target="#price-collapse">
+                                    Giá <i class="fas fa-chevron-down small"></i>
+                                </div>
+                                <div class="collapse show" id="price-collapse">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-5">
+                                            <input type="number" name="min_price"
+                                                class="form-control form-control-sm rounded-pill" placeholder="Min"
+                                                value="<?php echo $data['filters']['min_price']; ?>">
+                                        </div>
+                                        <div class="col-2 text-center text-muted small">—</div>
+                                        <div class="col-5">
+                                            <input type="number" name="max_price"
+                                                class="form-control form-control-sm rounded-pill" placeholder="Max"
+                                                value="<?php echo $data['filters']['max_price']; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Search Keyword -->
+                            <div class="filter-section">
+                                <div class="filter-title">
+                                    Tìm kiếm
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" name="keyword"
+                                        class="form-control rounded-pill-start border-end-0" placeholder="Tên sách..."
+                                        value="<?php echo htmlspecialchars($data['filters']['keyword']); ?>">
+                                    <button class="btn btn-outline-secondary rounded-pill-end border-start-0"
+                                        type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-apply w-100 shadow-sm mt-2">
+                                    Áp dụng
+                                </button>
+
+                            <a href="<?php echo BASE_URL; ?>product"
+                                class="btn btn-link w-100 text-decoration-none text-muted small mt-2">
+                                Xóa bộ lọc
+                            </a>
+                        </form>
+                    </div>
                 </div>
-            <?php endif; ?>
+            </div>
+
+            <!-- Products List -->
+            <div class="col-lg-9">
+                <!-- Toolbar -->
+                <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom">
+                    <h2 class="h4 fw-bold mb-0">
+                        <?php echo count($data['products']); ?> sách được tìm thấy
+                    </h2>
+                    <div class="d-flex align-items-center gap-3">
+                        <label class="small text-muted d-none d-sm-block">Sắp xếp theo:</label>
+                        <select name="sort" class="form-select form-select-sm sort-select" form="filter-form"
+                            onchange="this.form.submit()">
+                            <option value="newest" <?php echo $data['filters']['sort'] === 'newest' ? 'selected' : ''; ?>>
+                                Mới nhất</option>
+                            <option value="price_asc" <?php echo $data['filters']['sort'] === 'price_asc' ? 'selected' : ''; ?>>Giá: Từ thấp đến cao</option>
+                            <option value="price_desc" <?php echo $data['filters']['sort'] === 'price_desc' ? 'selected' : ''; ?>>Giá: Từ cao đến thấp</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Active Filters Display -->
+                <?php if (!empty(array_filter($data['filters'], fn($v) => $v !== '' && $v !== 'newest'))): ?>
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <?php foreach ($data['filters'] as $key => $value): ?>
+                            <?php if (!empty($value) && $key !== 'sort'): ?>
+                                <span class="badge bg-white text-dark border rounded-pill px-3 py-2 fw-normal">
+                                    <?php
+                                    if ($key === 'availability')
+                                        echo $value === 'in_stock' ? 'In Stock' : 'Out of Stock';
+                                    elseif ($key === 'min_price')
+                                        echo 'Min: ' . number_format($value) . '₫';
+                                    elseif ($key === 'max_price')
+                                        echo 'Max: ' . number_format($value) . '₫';
+                                    else
+                                        echo htmlspecialchars($value);
+                                    ?>
+                                </span>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (empty($data['products'])): ?>
+                    <div class="text-center py-5 my-5">
+                        <div class="mb-4">
+                            <i class="fas fa-search fa-4x text-muted opacity-25"></i>
+                        </div>
+                        <h3 class="fw-bold">No books match your criteria</h3>
+                        <p class="text-secondary">Try adjusting your filters or search term.</p>
+                        <a href="<?php echo BASE_URL; ?>product" class="btn btn-primary rounded-pill px-5 py-2 mt-3">Reset
+                            All Filters</a>
+                    </div>
+                <?php else: ?>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 g-xl-5">
+                        <?php foreach ($data['products'] as $product): ?>
+                            <div class="col">
+                                <div class="product-card">
+                                    <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"
+                                        class="text-decoration-none">
+                                        <div class="image-wrapper shadow-sm">
+                                            <?php if ($product->image): ?>
+                                                <img src="<?php echo BASE_URL; ?>uploads/<?php echo htmlspecialchars($product->image); ?>"
+                                                    alt="<?php echo htmlspecialchars($product->name); ?>">
+                                            <?php else: ?>
+                                                <div class="h-100 d-flex align-items-center justify-content-center bg-light">
+                                                    <i class="fas fa-book fa-3x text-muted opacity-25"></i>
+                                                </div>
+                                            <?php endif; ?>
+
+                                            <?php if ($product->stock <= 0): ?>
+                                                <div class="position-absolute top-0 end-0 p-2">
+                                                    <span class="badge bg-danger rounded-pill">Out of Stock</span>
+                                                </div>
+                                            <?php endif; ?>
+
+                                            <!-- Quick Add Button (Hover) -->
+                                            <?php if ($product->stock > 0): ?>
+                                                <div class="quick-add d-flex justify-content-center">
+                                                    <a href="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>"
+                                                        class="btn btn-light btn-sm rounded-pill px-3 fw-bold">
+                                                        <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ hàng
+                                                    </a>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </a>
+
+                                    <div class="text-center mt-3">
+                                        <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"
+                                            class="text-decoration-none">
+                                            <h3 class="product-title"><?php echo htmlspecialchars($product->name); ?></h3>
+                                        </a>
+                                        <p class="product-author">
+                                            <?php echo htmlspecialchars($product->author ?? 'Unknown Author'); ?>
+                                        </p>
+                                        <p class="product-price"><?php echo number_format($product->price, 0, ',', '.'); ?>₫</p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
-    </section>
+    </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Handle Category selection
+        const categoryItems = document.querySelectorAll('.category-item');
+        const categoryInput = document.getElementById('category-input');
+        const filterForm = document.getElementById('filter-form');
+
+        categoryItems.forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+                categoryInput.value = this.getAttribute('data-value');
+                filterForm.submit();
+            });
+        });
+
+        // Handle tilt effect (if VanillaTilt is loaded)
+        if (typeof VanillaTilt !== 'undefined') {
+            VanillaTilt.init(document.querySelectorAll(".image-wrapper"), {
+                max: 10,
+                speed: 400,
+                glare: true,
+                "max-glare": 0.3,
+            });
+        }
+    });
+</script>
 
 <?php require_once '../app/views/client/layout/footer.php'; ?>

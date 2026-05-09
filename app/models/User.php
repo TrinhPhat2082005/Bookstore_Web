@@ -95,18 +95,38 @@ class User
         }
     }
 
-    public function banUser($id)
+    public function getAll($page = 1, $limit = 10)
     {
-        # [Quản lý người dùng - CHUNG]
-        # todo: Cập nhật trạng thái 'banned' của user
-        return false;
+        $offset = ($page - 1) * $limit;
+        $this->db->query("SELECT * FROM users ORDER BY created_at DESC LIMIT :offset, :limit");
+        $this->db->bind(':offset', $offset, PDO::PARAM_INT);
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
+        return $this->db->resultSet();
     }
 
-    public function resetPassword($id)
+    public function toggleStatus($id, $current_status)
     {
-        # [Quản lý người dùng - CHUNG]
-        # todo: Reset mật khẩu về mặc định cho user
-        return false;
+        $new_status = ($current_status === 'active') ? 'banned' : 'active';
+        $this->db->query("UPDATE users SET status = :status WHERE id = :id");
+        $this->db->bind(':status', $new_status);
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
+    }
+
+    public function resetPassword($id, $default_password = 'user123')
+    {
+        $hashed_password = password_hash($default_password, PASSWORD_DEFAULT);
+        $this->db->query("UPDATE users SET password = :password WHERE id = :id");
+        $this->db->bind(':password', $hashed_password);
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
+    }
+
+    public function deleteUser($id)
+    {
+        $this->db->query("DELETE FROM users WHERE id = :id");
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
     }
 
     public function countAll()

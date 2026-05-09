@@ -12,6 +12,10 @@
             class="list-group-item list-group-item-action <?php echo ($title == '' || strpos($title, 'Dashboard') !== false) ? 'active' : ''; ?>">
             <i class="fa-solid fa-gauge"></i> Dashboard
         </a>
+        <a href="<?php echo BASE_URL; ?>admin/manageUsers"
+            class="list-group-item list-group-item-action <?php echo (strpos($title, 'Người dùng') !== false) ? 'active' : ''; ?>">
+            <i class="fa-solid fa-users"></i> Quản lý Người dùng
+        </a>
         <a href="<?php echo BASE_URL; ?>admin/manageProducts"
             class="list-group-item list-group-item-action <?php echo (strpos($title, 'Sản phẩm') !== false || strpos($title, 'sách') !== false) ? 'active' : ''; ?>">
             <i class="fa-solid fa-book"></i> Quản lý Sách
@@ -40,12 +44,6 @@
             class="list-group-item list-group-item-action <?php echo (strpos($title, 'thông tin website') !== false) ? 'active' : ''; ?>">
             <i class="fa-solid fa-gears"></i> Cấu hình Website
         </a>
-
-        <div class="mt-auto">
-            <a href="<?php echo BASE_URL; ?>" class="list-group-item border-top bg-dark w-100">
-                <i class="fa-solid fa-arrow-left"></i> Về trang chủ
-            </a>
-        </div>
     </div>
 </div>
 <!-- /#sidebar-wrapper -->

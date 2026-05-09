@@ -13,25 +13,24 @@ class ProductController extends Controller {
     // [Danh sách sản phẩm - TÂM] Hiển thị danh sách và lọc/tìm kiếm theo từ khóa
     public function index() {
         $settings = $this->settingModel->getAll();
-        $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
-        $category = isset($_GET['category']) ? trim($_GET['category']) : '';
-
-        if (!empty($keyword)) {
-            $products = $this->productModel->searchByKeyword($keyword);
-        } elseif (!empty($category)) {
-            $products = $this->productModel->getByCategory($category);
-        } else {
-            $products = $this->productModel->getAll();
-        }
-
+        
+        $filters = [
+            'keyword'      => isset($_GET['keyword']) ? trim($_GET['keyword']) : '',
+            'category'     => isset($_GET['category']) ? trim($_GET['category']) : '',
+            'min_price'    => isset($_GET['min_price']) ? $_GET['min_price'] : '',
+            'max_price'    => isset($_GET['max_price']) ? $_GET['max_price'] : '',
+            'availability' => isset($_GET['availability']) ? $_GET['availability'] : '',
+            'sort'         => isset($_GET['sort']) ? $_GET['sort'] : 'newest'
+        ];
+        
+        $products = $this->productModel->getFilteredProducts($filters);
         $categories = $this->productModel->getCategories();
 
         $data = [
             'settings'   => $settings,
             'products'   => $products,
             'categories' => $categories,
-            'keyword'    => $keyword,
-            'category'   => $category,
+            'filters'    => $filters,
             'title'      => 'Sản phẩm'
         ];
 

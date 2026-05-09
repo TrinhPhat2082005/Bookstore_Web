@@ -15,16 +15,20 @@ class AuthController extends Controller
                 $loggedInUser = $userModel->login($username, $password, $role);
 
                 if ($loggedInUser) {
-                    $_SESSION['user_id'] = $loggedInUser->id;
-                    $_SESSION['username'] = $loggedInUser->username;
-                    $_SESSION['role'] = $loggedInUser->role;
-
-                    if ($loggedInUser->role === 'admin') {
-                        header("Location: " . BASE_URL . "admin");
-                        exit;
+                    if ($loggedInUser->status === 'banned') {
+                        $_SESSION['error_msg'] = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.";
                     } else {
-                        header("Location: " . BASE_URL);
-                        exit;
+                        $_SESSION['user_id'] = $loggedInUser->id;
+                        $_SESSION['username'] = $loggedInUser->username;
+                        $_SESSION['role'] = $loggedInUser->role;
+
+                        if ($loggedInUser->role === 'admin') {
+                            header("Location: " . BASE_URL . "admin");
+                            exit;
+                        } else {
+                            header("Location: " . BASE_URL);
+                            exit;
+                        }
                     }
                 } else {
                     $_SESSION['error_msg'] = "Tên đăng nhập, mật khẩu hoặc vai trò không chính xác.";
@@ -152,6 +156,16 @@ class AuthController extends Controller
         ];
 
         $this->view('client/auth/profile', $data);
+    }
+
+    public function orderDetail($id)
+    {
+        $orderModel = $this->model('Order');
+        $items = $orderModel->getItems($id);
+        
+        header('Content-Type: application/json');
+        echo json_encode($items);
+        exit;
     }
 
     public function logout()

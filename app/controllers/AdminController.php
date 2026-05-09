@@ -10,10 +10,15 @@ class AdminController extends Controller
     private $faqModel;
     private $productModel;
     private $orderModel;
+    private $userModel;
 
     public function __construct()
     {
-        // Kiểm tra quyền Admin (Sẽ được CHUNG hiện thực sau)
+        // Kiểm tra quyền Admin
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            header('Location: ' . BASE_URL . 'auth/login');
+            exit();
+        }
         $this->settingModel = $this->model('Setting');
         $this->contactModel = $this->model('Contact');
         $this->articleModel = $this->model('Article');
@@ -21,6 +26,7 @@ class AdminController extends Controller
         $this->faqModel = $this->model('Faq');
         $this->productModel = $this->model('Product');
         $this->orderModel   = $this->model('Order');
+        $this->userModel    = $this->model('User');
     }
 
     public function index()
@@ -30,10 +36,39 @@ class AdminController extends Controller
     }
 
     // --- PHẦN CHUNG ---
-    public function users()
+    public function manageUsers()
     {
-        # [Quản lý người dùng - CHUNG]
-        # todo: Xem, sửa, cấm, xóa, reset mật khẩu
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $limit = 10;
+
+        // Xử lý các hành động quản lý
+        if (isset($_GET['action']) && isset($_GET['id'])) {
+            $id = (int) $_GET['id'];
+            $action = $_GET['action'];
+
+            if ($action == 'toggle_status') {
+                $user = $this->userModel->getUserById($id);
+                if ($user) $this->userModel->toggleStatus($id, $user->status);
+            } elseif ($action == 'reset_password') {
+                $this->userModel->resetPassword($id);
+            } elseif ($action == 'delete') {
+                $this->userModel->deleteUser($id);
+            }
+
+            header('Location: ' . BASE_URL . 'admin/manageUsers?success=1');
+            exit();
+        }
+
+        $users = $this->userModel->getAll($page, $limit);
+        $total = $this->userModel->countAll();
+
+        $data = [
+            'users' => $users,
+            'current_page' => $page,
+            'total_pages' => ceil($total / $limit),
+            'title' => 'Quản lý Người dùng'
+        ];
+        $this->view('admin/users', $data);
     }
 
     // --- PHÁT: Trang chủ, Liên hệ & Giới thiệu ---
