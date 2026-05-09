@@ -147,11 +147,11 @@ CREATE TABLE IF NOT EXISTS order_items (
 
 -- Sample products data
 INSERT IGNORE INTO products (name, author, description, price, stock, category, image) VALUES
-('Đắc Nhân Tâm', 'Dale Carnegie', 'Cuốn sách kinh điển về nghệ thuật giao tiếp và ảnh hưởng đến người khác. Được xem là một trong cuốn sách hay nhất mọi thời đại.', 89000, 50, 'Kỹ năng sống', '1777891981_phan-4-dac-nhan-tam-1024x1024.jpg'),
-('Nhà Giả Kim', 'Paulo Coelho', 'Tiểu thuyết triết học nổi tiếng thế giới về hành trình tìm kiếm kho báu và khám phá bản thân.', 79000, 35, 'Văn học', '1777902877_Nhà_giả_kim_(sách).jpg'),
-('Sapiens: Lược Sử Loài Người', 'Yuval Noah Harari', 'Khám phá lịch sử loài người từ thời tiền sử đến thời hiện đại với những góc nhìn mới mẻ và thú vị.', 145000, 28, 'Lịch sử', '1777902939_2e0daae3f9383a3e1c5d85b1e0156953.jpg.webp'),
-('Atomic Habits', 'James Clear', 'Phương pháp xây dựng thói quen tốt và loại bỏ thói quen xấu. Sách bán chạy nhất thế giới về phát triển bản thân.', 130000, 42, 'Kỹ năng sống', '1777903009_81kg51XRc1L._AC_UF1000,1000_QL80_.jpg'),
-('Tư Duy Nhanh Và Chậm', 'Daniel Kahneman', 'Khám phá cách thức hoạt động của tâm trí con người qua hai hệ thống tư duy khác nhau.', 160000, 20, 'Tâm lý học', '1777903043_20240107_7xE6cNqlzc.jpeg'),
-('Dám Nghĩ Lớn', 'David J. Schwartz', 'Hướng dẫn cách tư duy thành công và đạt được những mục tiêu lớn trong cuộc sống.', 95000, 33, 'Kỹ năng sống', '1777903094_462558750-1083111936819329-1957541486232979466-n.webp'),
-('Hoàng Tử Bé', 'Antoine de Saint-Exupéry', 'Câu chuyện triết học dành cho mọi lứa tuổi về sự thuần khiết, tình bạn và ý nghĩa cuộc sống.', 65000, 60, 'Văn học', '1777903172_bia_hoang_tu_be_bia_1_0fe39c9b864747ebae0f35d273c9d06e.png'),
-('Cách Nghĩ Để Thành Công', 'Napoleon Hill', 'Bí quyết thành công từ những người giàu có và thành đạt nhất thế giới.', 110000, 25, 'Kỹ năng sống', '1777903141_8935086856123.webp');
+('Đắc Nhân Tâm', 'Dale Carnegie', 'Cuốn sách kinh điển về nghệ thuật giao tiếp và ảnh hưởng đến người khác. Được xem là một trong cuốn sách hay nhất mọi thời đại.', 89000, 50, 'Kỹ năng sống', 'dac_nhan_tam.jpg'),
+('Nhà Giả Kim', 'Paulo Coelho', 'Tiểu thuyết triết học nổi tiếng thế giới về hành trình tìm kiếm kho báu và khám phá bản thân.', 79000, 35, 'Văn học', 'nha_gia_kim.jpg'),
+('Sapiens: Lược Sử Loài Người', 'Yuval Noah Harari', 'Khám phá lịch sử loài người từ thời tiền sử đến thời hiện đại với những góc nhìn mới mẻ và thú vị.', 145000, 28, 'Lịch sử', 'sapiens.webp'),
+('Atomic Habits', 'James Clear', 'Phương pháp xây dựng thói quen tốt và loại bỏ thói quen xấu. Sách bán chạy nhất thế giới về phát triển bản thân.', 130000, 42, 'Kỹ năng sống', 'atomic_habits.jpeg'),
+('Tư Duy Nhanh Và Chậm', 'Daniel Kahneman', 'Khám phá cách thức hoạt động của tâm trí con người qua hai hệ thống tư duy khác nhau.', 160000, 20, 'Tâm lý học', 'thinking_fast_and_slow.webp'),
+('Dám Nghĩ Lớn', 'David J. Schwartz', 'Hướng dẫn cách tư duy thành công và đạt được những mục tiêu lớn trong cuộc sống.', 95000, 33, 'Kỹ năng sống', 'thinking.webp'),
+('Hoàng Tử Bé', 'Antoine de Saint-Exupéry', 'Câu chuyện triết học dành cho mọi lứa tuổi về sự thuần khiết, tình bạn và ý nghĩa cuộc sống.', 65000, 60, 'Văn học', 'hoang_tu_be.png'),
+('Cách Nghĩ Để Thành Công', 'Napoleon Hill', 'Bí quyết thành công từ những người giàu có và thành đạt nhất thế giới.', 110000, 25, 'Kỹ năng sống', 'think.jpg');

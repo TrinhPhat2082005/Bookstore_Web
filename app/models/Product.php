@@ -13,6 +13,12 @@ class Product {
         return $this->db->resultSet();
     }
 
+    public function getLatest($limit = 8) {
+        $this->db->query("SELECT * FROM products WHERE status = 'active' ORDER BY created_at DESC LIMIT :limit");
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
+        return $this->db->resultSet();
+    }
+
     public function getById($id) {
         $this->db->query("SELECT * FROM products WHERE id = :id");
         $this->db->bind(':id', $id);

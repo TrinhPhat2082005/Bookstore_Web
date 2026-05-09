@@ -19,55 +19,49 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary"
+                <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-dark"
                     href="<?php echo BASE_URL; ?>">
-                    <i class="fas fa-book-open"></i> <?php echo $data['settings']['site_name'] ?? 'BookStore'; ?>
+                    <i class="fas fa-book-open text-accent"></i> <?php echo $data['settings']['site_name'] ?? 'BookStore'; ?>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto">
-                        <li class="nav-item"><a class="nav-link" href="<?php echo BASE_URL; ?>">Trang chủ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo BASE_URL; ?>home/about">Giới thiệu</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo BASE_URL; ?>product">Sản phẩm</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="<?php echo BASE_URL; ?>">Trang chủ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo BASE_URL; ?>home/about">Giới thiệu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo BASE_URL; ?>product">Cửa hàng</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo BASE_URL; ?>news">Tin tức</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo BASE_URL; ?>home/faq">Hỏi đáp</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo BASE_URL; ?>home/contact">Liên hệ</a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo BASE_URL; ?>home/contact">Liên hệ</a></li>
                     </ul>
-                    <div class="d-flex align-items-center gap-2">
-                        <a href="<?php echo BASE_URL; ?>cart"
-                            class="btn btn-outline-primary position-relative rounded-pill px-3">
-                            <i class="fas fa-shopping-cart"></i>
+                    <div class="d-flex align-items-center gap-3">
+                        <a href="<?php echo BASE_URL; ?>cart" class="text-dark position-relative text-decoration-none">
+                            <i class="fas fa-shopping-bag fs-5"></i>
                             <?php $cartCount = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'], 'quantity')) : 0; ?>
                             <?php if ($cartCount > 0): ?>
-                                <span
-                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                    style="font-size: 0.65rem;">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-accent p-1" style="font-size: 0.6rem; min-width: 18px;">
                                     <?php echo $cartCount; ?>
                                 </span>
                             <?php endif; ?>
                         </a>
                         <?php if (isset($_SESSION['username'])): ?>
                             <div class="dropdown">
-                                <button class="btn btn-primary px-4 rounded-pill dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user-circle"></i> Xin chào, <?php echo htmlspecialchars($_SESSION['username']); ?>
+                                <button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($_SESSION['username']); ?>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>auth/profile"><i class="fas fa-id-card me-2"></i> Hồ sơ</a></li>
+                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>auth/profile">Hồ sơ</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-danger" href="<?php echo BASE_URL; ?>auth/logout"><i class="fas fa-sign-out-alt me-2"></i> Đăng xuất</a></li>
+                                    <li><a class="dropdown-item text-danger" href="<?php echo BASE_URL; ?>auth/logout">Đăng xuất</a></li>
                                 </ul>
                             </div>
                         <?php else: ?>
-                            <a href="<?php echo BASE_URL; ?>auth/login" class="btn btn-primary px-4 rounded-pill">Đăng nhập</a>
+                            <a href="<?php echo BASE_URL; ?>auth/login" class="btn btn-primary btn-sm px-4">Đăng nhập</a>
                         <?php endif; ?>
                     </div>
                 </div>
             </div>
         </nav>
-    </header>
+    </header>

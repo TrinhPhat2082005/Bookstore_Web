@@ -6,19 +6,23 @@ class HomeController extends Controller
     private $settingModel;
     private $contactModel;
     private $faqModel;
+    private $productModel;
 
     public function __construct()
     {
         $this->settingModel = $this->model('Setting');
         $this->contactModel = $this->model('Contact');
         $this->faqModel = $this->model('Faq');
+        $this->productModel = $this->model('Product');
     }
 
     public function index()
     {
         $settings = $this->settingModel->getAll();
+        $products = $this->productModel->getLatest(8); // Lấy 8 sản phẩm mới nhất
         $data = [
             'settings' => $settings,
+            'products' => $products,
             'title' => 'Trang chủ'
         ];
         $this->view('client/home/index', $data);

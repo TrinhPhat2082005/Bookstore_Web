@@ -2,77 +2,113 @@
 
 <main>
     <!-- Hero Section -->
-    <section class="py-5"
-        style="background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%); min-height: 60vh; display: flex; align-items: center; overflow: hidden;">
+    <section class="hero-section">
         <div class="container">
             <div class="row align-items-center g-5">
-                <div class="col-lg-8">
-                    <h1 class="display-3 fw-bold mb-4">
-                        Mang cả thế giới <span class="text-primary">Tri thức</span> vào tầm tay bạn.
+                <div class="col-lg-6">
+                    <span class="text-uppercase letter-spacing-2 fw-bold text-accent mb-3 d-block">Chào mừng đến với cửa
+                        hàng của chúng tôi</span>
+                    <h1 class="hero-title">
+                        Mang cả thế giới <br> <span class="text-accent">Tri thức</span> trong tầm tay.
                     </h1>
-                    <p class="lead text-secondary mb-5">
-                        <?php echo $data['settings']['site_intro']; ?>
+                    <p class="hero-subtitle">
+                        <?php echo $data['settings']['site_intro'] ?? 'Khám phá bộ sưu tập sách được tuyển chọn kỹ lưỡng, từ nghệ thuật, thiết kế đến văn học kinh điển.'; ?>
                     </p>
-                    <div class="d-flex flex-wrap gap-3">
-                        <a href="<?php echo BASE_URL; ?>product"
-                            class="btn btn-primary btn-lg px-5 rounded-pill shadow-sm">Khám phá ngay</a>
-                        <a href="<?php echo BASE_URL; ?>home/about"
-                            class="btn btn-outline-secondary btn-lg px-5 rounded-pill">Về chúng tôi</a>
+                    <div class="d-flex gap-3">
+                        <a href="<?php echo BASE_URL; ?>product" class="btn btn-primary px-5">Khám phá ngay</a>
+                        <a href="<?php echo BASE_URL; ?>home/about" class="btn btn-outline-primary px-5">Về chúng
+                            tôi</a>
                     </div>
                 </div>
-                <div class="col-lg-4 text-center d-none d-lg-block hero-image-wrapper">
+                <div class="col-lg-6">
                     <div class="position-relative">
-                        <div class="bg-primary rounded-circle position-absolute top-50 start-50 translate-middle opacity-10"
-                            style="width: 100%; max-width: 400px; aspect-ratio: 1/1;"></div>
-                        <img src="<?php echo BASE_URL; ?>assets/hero-books.png" alt="Books Hero"
-                            class="img-fluid position-relative z-1"
-                            style="max-height: 400px; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.1));">
+                        <img src="<?php echo BASE_URL; ?>assets/bookstore_hero_premium.png" alt="Premium Bookstore"
+                            class="img-fluid" style="filter: drop-shadow(0 30px 60px rgba(0,0,0,0.12));">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="py-5">
+    <!-- Featured Products Section (New Releases) -->
+    <section class="py-5 bg-white">
         <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3">Tại sao chọn chúng tôi?</h2>
-                <p class="text-secondary lead">Cam kết mang lại trải nghiệm tốt nhất cho độc giả.</p>
+            <div class="d-flex justify-content-between align-items-end mb-5">
+                <div>
+                    <span class="text-accent fw-bold text-uppercase small d-block mb-2"
+                        style="letter-spacing: 1px;">Sách mới nhất</span>
+                    <h2 class="h3 fw-bold mb-0">New Releases</h2>
+                </div>
+                <div class="d-flex align-items-center gap-4">
+                    <div class="slider-arrows d-none d-md-flex mb-0">
+                        <button class="arrow-btn" type="button"><i class="fas fa-chevron-left"></i></button>
+                        <button class="arrow-btn" type="button"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <a href="<?php echo BASE_URL; ?>product" class="btn btn-shop-all">Xem thêm</a>
+                </div>
             </div>
+
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm p-4 rounded-4 transition-hover">
-                        <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-4 mb-4 d-inline-flex align-items-center justify-content-center"
-                            style="width: 70px; height: 70px;">
-                            <i class="fas fa-shipping-fast fs-2"></i>
+                <?php if (!empty($data['products'])): ?>
+                    <?php foreach ($data['products'] as $product): ?>
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="book-card">
+                                <div class="book-frame">
+                                    <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>">
+                                        <img src="<?php echo BASE_URL; ?>public/uploads/<?php echo $product->image; ?>"
+                                            alt="<?php echo htmlspecialchars($product->name); ?>" loading="lazy">
+                                    </a>
+                                    <button class="quick-view-btn" type="button" title="Quick View">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="book-info">
+                                    <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"
+                                        class="book-title" title="<?php echo htmlspecialchars($product->name); ?>">
+                                        <?php echo $product->name; ?>
+                                    </a>
+                                    <p class="book-author"><?php echo $product->author ?? 'Tác giả'; ?></p>
+                                    <span class="book-price"><?php echo number_format($product->price, 0, ',', '.'); ?>đ</span>
+                                </div>
+                            </div>
                         </div>
-                        <h3 class="h4 fw-bold mb-3">Giao hàng nhanh</h3>
-                        <p class="text-secondary mb-0">Giao hàng toàn quốc trong vòng 2-3 ngày làm việc với dịch vụ vận
-                            chuyển uy tín.</p>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="col-12 text-center py-5">
+                        <div class="py-5 bg-light rounded-4">
+                            <i class="fas fa-book-open fs-1 text-muted mb-3"></i>
+                            <p class="text-muted">Đang cập nhật sản phẩm mới...</p>
+                        </div>
                     </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-5 bg-light-gray">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-md-4 text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-shipping-fast fs-3 text-dark"></i>
+                    </div>
+                    <h3 class="h5 fw-bold mb-3">Vận chuyển toàn quốc</h3>
+                    <p class="text-secondary small">Giao hàng nhanh chóng và an toàn đến tận tay bạn.</p>
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm p-4 rounded-4 transition-hover">
-                        <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-4 mb-4 d-inline-flex align-items-center justify-content-center"
-                            style="width: 70px; height: 70px;">
-                            <i class="fas fa-shield-alt fs-2"></i>
-                        </div>
-                        <h3 class="h4 fw-bold mb-3">Sách chính hãng</h3>
-                        <p class="text-secondary mb-0">Chúng tôi cam kết 100% sách có bản quyền và chất lượng in ấn tốt
-                            nhất.</p>
+                <div class="col-md-4 text-center border-start border-end">
+                    <div class="mb-4">
+                        <i class="fas fa-shield-alt fs-3 text-dark"></i>
                     </div>
+                    <h3 class="h5 fw-bold mb-3">Sách bản quyền</h3>
+                    <p class="text-secondary small">Cam kết 100% sách chính hãng từ các nhà xuất bản uy tín.</p>
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm p-4 rounded-4 transition-hover">
-                        <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-4 mb-4 d-inline-flex align-items-center justify-content-center"
-                            style="width: 70px; height: 70px;">
-                            <i class="fas fa-headset fs-2"></i>
-                        </div>
-                        <h3 class="h4 fw-bold mb-3">Hỗ trợ 24/7</h3>
-                        <p class="text-secondary mb-0">Đội ngũ nhân viên giàu kinh nghiệm luôn sẵn sàng giải đáp mọi
-                            thắc mắc của bạn.</p>
+                <div class="col-md-4 text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-sync-alt fs-3 text-dark"></i>
                     </div>
+                    <h3 class="h5 fw-bold mb-3">Đổi trả dễ dàng</h3>
+                    <p class="text-secondary small">Chính sách đổi trả linh hoạt trong vòng 7 ngày.</p>
                 </div>
             </div>
         </div>
