@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize Swup for smooth page transitions
     const swup = new Swup({
-        containers: ["#swup"],
+        containers: ["#swup", "#main-nav", "#header-user-actions"],
         animationSelector: '[class*="transition-"]',
         plugins: [],
         ignoreVisit: (url, { el } = {}) => {
@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initProductFilters();
     initReadingProgress();
     initHeaderSearch();
+    initHeroSlider();
 
     // 3. Robust lifecycle handling
     swup.hooks.on('page:view', () => {
@@ -29,9 +30,37 @@ document.addEventListener('DOMContentLoaded', () => {
         initProductFilters();
         initReadingProgress();
         initHeaderSearch();
+        initHeroSlider();
         window.scrollTo(0, 0);
     });
 });
+
+/**
+ * Hero Slider initialization
+ */
+function initHeroSlider() {
+    if (document.querySelector('.hero-swiper')) {
+        new Swiper('.hero-swiper', {
+            loop: true,
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    }
+}
 
 /**
  * Header Live Search with instant results

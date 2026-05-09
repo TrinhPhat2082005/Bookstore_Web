@@ -38,7 +38,7 @@
                         <?php if ($product->category): ?>
                             <div class="mt-4">
                                 <a href="<?php echo BASE_URL; ?>product?category=<?php echo urlencode($product->category); ?>"
-                                    class="badge bg-main text-white glass-card rounded-pill text-decoration-none px-4 py-2 fs-6">
+                                    class="badge bg-main text-dark glass-card rounded-pill text-decoration-none px-4 py-2 fs-6 ">
                                     <i class="fas fa-tag me-2"></i><?php echo htmlspecialchars($product->category); ?>
                                 </a>
                             </div>
@@ -69,11 +69,13 @@
                         <div>
                             <div class="text-muted small mb-1">Tình trạng</div>
                             <?php if ($product->stock > 0): ?>
-                                <span class="badge bg-success-subtle text-success rounded-pill fs-6 px-3 py-2 border border-success-subtle">
+                                <span
+                                    class="badge bg-success-subtle text-success rounded-pill fs-6 px-3 py-2 border border-success-subtle">
                                     <i class="fas fa-check-circle me-1"></i>Còn hàng (<?php echo $product->stock; ?>)
                                 </span>
                             <?php else: ?>
-                                <span class="badge bg-danger-subtle text-danger rounded-pill fs-6 px-3 py-2 border border-danger-subtle">
+                                <span
+                                    class="badge bg-danger-subtle text-danger rounded-pill fs-6 px-3 py-2 border border-danger-subtle">
                                     <i class="fas fa-times-circle me-1"></i>Hết hàng
                                 </span>
                             <?php endif; ?>
@@ -93,8 +95,8 @@
                     <!-- Action Buttons -->
                     <div class="d-flex flex-wrap gap-3 pb-5 border-bottom">
                         <?php if ($product->stock > 0): ?>
-                            <button class="btn btn-primary btn-lg px-5 rounded-pill shadow-lg ajax-add-to-cart" 
-                                    data-product-id="<?php echo $product->id; ?>" id="btn-add-cart">
+                            <button class="btn btn-primary btn-lg px-5 rounded-pill shadow-lg ajax-add-to-cart"
+                                data-product-id="<?php echo $product->id; ?>" id="btn-add-cart">
                                 <i class="fas fa-cart-plus me-2"></i>Thêm vào giỏ hàng
                             </button>
                         <?php else: ?>
@@ -102,8 +104,7 @@
                                 <i class="fas fa-ban me-2"></i>Sản phẩm tạm hết hàng
                             </button>
                         <?php endif; ?>
-                        <a href="<?php echo BASE_URL; ?>product"
-                            class="btn btn-outline-dark btn-lg px-4 rounded-pill">
+                        <a href="<?php echo BASE_URL; ?>product" class="btn btn-outline-dark btn-lg px-4 rounded-pill">
                             <i class="fas fa-arrow-left me-2"></i>Quay lại
                         </a>
                     </div>
@@ -115,7 +116,7 @@
                                 <div class="bg-primary bg-opacity-10 p-2 rounded-circle">
                                     <i class="fas fa-shipping-fast text-primary fs-5"></i>
                                 </div>
-                                <span class="small fw-medium">Giao hàng nhanh</span>
+                                <span class="small fw-medium text-dark">Giao hàng nhanh</span>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -123,7 +124,7 @@
                                 <div class="bg-primary bg-opacity-10 p-2 rounded-circle">
                                     <i class="fas fa-shield-alt text-primary fs-5"></i>
                                 </div>
-                                <span class="small fw-medium">Bản quyền 100%</span>
+                                <span class="small fw-medium text-dark">Bản quyền 100%</span>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -131,7 +132,7 @@
                                 <div class="bg-primary bg-opacity-10 p-2 rounded-circle">
                                     <i class="fas fa-undo text-primary fs-5"></i>
                                 </div>
-                                <span class="small fw-medium">7 ngày đổi trả</span>
+                                <span class="small fw-medium text-dark">7 ngày đổi trả</span>
                             </div>
                         </div>
                     </div>
