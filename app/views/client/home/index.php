@@ -2,10 +2,11 @@
 
 <main>
     <!-- Hero Section -->
-    <section class="py-5" style="background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%); min-height: 60vh; display: flex; align-items: center; overflow: hidden;">
+    <section class="py-5"
+        style="background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%); min-height: 60vh; display: flex; align-items: center; overflow: hidden;">
         <div class="container">
             <div class="row align-items-center g-5">
-                <div class="col-lg-6">
+                <div class="col-lg-8">
                     <h1 class="display-3 fw-bold mb-4">
                         Mang cả thế giới <span class="text-primary">Tri thức</span> vào tầm tay bạn.
                     </h1>
@@ -19,7 +20,7 @@
                             class="btn btn-outline-secondary btn-lg px-5 rounded-pill">Về chúng tôi</a>
                     </div>
                 </div>
-                <div class="col-lg-6 text-center d-none d-lg-block hero-image-wrapper">
+                <div class="col-lg-4 text-center d-none d-lg-block hero-image-wrapper">
                     <div class="position-relative">
                         <div class="bg-primary rounded-circle position-absolute top-50 start-50 translate-middle opacity-10"
                             style="width: 100%; max-width: 400px; aspect-ratio: 1/1;"></div>

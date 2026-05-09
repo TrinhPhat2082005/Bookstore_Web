@@ -52,8 +52,20 @@
                                 </span>
                             <?php endif; ?>
                         </a>
-                        <a href="<?php echo BASE_URL; ?>auth/login" class="btn btn-primary px-4 rounded-pill">Đăng
-                            nhập</a>
+                        <?php if (isset($_SESSION['username'])): ?>
+                            <div class="dropdown">
+                                <button class="btn btn-primary px-4 rounded-pill dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle"></i> Xin chào, <?php echo htmlspecialchars($_SESSION['username']); ?>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>auth/profile"><i class="fas fa-id-card me-2"></i> Hồ sơ</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="<?php echo BASE_URL; ?>auth/logout"><i class="fas fa-sign-out-alt me-2"></i> Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                        <?php else: ?>
+                            <a href="<?php echo BASE_URL; ?>auth/login" class="btn btn-primary px-4 rounded-pill">Đăng nhập</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

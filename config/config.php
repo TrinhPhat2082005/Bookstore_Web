@@ -6,4 +6,4 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_NAME', 'bookstore_db');
 
-define('BASE_URL', 'http://localhost/bookstore_web/public/');
+define('BASE_URL', 'http://localhost/bookstore_web/');
