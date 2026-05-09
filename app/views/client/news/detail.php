@@ -1,9 +1,11 @@
+<?php require_once '../app/views/client/layout/header.php'; ?>
+
 <!-- Reading Progress Bar -->
 <div id="reading-progress" class="fixed-top shadow-sm" style="height: 4px; background: rgba(var(--bs-primary-rgb), 0.1); z-index: 1050;">
-    <div id="progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--bs-primary) 0%, #8918fe 100%); transition: width 0.1s ease;"></div>
+    <div id="progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-color) 0%, #8918fe 100%); transition: width 0.1s ease;"></div>
 </div>
 
-<main class="py-5" style="background-color: #f1f5f9;">
+<div class="py-5 bg-body">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-9">
@@ -96,7 +98,8 @@
                         </div>
 
                         <!-- Comment Form -->
-                        <div class="card border-0 bg-dark rounded-5 p-4 p-md-5 shadow-lg text-white" id="comment-form">
+                        <!-- Comment Form Section -->
+                        <div class="glass-card rounded-5 p-4 p-md-5 mb-5 shadow-lg" id="comment-form">
                             <h4 class="fw-bold mb-4">Để lại suy nghĩ của bạn</h4>
                             <form action="<?php echo BASE_URL . 'news/comment/' . $data['article']->id; ?>" method="POST">
                                 <div class="row g-4">
@@ -104,16 +107,16 @@
                                         <div class="mb-3">
                                             <label for="name" class="form-label small text-uppercase fw-bold opacity-75">Họ và tên</label>
                                             <input type="text" name="name" id="name"
-                                                class="form-control bg-white bg-opacity-10 border-0 text-white rounded-4 p-3 shadow-none" required
-                                                placeholder="Nhập tên của bạn...">
+                                                class="form-control bg-secondary bg-opacity-10 border-0 text-main rounded-4 p-3 shadow-none" required
+                                                placeholder="Nhập tên của bạn..." style="background-color: rgba(var(--bs-primary-rgb), 0.05) !important;">
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="mb-4">
                                             <label for="content" class="form-label small text-uppercase fw-bold opacity-75">Nội dung bình luận</label>
                                             <textarea name="content" id="content"
-                                                class="form-control bg-white bg-opacity-10 border-0 text-white rounded-4 p-3 shadow-none" rows="5" required
-                                                placeholder="Chia sẻ ý kiến của bạn về bài viết này..."></textarea>
+                                                class="form-control bg-secondary bg-opacity-10 border-0 text-main rounded-4 p-3 shadow-none" rows="5" required
+                                                placeholder="Chia sẻ ý kiến của bạn về bài viết này..." style="background-color: rgba(var(--bs-primary-rgb), 0.05) !important;"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-12 text-end">
@@ -130,19 +133,9 @@
             </div>
         </div>
     </div>
-</main>
+</div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Reading Progress Bar logic
-    window.addEventListener('scroll', function() {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        document.getElementById('progress-bar').style.width = scrolled + "%";
-    });
-});
-</script>
+
 
 <style>
     .content-rendered h2, .content-rendered h3, .content-rendered h4 {
