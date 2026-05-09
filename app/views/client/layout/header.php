@@ -53,6 +53,9 @@
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end border-0 shadow" aria-labelledby="userDropdown">
                                     <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>auth/profile">Hồ sơ</a></li>
+                                    <?php if ($_SESSION['role'] === 'admin'): ?>
+                                        <li><a class="dropdown-item text-primary" href="<?php echo BASE_URL; ?>admin"><i class="fas fa-user-shield me-2"></i> Quản lý</a></li>
+                                    <?php endif; ?>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item text-danger" href="<?php echo BASE_URL; ?>auth/logout">Đăng xuất</a></li>
                                 </ul>

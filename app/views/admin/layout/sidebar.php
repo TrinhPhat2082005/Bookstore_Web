@@ -64,12 +64,11 @@
                             class="rounded-circle me-2" width="30"> Admin
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3">
-                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user me-2"></i> Hồ sơ</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-gear me-2"></i> Cài đặt</a></li>
+                        <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>"><i class="fa-solid fa-house me-2"></i> Trang chủ</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item text-danger" href="#"><i
+                        <li><a class="dropdown-item text-danger" href="<?php echo BASE_URL; ?>auth/logout"><i
                                     class="fa-solid fa-right-from-bracket me-2"></i> Đăng xuất</a></li>
                     </ul>
                 </div>
