@@ -146,30 +146,36 @@
         <section class="py-5 bg-body">
             <div class="container">
                 <h3 class="fw-bold mb-5 text-main">Sách cùng danh mục</h3>
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
-                    <?php foreach ($data['related'] as $rel): ?>
-                        <div class="col">
-                            <div class="book-card h-100">
-                                <div class="book-frame shadow-sm">
-                                    <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $rel->id; ?>">
-                                        <img src="<?php echo BASE_URL; ?>uploads/<?php echo htmlspecialchars($rel->image); ?>"
-                                            alt="<?php echo htmlspecialchars($rel->name); ?>" loading="lazy">
-                                    </a>
-                                </div>
-                                <div class="book-info text-center mt-3">
-                                    <h6 class="book-title line-clamp-2"><?php echo htmlspecialchars($rel->name); ?></h6>
-                                    <p class="text-secondary small mb-3"><?php echo htmlspecialchars($rel->author ?? ''); ?></p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="book-price">
-                                            <?php echo number_format($rel->price, 0, ',', '.'); ?>₫
-                                        </span>
-                                        <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $rel->id; ?>"
-                                            class="btn btn-sm btn-outline-dark rounded-pill px-3">Chi tiết</a>
+                <div class="swiper related-swiper pb-5">
+                    <div class="swiper-wrapper">
+                        <?php foreach ($data['related'] as $rel): ?>
+                            <div class="swiper-slide">
+                                <div class="book-card h-100">
+                                    <div class="book-frame shadow-sm">
+                                        <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $rel->id; ?>">
+                                            <img src="<?php echo BASE_URL; ?>uploads/<?php echo htmlspecialchars($rel->image); ?>"
+                                                alt="<?php echo htmlspecialchars($rel->name); ?>" loading="lazy">
+                                        </a>
+                                    </div>
+                                    <div class="book-info text-center mt-3">
+                                        <h6 class="book-title line-clamp-2"><?php echo htmlspecialchars($rel->name); ?></h6>
+                                        <p class="text-secondary small mb-3"><?php echo htmlspecialchars($rel->author ?? 'Tác giả'); ?></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="book-price">
+                                                <?php echo number_format($rel->price, 0, ',', '.'); ?>₫
+                                            </span>
+                                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3 ajax-add-to-cart"
+                                                    data-product-id="<?php echo $rel->id; ?>">
+                                                <i class="fas fa-cart-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
+                    <!-- Add Pagination & Navigation -->
+                    <div class="swiper-pagination"></div>
                 </div>
             </div>
         </section>

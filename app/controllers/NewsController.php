@@ -54,12 +54,13 @@ class NewsController extends Controller
     public function comment($id)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                die('Lỗi bảo mật: CSRF token không hợp lệ.');
+            }
             $data = [
                 'article_id' => $id,
-                'name' => trim($_POST['name']),
-                'content' => trim($_POST['content'])
+                'name' => Security::xssClean(trim($_POST['name'] ?? '')),
+                'content' => Security::xssClean(trim($_POST['content'] ?? ''))
             ];
 
             if (!empty($data['name']) && !empty($data['content'])) {

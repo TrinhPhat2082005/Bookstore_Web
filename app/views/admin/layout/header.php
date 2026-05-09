@@ -19,6 +19,9 @@
 
     <!-- Custom Admin CSS (Hand-coded) -->
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/admin-custom.css">
+    
+    <!-- Dropzone.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 </head>
 
 <body>

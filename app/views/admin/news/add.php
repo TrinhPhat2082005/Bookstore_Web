@@ -6,6 +6,7 @@
         <div class="table-container p-4">
             <h4 class="mb-4">Viết bài mới</h4>
             <form action="<?php echo BASE_URL; ?>admin/addNews" method="POST" enctype="multipart/form-data">
+                <?php Security::csrfField(); ?>
                 <div class="row g-4">
                     <div class="col-lg-8">
                         <div class="mb-4">

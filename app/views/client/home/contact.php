@@ -50,6 +50,7 @@
                         <?php endif; ?>
 
                         <form id="contactForm" action="<?php echo BASE_URL; ?>home/contact" method="POST" novalidate>
+                            <?php Security::csrfField(); ?>
                             <div class="row g-3">
                                 <div class="col-md-6 mb-3">
                                     <label for="name" class="form-label fw-semibold">Họ tên *</label>

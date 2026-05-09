@@ -13,7 +13,8 @@
                 </div>
             <?php endif; ?>
 
-            <form action="<?php echo BASE_URL; ?>admin/manageInfo" method="POST" enctype="shortcut/form-data">
+            <form action="<?php echo BASE_URL; ?>admin/manageInfo" method="POST" enctype="multipart/form-data">
+                <?php Security::csrfField(); ?>
                 <div class="row g-4">
                     <div class="col-lg-7">
                         <div class="mb-3">

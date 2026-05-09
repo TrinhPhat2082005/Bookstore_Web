@@ -102,6 +102,7 @@
                         <div class="glass-card rounded-5 p-4 p-md-5 mb-5 shadow-lg" id="comment-form">
                             <h4 class="fw-bold mb-4">Để lại suy nghĩ của bạn</h4>
                             <form action="<?php echo BASE_URL . 'news/comment/' . $data['article']->id; ?>" method="POST">
+                                <?php Security::csrfField(); ?>
                                 <div class="row g-4">
                                     <div class="col-md-6">
                                         <div class="mb-3">

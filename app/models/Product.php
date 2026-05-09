@@ -32,13 +32,19 @@ class Product
         }
 
         if (isset($filters['min_price']) && $filters['min_price'] !== '') {
+            $min = floatval($filters['min_price']);
+            // Smart VND handle: if user enters 80, assume 80,000
+            if ($min > 0 && $min < 1000) $min *= 1000;
             $sql .= " AND price >= :min_price";
-            $params[':min_price'] = $filters['min_price'];
+            $params[':min_price'] = $min;
         }
 
         if (isset($filters['max_price']) && $filters['max_price'] !== '') {
+            $max = floatval($filters['max_price']);
+            // Smart VND handle: if user enters 200, assume 200,000
+            if ($max > 0 && $max < 1000) $max *= 1000;
             $sql .= " AND price <= :max_price";
-            $params[':max_price'] = $filters['max_price'];
+            $params[':max_price'] = $max;
         }
 
         if (isset($filters['availability'])) {

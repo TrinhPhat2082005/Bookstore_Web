@@ -13,6 +13,7 @@
             </div>
             <form action="<?php echo BASE_URL; ?>admin/editNews/<?php echo $data['article']->id; ?>" method="POST"
                 enctype="multipart/form-data">
+                <?php Security::csrfField(); ?>
                 <div class="row g-4">
                     <div class="col-lg-8">
                         <div class="mb-4">

@@ -21,6 +21,13 @@ CREATE TABLE IF NOT EXISTS users (
 INSERT IGNORE INTO users (username, email, password, role) VALUES 
 ('admin', 'admin@bookstore.vn', '$2y$10$J7/pFo7LDOao.aYIaMrodOaQoo9.8OpzQw9.Nd/KBMKBAZsYARn.K', 'admin');
 
+-- Ensure missing columns are added if table already exists
+ALTER TABLE users ADD COLUMN IF NOT EXISTS remember_token VARCHAR(255) NULL AFTER role;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS status ENUM('active', 'banned') DEFAULT 'active' AFTER remember_token;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name VARCHAR(255) AFTER status;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(20) AFTER full_name;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS address TEXT AFTER phone;
+
 -- ============================================================
 -- SQL for PHÁT's tasks
 -- ============================================================
@@ -94,8 +101,13 @@ CREATE TABLE IF NOT EXISTS faqs (
 
 -- Sample articles
 INSERT IGNORE INTO articles (title, content, summary, author, seo_keywords, seo_description, image) VALUES
-('Top 10 Sách Nên Đọc Năm 2024', 'Nội dung chi tiết về danh sách 10 cuốn sách hay nhất hội tụ đủ các yếu tố từ cốt truyện đến bài học nhân sinh...', 'Danh sách những cuốn sách không thể bỏ qua trong năm nay.', 'Khang Admin', 'sách hay 2024, top sách, review sách', 'Khám phá top 10 cuốn sách đáng đọc nhất năm 2024 tại BookStore Premium.', '1777903201_7fb5bbde1db4e7e180c41963b1c78b30.jpg'),
-('Lợi ích của việc đọc sách mỗi ngày', 'Đọc sách không chỉ giúp chúng ta mở mang kiến thức mà còn giúp giảm căng thẳng, cải thiện trí nhớ...', 'Tại sao bạn nên dành ít nhất 30 phút mỗi ngày để đọc sách?', 'Khang Admin', 'lợi ích đọc sách, thói quen đọc sách', 'Tìm hiểu những lợi ích bất ngờ của việc duy trì thói quen đọc sách mỗi ngày.', '1777903462_z7772420522673_90661c8200ee13cf110dda294d934fea.jpg');
+('Top 10 Sách Nên Đọc Năm 2024', 'Nội dung chi tiết về danh sách 10 cuốn sách hay nhất hội tụ đủ các yếu tố từ cốt truyện đến bài học nhân sinh...', 'Danh sách những cuốn sách không thể bỏ qua trong năm nay.', 'Khang Admin', 'sách hay 2024, top sách, review sách', 'Khám phá top 10 cuốn sách đáng đọc nhất năm 2024 tại BookStore Premium.', '1778335770_sachgiay.jpg'),
+('Lợi ích của việc đọc sách mỗi ngày', 'Đọc sách không chỉ giúp chúng ta mở mang kiến thức mà còn giúp giảm căng thẳng, cải thiện trí nhớ...', 'Tại sao bạn nên dành ít nhất 30 phút mỗi ngày để đọc sách?', 'Khang Admin', 'lợi ích đọc sách, thói quen đọc sách', 'Tìm hiểu những lợi ích bất ngờ của việc duy trì thói quen đọc sách mỗi ngày.', '1777903462_z7772420522673_90661c8200ee13cf110dda294d934fea.jpg'),
+('Tương lai của ngành xuất bản: Trí tuệ nhân tạo đang thay đổi cuộc chơi như thế nào?', 'Bước sang năm 2025, trí tuệ nhân tạo (AI) không còn là khái niệm xa lạ trong giới cầm bút. Từ việc hỗ trợ lên ý tưởng, kiểm tra lỗi ngữ pháp đến việc phân tích thị hiếu người đọc, AI đang trở thành người bạn đồng hành đắc lực của các tác giả...', 'Khám phá sự kết hợp giữa sức sáng tạo của con người và sức mạnh của AI trong việc tạo ra những tác phẩm văn học thế hệ mới.', 'Phat Admin', 'AI xuất bản, tương lai ngành sách, công nghệ văn học', 'Tìm hiểu cách AI đang định hình lại ngành xuất bản thế giới trong năm 2025.', 'article_ai.jpg'),
+('Sách giấy hồi sinh mạnh mẽ trong kỷ nguyên số', 'Dù ebook và audiobooks phát triển vượt bậc, doanh số sách in vẫn đạt kỷ lục vào năm 2024. Độc giả chia sẻ rằng cảm giác được chạm vào từng trang giấy, mùi hương của sách mới và việc không bị làm phiền bởi thông báo điện thoại là những lý do khiến họ chọn sách giấy...', 'Tại sao độc giả hiện đại lại đang có xu hướng quay trở lại với những trang sách thơm mùi mực in?', 'Phat Admin', 'sách giấy, xu hướng đọc sách, văn hóa đọc', 'Lý do tại sao sách giấy vẫn giữ vững vị thế và hồi sinh mạnh mẽ giữa thời đại công nghệ.', 'article_print.jpg'),
+('Xu hướng "Cozy Fantasy" - Khi độc giả tìm kiếm sự bình yên qua những trang sách', 'Khác với những cuộc chiến khốc liệt hay những âm mưu đen tối trong các bộ sử thi đồ sộ, Cozy Fantasy mang đến những câu chuyện về tình bạn, những quán trà nhỏ trong thế giới phép thuật hay những chuyến phiêu lưu nhẹ nhàng với kết thúc có hậu...', 'Tìm hiểu về dòng sách giả tưởng nhẹ nhàng đang chiếm trọn trái tim của hàng triệu độc giả trên toàn thế giới.', 'Phat Admin', 'Cozy Fantasy, sách giả tưởng nhẹ nhàng, xu hướng sách 2025', 'Khám phá sức hút của dòng sách Cozy Fantasy - liều thuốc tinh thần cho độc giả hiện đại.', 'article_cozy.jpg'),
+('Top 5 cuốn sách đáng mong chờ nhất năm 2025', 'Năm 2025 hứa hẹn sẽ là một năm bùng nổ của thị trường sách với sự trở lại của nhiều tên tuổi lớn. Đứng đầu danh sách là tác phẩm mới của Katie Kitamura mang tên "Audition", một tiểu thuyết đầy ám ảnh về danh tính và sự thật...', 'Danh sách những "siêu phẩm" văn học sắp ra mắt mà bạn không thể bỏ qua trong năm nay.', 'Phat Admin', 'sách hay 2025, top sách 2025, sách mới ra mắt', 'Điểm mặt 5 cuốn sách đình đám nhất dự kiến sẽ làm mưa làm gió trên các bảng xếp hạng năm 2025.', 'article_top_2025.jpg'),
+('Sách nói (Audiobook) - Giải pháp đọc sách cho người bận rộn', 'Với sự phát triển của các nền tảng phát trực tuyến và công nghệ giọng nói nhân tạo, sách nói đã trở thành một phần không thể thiếu trong cuộc sống hiện đại. Bạn có thể "đọc" sách khi đang lái xe, tập gym hay làm việc nhà...', 'Cách mà công nghệ âm thanh đang giúp chúng ta tiếp cận tri thức mọi lúc mọi nơi.', 'Phat Admin', 'audiobook, sách nói, công nghệ đọc sách', 'Khám phá lợi ích và sự phát triển vượt bậc của sách nói trong đời sống hiện đại.', 'article_audiobook.jpg');
 
 -- Sample FAQ
 INSERT IGNORE INTO faqs (question, answer, category) VALUES

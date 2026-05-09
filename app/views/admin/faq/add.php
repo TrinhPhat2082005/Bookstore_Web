@@ -6,6 +6,7 @@
         <div class="table-container p-4">
             <h4 class="mb-4">Thêm Câu hỏi mới</h4>
             <form action="<?php echo BASE_URL; ?>admin/addFaq" method="POST">
+                <?php Security::csrfField(); ?>
                 <div class="mb-4">
                     <label class="form-label fw-bold">Câu hỏi</label>
                     <input class="form-control" type="text" name="question" placeholder="Ví dụ: Làm sao để mua hàng?"

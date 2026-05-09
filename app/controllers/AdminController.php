@@ -27,6 +27,16 @@ class AdminController extends Controller
         $this->productModel = $this->model('Product');
         $this->orderModel   = $this->model('Order');
         $this->userModel    = $this->model('User');
+
+        // Global CSRF Check for Admin POST requests
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Skip check for Dropzone AJAX uploads if needed, but for standard forms it's required
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                $_SESSION['error_msg'] = "Lỗi bảo mật: CSRF token không hợp lệ.";
+                header('Location: ' . BASE_URL . 'admin');
+                exit();
+            }
+        }
     }
 
     public function index()
@@ -164,7 +174,7 @@ class AdminController extends Controller
             $data = [
                 'name'        => trim($_POST['name']),
                 'author'      => trim($_POST['author']),
-                'description' => trim($_POST['description']),
+                'description' => Security::sanitizeHTML($_POST['description']),
                 'price'       => (float) $_POST['price'],
                 'stock'       => (int) $_POST['stock'],
                 'category'    => trim($_POST['category']),
@@ -210,7 +220,7 @@ class AdminController extends Controller
             $data = [
                 'name'        => trim($_POST['name']),
                 'author'      => trim($_POST['author']),
-                'description' => trim($_POST['description']),
+                'description' => Security::sanitizeHTML($_POST['description']),
                 'price'       => (float) $_POST['price'],
                 'stock'       => (int) $_POST['stock'],
                 'category'    => trim($_POST['category']),
@@ -310,7 +320,7 @@ class AdminController extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'title' => trim($_POST['title']),
-                'content' => trim($_POST['content']),
+                'content' => Security::sanitizeHTML($_POST['content']),
                 'summary' => trim($_POST['summary']),
                 'author' => $_SESSION['user_name'] ?? 'Admin',
                 'seo_keywords' => trim($_POST['seo_keywords']),
@@ -347,7 +357,7 @@ class AdminController extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'title' => trim($_POST['title']),
-                'content' => trim($_POST['content']),
+                'content' => Security::sanitizeHTML($_POST['content']),
                 'summary' => trim($_POST['summary']),
                 'author' => $_POST['author'],
                 'seo_keywords' => trim($_POST['seo_keywords']),

@@ -6,6 +6,11 @@ class AuthController extends Controller
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                $_SESSION['error_msg'] = "Lỗi bảo mật: CSRF token không hợp lệ.";
+                header("Location: " . BASE_URL . "auth/login");
+                exit;
+            }
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
             $role = $_POST['role'] ?? 'client';
@@ -51,6 +56,11 @@ class AuthController extends Controller
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                $_SESSION['error_msg'] = "Lỗi bảo mật: CSRF token không hợp lệ.";
+                header("Location: " . BASE_URL . "auth/register");
+                exit;
+            }
             $username = $_POST['username'] ?? '';
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
@@ -103,6 +113,11 @@ class AuthController extends Controller
         $id = $_SESSION['user_id'];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                $_SESSION['error_msg'] = "Lỗi bảo mật: CSRF token không hợp lệ.";
+                header("Location: " . BASE_URL . "auth/profile");
+                exit;
+            }
             $action = $_POST['action'] ?? '';
 
             if ($action === 'update_profile') {

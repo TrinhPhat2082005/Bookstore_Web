@@ -6,6 +6,7 @@
         <div class="table-container p-4">
             <h4 class="mb-4">Chỉnh sửa Câu hỏi</h4>
             <form action="<?php echo BASE_URL; ?>admin/editFaq/<?php echo $data['faq']->id; ?>" method="POST">
+                <?php Security::csrfField(); ?>
                 <div class="mb-4">
                     <label class="form-label fw-bold">Câu hỏi</label>
                     <input class="form-control" type="text" name="question"

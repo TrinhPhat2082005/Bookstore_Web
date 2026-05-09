@@ -43,14 +43,16 @@ class HomeController extends Controller
         $settings = $this->settingModel->getAll();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                die('Lỗi bảo mật: CSRF token không hợp lệ.');
+            }
             // Sanitize input
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
+            // Using Security::xssClean instead of deprecated filter_input_array
             $data = [
-                'name' => trim($_POST['name']),
-                'email' => trim($_POST['email']),
-                'subject' => trim($_POST['subject']),
-                'message' => trim($_POST['message']),
+                'name' => Security::xssClean(trim($_POST['name'] ?? '')),
+                'email' => Security::xssClean(trim($_POST['email'] ?? '')),
+                'subject' => Security::xssClean(trim($_POST['subject'] ?? '')),
+                'message' => Security::xssClean(trim($_POST['message'] ?? '')),
                 'settings' => $settings,
                 'name_err' => '',
                 'email_err' => '',

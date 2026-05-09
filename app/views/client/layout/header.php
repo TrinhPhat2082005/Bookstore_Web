@@ -5,8 +5,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?php echo $data['settings']['site_intro'] ?? 'Hiệu sách trực tuyến'; ?>">
-    <title><?php echo $data['title']; ?> | <?php echo $data['settings']['site_name'] ?? 'BookStore'; ?></title>
+    <meta name="description" content="<?php 
+        if (isset($data['product'])) {
+            echo htmlspecialchars(mb_substr(strip_tags($data['product']->description), 0, 160)) . '...';
+        } elseif (isset($data['article'])) {
+            echo htmlspecialchars(mb_substr(strip_tags($data['article']->summary), 0, 160)) . '...';
+        } else {
+            echo $data['settings']['site_intro'] ?? 'Hiệu sách trực tuyến hàng đầu với ngàn đầu sách hấp dẫn.';
+        }
+    ?>">
+    <title><?php 
+        if (isset($data['product'])) {
+            echo htmlspecialchars($data['product']->name) . ' | ' . ($data['settings']['site_name'] ?? 'BookStore');
+        } elseif (isset($data['article'])) {
+            echo htmlspecialchars($data['article']->title) . ' | ' . ($data['settings']['site_name'] ?? 'BookStore');
+        } else {
+            echo ($data['title'] ?? 'Trang chủ') . ' | ' . ($data['settings']['site_name'] ?? 'BookStore');
+        }
+    ?></title>
+    <!-- Security CSRF -->
+    <meta name="csrf-token" content="<?php echo Security::generateCSRFToken(); ?>">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <!-- Font Awesome -->

@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initReadingProgress();
     initHeaderSearch();
     initHeroSlider();
+    initRelatedSwiper();
 
     // 3. Robust lifecycle handling
     swup.hooks.on('page:view', () => {
@@ -31,9 +32,35 @@ document.addEventListener('DOMContentLoaded', () => {
         initReadingProgress();
         initHeaderSearch();
         initHeroSlider();
+        initRelatedSwiper();
         window.scrollTo(0, 0);
     });
 });
+
+/**
+ * Related Products Swiper
+ */
+function initRelatedSwiper() {
+    if (document.querySelector('.related-swiper')) {
+        new Swiper('.related-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                1024: { slidesPerView: 4 },
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: true,
+            },
+        });
+    }
+}
 
 /**
  * Hero Slider initialization
@@ -280,9 +307,13 @@ function initAjaxCart() {
             btn.disabled = true;
 
             try {
+                const formData = new FormData();
+                formData.append('csrf_token', document.querySelector('meta[name="csrf-token"]').content);
+
                 const response = await fetch(`${window.location.origin}/bookstore_web/cart/add/${productId}`, {
                     method: 'POST',
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    body: formData
                 });
                 
                 const data = await response.json();

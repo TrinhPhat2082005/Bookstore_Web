@@ -7,6 +7,7 @@
     </h5>
 
     <form action="<?php echo BASE_URL; ?>admin/addProduct" method="POST" enctype="multipart/form-data">
+        <?php Security::csrfField(); ?>
         <div class="mb-3">
             <label for="prod_name" class="form-label fw-semibold">Tên sách <span class="text-danger">*</span></label>
             <input type="text" id="prod_name" name="name" class="form-control rounded-3" required
@@ -63,9 +64,17 @@
         </div>
 
         <div class="mb-4">
-            <label for="prod_image" class="form-label fw-semibold">Ảnh bìa sách</label>
-            <input type="file" id="prod_image" name="image" class="form-control rounded-3" accept="image/*">
-            <div class="form-text">Định dạng: JPG, PNG, GIF. Khuyến nghị tỷ lệ 2:3.</div>
+            <label class="form-label fw-semibold">Ảnh bìa sách</label>
+            <div id="image-dropzone" class="dropzone rounded-3 border-dashed bg-light d-flex align-items-center justify-content-center" style="min-height: 150px; cursor: pointer;">
+                <div class="dz-message" data-dz-message>
+                    <div class="text-center">
+                        <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                        <h6 class="fw-bold">Kéo thả hoặc click để tải ảnh lên</h6>
+                        <p class="text-muted small mb-0">Định dạng hỗ trợ: JPG, PNG, WEBP. Khuyến nghị tỷ lệ 2:3.</p>
+                    </div>
+                </div>
+            </div>
+            <input type="file" id="prod_image" name="image" class="d-none" accept="image/*">
         </div>
 
         <div class="d-flex gap-3">
@@ -78,5 +87,27 @@
         </div>
     </form>
 </div>
+
+<script>
+    Dropzone.autoDiscover = false;
+    new Dropzone("#image-dropzone", {
+        url: "#",
+        autoProcessQueue: false,
+        maxFiles: 1,
+        acceptedFiles: "image/*",
+        addRemoveLinks: true,
+        init: function() {
+            this.on("addedfile", function(file) {
+                if (this.files.length > 1) this.removeFile(this.files[0]);
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                document.getElementById('prod_image').files = dt.files;
+            });
+            this.on("removedfile", function() {
+                document.getElementById('prod_image').value = "";
+            });
+        }
+    });
+</script>
 
 <?php require_once '../app/views/admin/layout/footer.php'; ?>

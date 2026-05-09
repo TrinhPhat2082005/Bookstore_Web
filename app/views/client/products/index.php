@@ -244,15 +244,17 @@
                                 <div class="collapse show" id="price-collapse">
                                     <div class="row g-2 align-items-center">
                                         <div class="col-5">
-                                            <input type="number" name="min_price"
+                                            <input type="number" name="min_price" id="min_price"
                                                 class="form-control form-control-sm rounded-pill" placeholder="Min"
-                                                value="<?php echo $data['filters']['min_price']; ?>">
+                                                min="0"
+                                                value="<?php echo htmlspecialchars($data['filters']['min_price']); ?>">
                                         </div>
                                         <div class="col-2 text-center text-muted small">—</div>
                                         <div class="col-5">
-                                            <input type="number" name="max_price"
+                                            <input type="number" name="max_price" id="max_price"
                                                 class="form-control form-control-sm rounded-pill" placeholder="Max"
-                                                value="<?php echo $data['filters']['max_price']; ?>">
+                                                min="0"
+                                                value="<?php echo htmlspecialchars($data['filters']['max_price']); ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -275,8 +277,8 @@
                             </div>
 
                             <button type="submit" class="btn btn-apply w-100 shadow-sm mt-2">
-                                    Áp dụng
-                                </button>
+                                Áp dụng
+                            </button>
 
                             <a href="<?php echo BASE_URL; ?>product"
                                 class="btn btn-link w-100 text-decoration-none text-muted small mt-2">
@@ -310,16 +312,22 @@
                 <?php if (!empty(array_filter($data['filters'], fn($v) => $v !== '' && $v !== 'newest'))): ?>
                     <div class="d-flex flex-wrap gap-2 mb-4">
                         <?php foreach ($data['filters'] as $key => $value): ?>
-                            <?php if (!empty($value) && $key !== 'sort'): ?>
+                            <?php if (($value !== '' && $value !== null) && $key !== 'sort'): ?>
                                 <span class="badge bg-white text-dark border rounded-pill px-3 py-2 fw-normal">
                                     <?php
                                     if ($key === 'availability')
                                         echo $value === 'in_stock' ? 'In Stock' : 'Out of Stock';
-                                    elseif ($key === 'min_price')
-                                        echo 'Min: ' . number_format($value) . '₫';
-                                    elseif ($key === 'max_price')
-                                        echo 'Max: ' . number_format($value) . '₫';
-                                    else
+                                    elseif ($key === 'min_price') {
+                                        $displayVal = $value;
+                                        if ($displayVal > 0 && $displayVal < 1000)
+                                            $displayVal *= 1000;
+                                        echo 'Min: ' . number_format($displayVal) . '₫';
+                                    } elseif ($key === 'max_price') {
+                                        $displayVal = $value;
+                                        if ($displayVal > 0 && $displayVal < 1000)
+                                            $displayVal *= 1000;
+                                        echo 'Max: ' . number_format($displayVal) . '₫';
+                                    } else
                                         echo htmlspecialchars($value);
                                     ?>
                                 </span>
@@ -340,7 +348,8 @@
                     </div>
                 <?php else: ?>
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 g-xl-5">
-                        <?php $delay = 0; foreach ($data['products'] as $product): ?>
+                        <?php $delay = 0;
+                        foreach ($data['products'] as $product): ?>
                             <div class="col" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
                                 <?php $delay = ($delay < 400) ? $delay + 100 : 0; ?>
                                 <div class="product-card">
@@ -365,7 +374,7 @@
                                             <!-- Quick Add Button (Hover) -->
                                             <?php if ($product->stock > 0): ?>
                                                 <div class="quick-add d-flex justify-content-center">
-                                                    <button type="button" 
+                                                    <button type="button"
                                                         class="btn btn-light btn-sm rounded-pill px-3 fw-bold ajax-add-to-cart"
                                                         data-product-id="<?php echo $product->id; ?>">
                                                         <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ hàng
@@ -397,11 +406,11 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Handle Category selection
         const categoryItems = document.querySelectorAll('.category-item');
         const categoryInput = document.getElementById('category-input');
         const filterForm = document.getElementById('filter-form');
 
+        // Handle Category selection
         categoryItems.forEach(item => {
             item.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -409,6 +418,29 @@
                 filterForm.submit();
             });
         });
+
+        // Handle Min/Max Price Validation
+        if (filterForm) {
+            filterForm.addEventListener('submit', function (e) {
+                const minInput = document.getElementById('min_price');
+                const maxInput = document.getElementById('max_price');
+
+                if (minInput && maxInput) {
+                    const min = parseFloat(minInput.value) || 0;
+                    const max = parseFloat(maxInput.value) || Infinity;
+
+                    if (max < min && max !== Infinity) {
+                        e.preventDefault();
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Lỗi khoảng giá',
+                            text: 'Giá tối đa phải lớn hơn hoặc bằng giá tối thiểu.',
+                            confirmButtonColor: '#6366f1'
+                        });
+                    }
+                }
+            });
+        }
 
         // Handle tilt effect (if VanillaTilt is loaded)
         if (typeof VanillaTilt !== 'undefined') {

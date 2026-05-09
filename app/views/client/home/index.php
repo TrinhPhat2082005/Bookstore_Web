@@ -80,7 +80,7 @@
                                 <?php $delay += 100; ?>
                                 <div class="book-frame shadow-sm">
                                     <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>">
-                                        <img src="<?php echo BASE_URL; ?>public/uploads/<?php echo $product->image; ?>"
+                                        <img src="<?php echo BASE_URL; ?>uploads/<?php echo $product->image; ?>"
                                             alt="<?php echo htmlspecialchars($product->name); ?>" loading="lazy">
                                     </a>
                                 </div>
@@ -90,10 +90,14 @@
                                         <?php echo $product->name; ?>
                                     </a>
                                     <p class="book-author text-secondary small"><?php echo $product->author ?? 'Tác giả'; ?></p>
-                                    <div class="justify-content-between align-items-center mt-2">
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
                                         <span
                                             class="book-price"><?php echo number_format($product->price, 0, ',', '.'); ?>₫</span>
                                         <?php if ($product->stock > 0): ?>
+                                            <button class="btn btn-primary btn-sm rounded-pill ajax-add-to-cart px-3" 
+                                                    data-product-id="<?php echo $product->id; ?>">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                            </button>
                                         <?php endif; ?>
                                     </div>
                                 </div>

@@ -8,6 +8,7 @@ require_once '../config/config.php';
 require_once '../app/core/App.php';
 require_once '../app/core/Controller.php';
 require_once '../app/core/Database.php';
+require_once '../app/core/Security.php';
 
 // Tự động đăng nhập bằng cookie nếu có
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_token'])) {

@@ -15,6 +15,7 @@
                         <div class="alert alert-success rounded-pill text-center"><?php echo $_SESSION['success_msg']; unset($_SESSION['success_msg']); ?></div>
                     <?php endif; ?>
                     <form action="<?php echo BASE_URL; ?>auth/login" method="POST">
+                        <?php Security::csrfField(); ?>
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Tên đăng nhập</label>
                             <input type="text" name="username" class="form-control rounded-pill px-4 py-2" required placeholder="Nhập tên đăng nhập...">

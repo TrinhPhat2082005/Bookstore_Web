@@ -38,6 +38,12 @@ class CartController extends Controller {
 
     // Thêm sản phẩm vào giỏ hàng (session)
     public function add($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                echo json_encode(['success' => false, 'message' => 'Lỗi bảo mật: CSRF token không hợp lệ.']);
+                exit();
+            }
+        }
         $product = $this->productModel->getById($id);
 
         $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
@@ -85,6 +91,10 @@ class CartController extends Controller {
     // Cập nhật số lượng sản phẩm trong giỏ
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                header('Location: ' . BASE_URL . 'cart');
+                exit();
+            }
             if (isset($_POST['quantities']) && is_array($_POST['quantities'])) {
                 foreach ($_POST['quantities'] as $id => $qty) {
                     $qty = (int)$qty;
@@ -134,6 +144,9 @@ class CartController extends Controller {
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                die('Lỗi bảo mật: CSRF token không hợp lệ.');
+            }
             $data = [
                 'customer_name'    => trim($_POST['customer_name'] ?? ''),
                 'customer_email'   => trim($_POST['customer_email'] ?? ''),

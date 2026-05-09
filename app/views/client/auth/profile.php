@@ -67,6 +67,7 @@
                         <div class="tab-pane fade show active" id="info-pane" role="tabpanel">
                             <h3 class="fw-bold mb-4">Thông tin cá nhân</h3>
                             <form action="<?php echo BASE_URL; ?>auth/profile" method="POST">
+                                <?php Security::csrfField(); ?>
                                 <input type="hidden" name="action" value="update_profile">
                                 <div class="row g-3">
                                     <div class="col-md-6">
@@ -110,6 +111,7 @@
                         <div class="tab-pane fade" id="password-pane" role="tabpanel">
                             <h3 class="fw-bold mb-4">Đổi mật khẩu</h3>
                             <form action="<?php echo BASE_URL; ?>auth/profile" method="POST">
+                                <?php Security::csrfField(); ?>
                                 <input type="hidden" name="action" value="change_password">
                                 <div class="row g-3">
                                     <div class="col-12">

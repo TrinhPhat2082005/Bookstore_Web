@@ -43,6 +43,7 @@
                         <div class="card border-0 shadow-sm rounded-4">
                             <div class="card-body p-0">
                                 <form action="<?php echo BASE_URL; ?>cart/update" method="POST" id="cart-form">
+                                    <?php Security::csrfField(); ?>
                                     <div class="table-responsive">
                                         <table class="table table-hover align-middle mb-0">
                                             <thead class="table-light">

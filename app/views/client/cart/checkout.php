@@ -53,6 +53,7 @@
                             <h5 class="fw-bold mb-4">Thông tin giao hàng</h5>
 
                             <form action="<?php echo BASE_URL; ?>cart/checkout" method="POST" id="checkout-form">
+                                <?php Security::csrfField(); ?>
                                 <div class="mb-3">
                                     <label for="customer_name" class="form-label fw-semibold">
                                         Họ và tên <span class="text-danger">*</span>

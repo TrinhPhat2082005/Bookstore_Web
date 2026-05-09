@@ -8,7 +8,8 @@
     </h5>
 
     <form action="<?php echo BASE_URL; ?>admin/editProduct/<?php echo $product->id; ?>" method="POST"
-        enctype="multipart/form-data">
+        enctype="multipart/form-data" id="edit-product-form">
+        <?php Security::csrfField(); ?>
         <div class="mb-3">
             <label for="prod_name" class="form-label fw-semibold">Tên sách <span class="text-danger">*</span></label>
             <input type="text" id="prod_name" name="name" class="form-control rounded-3" required
@@ -55,20 +56,29 @@
             </div>
         </div>
 
-        <!-- Current Image Preview -->
+        <!-- Current Image Preview & Upload -->
         <div class="mb-4">
             <label class="form-label fw-semibold">Ảnh bìa sách</label>
-            <?php if ($product->image): ?>
-                <div class="mb-2 d-flex align-items-center gap-3">
-                    <img src="<?php echo BASE_URL; ?>uploads/<?php echo htmlspecialchars($product->image); ?>"
-                        class="rounded-3 shadow-sm" style="height: 100px; object-fit: cover;">
-                    <div>
-                        <div class="fw-semibold small">Ảnh hiện tại</div>
-                        <div class="text-muted small"><?php echo htmlspecialchars($product->image); ?></div>
+            <div class="d-flex flex-wrap gap-3 mb-3">
+                <?php if ($product->image): ?>
+                    <div class="position-relative">
+                        <img src="<?php echo BASE_URL; ?>uploads/<?php echo htmlspecialchars($product->image); ?>"
+                            class="rounded-3 shadow-sm border" style="height: 120px; width: 90px; object-fit: cover;">
+                        <div class="small text-center mt-1 text-muted">Hiện tại</div>
+                    </div>
+                <?php endif; ?>
+                
+                <div id="image-dropzone" class="dropzone rounded-3 border-dashed bg-light d-flex align-items-center justify-content-center flex-grow-1" style="min-height: 120px; cursor: pointer;">
+                    <div class="dz-message" data-dz-message>
+                        <div class="text-center">
+                            <i class="fas fa-cloud-upload-alt fa-2x text-primary mb-2"></i>
+                            <p class="mb-0 small fw-bold">Kéo thả hoặc click để thay đổi ảnh</p>
+                            <p class="text-muted smaller mb-0">Hỗ trợ JPG, PNG, WEBP</p>
+                        </div>
                     </div>
                 </div>
-            <?php endif; ?>
-            <input type="file" id="prod_image" name="image" class="form-control rounded-3" accept="image/*">
+            </div>
+            <input type="file" id="prod_image" name="image" class="d-none" accept="image/*">
             <div class="form-text">Để trống nếu không muốn thay đổi ảnh.</div>
         </div>
 
@@ -82,5 +92,27 @@
         </div>
     </form>
 </div>
+
+<script>
+    Dropzone.autoDiscover = false;
+    new Dropzone("#image-dropzone", {
+        url: "#",
+        autoProcessQueue: false,
+        maxFiles: 1,
+        acceptedFiles: "image/*",
+        addRemoveLinks: true,
+        init: function() {
+            this.on("addedfile", function(file) {
+                if (this.files.length > 1) this.removeFile(this.files[0]);
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                document.getElementById('prod_image').files = dt.files;
+            });
+            this.on("removedfile", function() {
+                document.getElementById('prod_image').value = "";
+            });
+        }
+    });
+</script>
 
 <?php require_once '../app/views/admin/layout/footer.php'; ?>
