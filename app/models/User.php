@@ -134,4 +134,19 @@ class User
         $this->db->query("SELECT COUNT(*) as total FROM users");
         return $this->db->single()->total;
     }
+
+    public function updateRememberToken($id, $token)
+    {
+        $this->db->query("UPDATE users SET remember_token = :token WHERE id = :id");
+        $this->db->bind(':token', $token);
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
+    }
+
+    public function getUserByRememberToken($token)
+    {
+        $this->db->query("SELECT * FROM users WHERE remember_token = :token");
+        $this->db->bind(':token', $token);
+        return $this->db->single();
+    }
 }

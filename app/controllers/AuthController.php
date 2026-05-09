@@ -26,6 +26,13 @@ class AuthController extends Controller
                             header("Location: " . BASE_URL . "admin");
                             exit;
                         } else {
+                            // Xử lý Remember Me
+                            if (isset($_POST['remember'])) {
+                                $token = bin2hex(random_bytes(16));
+                                $userModel->updateRememberToken($loggedInUser->id, $token);
+                                setcookie('remember_token', $token, time() + (30 * 24 * 60 * 60), '/');
+                            }
+                            
                             header("Location: " . BASE_URL);
                             exit;
                         }
@@ -170,6 +177,17 @@ class AuthController extends Controller
 
     public function logout()
     {
+        // Xóa token trong database nếu có cookie
+        if (isset($_COOKIE['remember_token'])) {
+            $userModel = $this->model('User');
+            $user = $userModel->getUserByRememberToken($_COOKIE['remember_token']);
+            if ($user) {
+                $userModel->updateRememberToken($user->id, null);
+            }
+            // Xóa cookie trình duyệt
+            setcookie('remember_token', '', time() - 3600, '/');
+        }
+
         unset($_SESSION['user_id']);
         unset($_SESSION['username']);
         unset($_SESSION['role']);

@@ -35,6 +35,10 @@
                                 <option value="admin">Quản trị viên (Admin)</option>
                             </select>
                         </div>
+                        <div class="mb-3 form-check ms-1">
+                            <input type="checkbox" name="remember" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label text-muted" for="rememberMe">Ghi nhớ đăng nhập</label>
+                        </div>
                         <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold shadow-sm">Đăng Nhập</button>
                     </form>
                     <div class="text-center mt-4">
