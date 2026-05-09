@@ -1,6 +1,6 @@
 <?php require_once '../app/views/client/layout/header.php'; ?>
 
-<main class="py-5">
+<div class="py-5 bg-body">
     <section>
         <div class="container">
             <div class="row g-5 align-items-start">
@@ -95,7 +95,7 @@
             </div>
         </div>
     </section>
-</main>
+</div>
 
 <script>
     document.getElementById('contactForm').addEventListener('submit', function (e) {

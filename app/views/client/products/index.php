@@ -181,7 +181,7 @@
     }
 </style>
 
-<main class="products-container py-5">
+<div class="products-container py-5">
     <div class="container">
         <div class="row g-5">
             <!-- Sidebar Filters -->
@@ -340,8 +340,9 @@
                     </div>
                 <?php else: ?>
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 g-xl-5">
-                        <?php foreach ($data['products'] as $product): ?>
-                            <div class="col">
+                        <?php $delay = 0; foreach ($data['products'] as $product): ?>
+                            <div class="col" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
+                                <?php $delay = ($delay < 400) ? $delay + 100 : 0; ?>
                                 <div class="product-card">
                                     <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"
                                         class="text-decoration-none">
@@ -364,10 +365,11 @@
                                             <!-- Quick Add Button (Hover) -->
                                             <?php if ($product->stock > 0): ?>
                                                 <div class="quick-add d-flex justify-content-center">
-                                                    <a href="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>"
-                                                        class="btn btn-light btn-sm rounded-pill px-3 fw-bold">
+                                                    <button type="button" 
+                                                        class="btn btn-light btn-sm rounded-pill px-3 fw-bold ajax-add-to-cart"
+                                                        data-product-id="<?php echo $product->id; ?>">
                                                         <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ hàng
-                                                    </a>
+                                                    </button>
                                                 </div>
                                             <?php endif; ?>
                                         </div>
@@ -391,7 +393,7 @@
             </div>
         </div>
     </div>
-</main>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

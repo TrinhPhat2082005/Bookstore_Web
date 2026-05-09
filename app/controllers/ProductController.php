@@ -34,6 +34,12 @@ class ProductController extends Controller {
             'title'      => 'Sản phẩm'
         ];
 
+        // AJAX handling
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            $this->view('client/products/_grid', $data);
+            exit();
+        }
+
         $this->view('client/products/index', $data);
     }
 
@@ -60,5 +66,34 @@ class ProductController extends Controller {
         ];
 
         $this->view('client/products/detail', $data);
+    }
+
+    public function search_api() {
+        $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        if (empty($keyword)) {
+            echo json_encode([]);
+            exit();
+        }
+
+        $filters = ['keyword' => $keyword, 'sort' => 'newest'];
+        $products = $this->productModel->getFilteredProducts($filters);
+        
+        // Limit to 5 results for the dropdown
+        $results = array_slice($products, 0, 5);
+        
+        $output = [];
+        foreach ($results as $p) {
+            $output[] = [
+                'id'    => $p->id,
+                'name'  => $p->name,
+                'author' => $p->author,
+                'price' => number_format($p->price, 0, ',', '.'),
+                'image' => $p->image ? BASE_URL . 'uploads/' . $p->image : null
+            ];
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($output);
+        exit();
     }
 }

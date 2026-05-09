@@ -32,7 +32,6 @@ Không có gì làm người dùng khó chịu hơn việc website phải tải 
 ## 3. Tương tác Advanced & Component Chuyên Nghiệp
 Sử dụng các thư viện chuẩn doanh nghiệp để quản lý nội dung.
 
-- **WYSIWYG Editor:** Tích hợp `CKEditor 5` hoặc `TinyMCE` vào trang Admin. Admin có thể bôi đậm, in nghiêng, chèn link, đổi màu chữ dễ dàng như dùng Microsoft Word.
 - **Drag & Drop Upload:** Sử dụng thư viện `Dropzone.js` cho phần upload ảnh trong Admin. Cho phép kéo thả ảnh bìa sách vào ô upload thay vì phải ấn nút chọn file truyền thống.
 - **Modern Carousels:** Sử dụng `Swiper.js` để tạo khu vực "Sách Nổi Bật" dạng slider. Hỗ trợ vuốt chạm mượt mà trên cả điện thoại và máy tính.
 - **Lazy Loading & Reveal Animations:** 

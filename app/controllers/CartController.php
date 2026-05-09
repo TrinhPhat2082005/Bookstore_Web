@@ -40,7 +40,13 @@ class CartController extends Controller {
     public function add($id) {
         $product = $this->productModel->getById($id);
 
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+
         if (!$product || $product->stock <= 0) {
+            if ($isAjax) {
+                echo json_encode(['success' => false, 'message' => 'Sản phẩm hết hàng hoặc không tồn tại.']);
+                exit();
+            }
             header('Location: ' . BASE_URL . 'product');
             exit();
         }
@@ -58,6 +64,16 @@ class CartController extends Controller {
                 'image'      => $product->image,
                 'quantity'   => 1
             ];
+        }
+
+        if ($isAjax) {
+            $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
+            echo json_encode([
+                'success' => true, 
+                'message' => "Đã thêm '{$product->name}' vào giỏ hàng.",
+                'cartCount' => $cartCount
+            ]);
+            exit();
         }
 
         // Redirect về trang trước hoặc giỏ hàng
