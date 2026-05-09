@@ -167,15 +167,32 @@ class CartController extends Controller {
             $this->view('client/cart/checkout', $data);
 
         } else { // First time access to checkout page
+            $customer_name = '';
+            $customer_email = '';
+            $customer_phone = '';
+            $customer_address = '';
+
+            // Nếu đã đăng nhập, tự động điền thông tin từ profile
+            if (isset($_SESSION['user_id'])) {
+                $userModel = $this->model('User');
+                $user = $userModel->getUserById($_SESSION['user_id']);
+                if ($user) {
+                    $customer_name = $user->full_name ?? '';
+                    $customer_email = $user->email ?? '';
+                    $customer_phone = $user->phone ?? '';
+                    $customer_address = $user->address ?? '';
+                }
+            }
+
             $data = [
                 'settings'         => $settings,
                 'cart'             => $cart,
                 'total'            => $total,
                 'title'            => 'Thanh toán',
-                'customer_name'    => '',
-                'customer_email'   => '',
-                'customer_phone'   => '',
-                'customer_address' => '',
+                'customer_name'    => $customer_name,
+                'customer_email'   => $customer_email,
+                'customer_phone'   => $customer_phone,
+                'customer_address' => $customer_address,
                 'note'             => '',
                 'name_err'         => '',
                 'email_err'        => '',

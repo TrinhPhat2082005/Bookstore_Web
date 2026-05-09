@@ -58,18 +58,41 @@ class User
         return $this->db->single();
     }
 
+    public function getUserById($id)
+    {
+        $this->db->query("SELECT * FROM users WHERE id = :id");
+        $this->db->bind(':id', $id);
+        return $this->db->single();
+    }
+
     public function updateProfile($id, $data)
     {
-        # [Thay đổi thông tin cá nhân - CHUNG]
-        # todo: Cập nhật thông tin profile của thành viên
-        return false;
+        $this->db->query("UPDATE users SET email = :email, full_name = :full_name, phone = :phone, address = :address WHERE id = :id");
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':full_name', $data['full_name']);
+        $this->db->bind(':phone', $data['phone']);
+        $this->db->bind(':address', $data['address']);
+        $this->db->bind(':id', $id);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function changePassword($id, $new_password)
     {
-        # [Đổi mật khẩu - CHUNG]
-        # todo: Cập nhật mật khẩu mới (đã mã hóa)
-        return false;
+        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+        $this->db->query("UPDATE users SET password = :password WHERE id = :id");
+        $this->db->bind(':password', $hashed_password);
+        $this->db->bind(':id', $id);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function banUser($id)

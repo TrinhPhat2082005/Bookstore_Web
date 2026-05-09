@@ -9,13 +9,16 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'client') DEFAULT 'client',
     status ENUM('active', 'banned') DEFAULT 'active',
+    full_name VARCHAR(255),
+    phone VARCHAR(20),
+    address TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Default admin user (password: admin123)
 INSERT IGNORE INTO users (username, email, password, role) VALUES 
-('admin', 'admin@bookstore.vn', '$2y$10$wTfH.K3bB6cXZm6uPzV/XecH62aF4vVp/1Qp7W6D1x/r7sW/Q5fC.', 'admin');
+('admin', 'admin@bookstore.vn', '$2y$10$J7/pFo7LDOao.aYIaMrodOaQoo9.8OpzQw9.Nd/KBMKBAZsYARn.K', 'admin');
 
 -- ============================================================
 -- SQL for PHÁT's tasks

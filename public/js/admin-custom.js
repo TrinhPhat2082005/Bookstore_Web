@@ -20,4 +20,14 @@ document.addEventListener('DOMContentLoaded', function () {
             bsAlert.close();
         }, 5000);
     });
+
+    // Initialize CKEditor 5 for WYSIWYG textareas
+    if (typeof ClassicEditor !== 'undefined') {
+        const textareas = document.querySelectorAll('textarea[name="description"], textarea[name="content"], textarea[name="answer"], textarea[name="about_content"]');
+        textareas.forEach(textarea => {
+            ClassicEditor.create(textarea).catch(error => {
+                console.error(error);
+            });
+        });
+    }
 });
