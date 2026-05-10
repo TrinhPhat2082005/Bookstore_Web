@@ -37,23 +37,16 @@
     <div class="col-lg-8">
         <div class="admin-card">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="mb-0">Thống kê truy cập</h5>
+                <h5 class="mb-0">Doanh thu 7 ngày qua</h5>
                 <div class="dropdown">
                     <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
                         data-bs-toggle="dropdown">
-                        7 ngày qua
+                        Tuần này
                     </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Hôm nay</a></li>
-                        <li><a class="dropdown-item" href="#">Năm nay</a></li>
-                    </ul>
                 </div>
             </div>
-            <div class="bg-light rounded p-5 text-center text-muted"
-                style="height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <i class="fa-solid fa-chart-line fa-3x mb-3 opacity-25"></i>
-                <p>Biểu đồ thống kê đang được xử lý...</p>
-                <small>(Dữ liệu sẽ được kết nối sau)</small>
+            <div style="height: 300px; position: relative;">
+                <canvas id="revenueChart"></canvas>
             </div>
         </div>
     </div>
@@ -119,8 +112,88 @@
         </div>
     </div>
 </div>
-        </div>
-    </div>
-</div>
+
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    
+    // Create Gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(99, 102, 241, 0.2)');
+    gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: <?php echo json_encode($data['chartLabels']); ?>,
+            datasets: [{
+                label: 'Doanh thu (₫)',
+                data: <?php echo json_encode($data['chartValues']); ?>,
+                borderColor: '#6366f1',
+                backgroundColor: gradient,
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#6366f1',
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: '#1e293b',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    padding: 12,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return new Intl.NumberFormat('vi-VN').format(context.raw) + '₫';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        display: true,
+                        color: 'rgba(0, 0, 0, 0.05)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return new Intl.NumberFormat('vi-VN', { 
+                                notation: "compact", 
+                                compactDisplay: "short" 
+                            }).format(value) + '₫';
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            }
+        }
+    });
+});
+</script>
 
 <?php require_once '../app/views/admin/layout/footer.php'; ?>

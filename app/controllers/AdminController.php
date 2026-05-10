@@ -82,11 +82,30 @@ class AdminController extends Controller
             return strtotime($b['time']) - strtotime($a['time']);
         });
 
+        // Lấy dữ liệu biểu đồ (7 ngày qua)
+        $chartData = $this->orderModel->getRevenueLast7Days();
+        $chartLabels = [];
+        $chartValues = [];
+        
+        // Tạo map dữ liệu để đảm bảo đủ 7 ngày (kể cả ngày không có đơn)
+        $dataMap = [];
+        foreach($chartData as $row) {
+            $dataMap[$row->date] = $row->total;
+        }
+        
+        for ($i = 6; $i >= 0; $i--) {
+            $date = date('Y-m-d', strtotime("-$i days"));
+            $chartLabels[] = date('d/m', strtotime($date));
+            $chartValues[] = $dataMap[$date] ?? 0;
+        }
+
         $data = [
             'userCount' => $userCount,
             'orderCount' => $orderCount,
             'totalRevenue' => $totalRevenue,
-            'notifications' => array_slice($notifications, 0, 5), // Lấy 5 cái mới nhất
+            'notifications' => array_slice($notifications, 0, 5),
+            'chartLabels' => $chartLabels,
+            'chartValues' => $chartValues,
             'title' => 'Bảng điều khiển'
         ];
         

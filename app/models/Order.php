@@ -100,4 +100,19 @@ class Order {
         $this->db->bind(':limit', $limit, PDO::PARAM_INT);
         return $this->db->resultSet();
     }
+
+    public function getRevenueLast7Days() {
+        $this->db->query("
+            SELECT 
+                DATE(created_at) as date, 
+                SUM(total_amount) as total,
+                COUNT(*) as order_count
+            FROM orders 
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+              AND status != 'cancelled'
+            GROUP BY DATE(created_at)
+            ORDER BY DATE(created_at) ASC
+        ");
+        return $this->db->resultSet();
+    }
 }
