@@ -38,6 +38,15 @@
                             <p class="text-secondary mb-0"><?php echo $data['settings']['site_email']; ?></p>
                         </div>
                     </div>
+
+                    <!-- Quick Help / FAQ CTA -->
+                    <div class="mt-5 p-4 rounded-4 bg-light border border-2 border-white shadow-sm" data-aos="fade-up">
+                        <h5 class="fw-bold mb-3"><i class="fas fa-question-circle text-primary me-2"></i>Tìm câu trả lời ngay?</h5>
+                        <p class="small text-secondary mb-4">Bạn có thể tìm thấy giải pháp nhanh chóng trong phần Câu hỏi thường gặp của chúng tôi.</p>
+                        <a href="<?php echo BASE_URL; ?>home/faq" class="btn btn-outline-primary rounded-pill px-4 fw-bold">
+                            Xem FAQ <i class="fas fa-arrow-right ms-2 small"></i>
+                        </a>
+                    </div>
                 </div>
 
                 <div class="col-lg-7">

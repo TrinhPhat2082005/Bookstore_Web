@@ -40,7 +40,7 @@
                                 <div id="collapse-<?php echo $index; ?>" class="accordion-collapse collapse"
                                     data-bs-parent="#faqAccordion">
                                     <div class="accordion-body py-4 px-4 text-secondary bg-white bg-opacity-50" style="line-height: 1.8;">
-                                        <?php echo nl2br(htmlspecialchars($faq->answer)); ?>
+                                        <?php echo Security::sanitizeHTML($faq->answer); ?>
                                     </div>
                                 </div>
                             </div>
@@ -54,9 +54,6 @@
         <div class="row justify-content-center mt-5 pt-4">
             <div class="col-lg-9">
                 <div class="p-5 text-center rounded-5 glass-card position-relative overflow-hidden">
-                    <div class="position-absolute top-0 end-0 p-5 opacity-10">
-                        <i class="fas fa-envelope-open-text display-1"></i>
-                    </div>
                     <h3 class="fw-bold text-dark mb-3">Vẫn còn thắc mắc khác?</h3>
                     <p class="text-secondary mb-4 fs-5">Đội ngũ hỗ trợ khách hàng của BookStore Premium luôn sẵn sàng phục vụ bạn 24/7.</p>
                     <div class="d-flex flex-wrap justify-content-center gap-3">
