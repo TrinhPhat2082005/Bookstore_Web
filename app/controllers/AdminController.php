@@ -42,7 +42,55 @@ class AdminController extends Controller
     public function index()
     {
         # [Dashboard tổng quan]
-        $this->view('admin/dashboard');
+        $userCount = $this->userModel->countAll();
+        $orderCount = $this->orderModel->countAll();
+        $totalRevenue = $this->orderModel->getTotalRevenue();
+        
+        // Lấy thông báo mới (kết hợp user mới và đơn hàng mới)
+        $latestUsers = $this->userModel->getLatest(3);
+        $latestOrders = $this->orderModel->getLatest(3);
+        
+        $notifications = [];
+        foreach ($latestUsers as $user) {
+            $notifications[] = [
+                'type' => 'user',
+                'title' => 'Người dùng mới đăng ký',
+                'content' => ($user->full_name ?: $user->username) . ' vừa tạo tài khoản',
+                'time' => $user->created_at,
+                'icon' => 'fas fa-user-plus text-primary'
+            ];
+        }
+        foreach ($latestOrders as $order) {
+            $statusLabel = 'vừa tạo đơn hàng mới';
+            $icon = 'fas fa-shopping-cart text-warning';
+            if ($order->status === 'delivered') {
+                $statusLabel = 'vừa hoàn tất đơn hàng #' . $order->id;
+                $icon = 'fas fa-check-circle text-success';
+            }
+            
+            $notifications[] = [
+                'type' => 'order',
+                'title' => 'Đơn hàng #' . $order->id,
+                'content' => $order->customer_name . ' ' . $statusLabel,
+                'time' => $order->created_at,
+                'icon' => $icon
+            ];
+        }
+        
+        // Sắp xếp thông báo theo thời gian mới nhất
+        usort($notifications, function($a, $b) {
+            return strtotime($b['time']) - strtotime($a['time']);
+        });
+
+        $data = [
+            'userCount' => $userCount,
+            'orderCount' => $orderCount,
+            'totalRevenue' => $totalRevenue,
+            'notifications' => array_slice($notifications, 0, 5), // Lấy 5 cái mới nhất
+            'title' => 'Bảng điều khiển'
+        ];
+        
+        $this->view('admin/dashboard', $data);
     }
 
     // --- PHẦN CHUNG ---

@@ -149,4 +149,11 @@ class User
         $this->db->bind(':token', $token);
         return $this->db->single();
     }
+
+    public function getLatest($limit = 5)
+    {
+        $this->db->query("SELECT * FROM users ORDER BY created_at DESC LIMIT :limit");
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
+        return $this->db->resultSet();
+    }
 }

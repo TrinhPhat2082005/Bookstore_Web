@@ -9,11 +9,7 @@
                 <i class="fa-solid fa-users"></i>
             </div>
             <h6 class="text-muted mb-1">Người dùng</h6>
-            <h3 class="mb-0"><?php echo isset($data['user_count']) ? $data['user_count'] : '12'; ?></h3>
-            <div class="mt-3">
-                <span class="text-success me-1"><i class="fa-solid fa-arrow-up"></i> 5.2%</span>
-                <span class="text-muted small">kể từ hôm qua</span>
-            </div>
+            <h3 class="mb-0"><?php echo number_format($data['userCount']); ?></h3>
         </div>
     </div>
     <div class="col-md-4">
@@ -22,11 +18,7 @@
                 <i class="fa-solid fa-cart-shopping"></i>
             </div>
             <h6 class="text-muted mb-1">Đơn hàng</h6>
-            <h3 class="mb-0"><?php echo isset($data['order_count']) ? $data['order_count'] : '34'; ?></h3>
-            <div class="mt-3">
-                <span class="text-success me-1"><i class="fa-solid fa-arrow-up"></i> 14.5%</span>
-                <span class="text-muted small">kể từ hôm qua</span>
-            </div>
+            <h3 class="mb-0"><?php echo number_format($data['orderCount']); ?></h3>
         </div>
     </div>
     <div class="col-md-4">
@@ -35,11 +27,7 @@
                 <i class="fa-solid fa-money-bill-trend-up"></i>
             </div>
             <h6 class="text-muted mb-1">Doanh thu</h6>
-            <h3 class="mb-0">$ <?php echo isset($data['revenue']) ? number_format($data['revenue']) : '1,250'; ?></h3>
-            <div class="mt-3">
-                <span class="text-danger me-1"><i class="fa-solid fa-arrow-down"></i> 2.5%</span>
-                <span class="text-muted small">kể từ hôm qua</span>
-            </div>
+            <h3 class="mb-0"><?php echo number_format($data['totalRevenue'], 0, ',', '.'); ?>₫</h3>
         </div>
     </div>
 </div>
@@ -75,33 +63,62 @@
         <div class="admin-card">
             <h5 class="mb-4">Thông báo mới</h5>
             <div class="list-group list-group-flush">
-                <div class="list-group-item px-0 py-3 border-bottom border-light bg-transparent">
-                    <div class="d-flex">
-                        <div class="flex-shrink-0">
-                            <span class="badge rounded-circle p-2 bg-purple-subtle text-purple"><i
-                                    class="fa-solid fa-user-plus text-primary"></i></span>
+                <?php if (empty($data['notifications'])): ?>
+                    <p class="text-muted small">Chưa có thông báo mới.</p>
+                <?php else: ?>
+                    <?php foreach ($data['notifications'] as $noti): ?>
+                        <div class="list-group-item px-0 py-3 border-bottom border-light bg-transparent">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <span class="badge rounded-circle p-2 bg-light"><i class="<?php echo $noti['icon']; ?>"></i></span>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1 small font-weight-bold"><?php echo $noti['title']; ?></h6>
+                                    <p class="mb-0 small text-muted"><?php echo $noti['content']; ?></p>
+                                    <small class="text-muted opacity-50"><?php echo date('H:i d/m/Y', strtotime($noti['time'])); ?></small>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="mb-1 small font-weight-bold">Người dùng mới đăng ký</h6>
-                            <p class="mb-0 small text-muted">Nguyen Van A vừa tạo tài khoản</p>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+            <button class="btn btn-sm btn-link text-decoration-none mt-3 w-100 p-0 text-start" 
+                    data-bs-toggle="modal" data-bs-target="#notificationsModal">
+                Xem tất cả thông báo
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- All Notifications Modal -->
+<div class="modal fade" id="notificationsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="fw-bold">Tất cả thông báo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="list-group list-group-flush">
+                    <?php foreach ($data['notifications'] as $noti): ?>
+                        <div class="list-group-item px-0 py-3 border-bottom border-light">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <span class="badge rounded-circle p-2 bg-light"><i class="<?php echo $noti['icon']; ?>"></i></span>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1 small font-weight-bold"><?php echo $noti['title']; ?></h6>
+                                    <p class="mb-0 small text-muted"><?php echo $noti['content']; ?></p>
+                                    <small class="text-muted opacity-50"><?php echo date('H:i d/m/Y', strtotime($noti['time'])); ?></small>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="list-group-item px-0 py-3 border-bottom border-light bg-transparent">
-                    <div class="d-flex">
-                        <div class="flex-shrink-0">
-                            <span class="badge rounded-circle p-2 bg-success-subtle text-success"><i
-                                    class="fa-solid fa-check"></i></span>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="mb-1 small font-weight-bold">Đơn hàng #345 hoàn tất</h6>
-                            <p class="mb-0 small text-muted">Vừa giao thành công cho khách hàng</p>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
-            <a href="#" class="btn btn-sm btn-link text-decoration-none mt-3 w-100 p-0 text-start">Xem tất cả thông
-                báo</a>
+        </div>
+    </div>
+</div>
         </div>
     </div>
 </div>

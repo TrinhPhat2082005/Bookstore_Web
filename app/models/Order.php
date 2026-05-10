@@ -88,4 +88,16 @@ class Order {
         $this->db->bind(':id', $id);
         return $this->db->execute();
     }
+
+    public function getTotalRevenue() {
+        $this->db->query("SELECT SUM(total_amount) as total FROM orders WHERE status != 'cancelled'");
+        $result = $this->db->single();
+        return $result ? (float)$result->total : 0;
+    }
+
+    public function getLatest($limit = 5) {
+        $this->db->query("SELECT * FROM orders ORDER BY created_at DESC LIMIT :limit");
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
+        return $this->db->resultSet();
+    }
 }
