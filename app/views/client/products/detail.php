@@ -95,10 +95,12 @@
                     <!-- Action Buttons -->
                     <div class="d-flex flex-wrap gap-3 pb-5 border-bottom">
                         <?php if ($product->stock > 0): ?>
-                            <button class="btn btn-primary btn-lg px-5 rounded-pill shadow-lg ajax-add-to-cart"
-                                data-product-id="<?php echo $product->id; ?>" id="btn-add-cart">
-                                <i class="fas fa-cart-plus me-2"></i>Thêm vào giỏ hàng
-                            </button>
+                            <form action="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>" method="POST" class="d-inline m-0">
+                                <?php Security::csrfField(); ?>
+                                <button type="submit" class="btn btn-primary btn-lg px-5 rounded-pill shadow-lg" id="btn-add-cart">
+                                    <i class="fas fa-cart-plus me-2"></i>Thêm vào giỏ hàng
+                                </button>
+                            </form>
                         <?php else: ?>
                             <button class="btn btn-secondary btn-lg px-5 rounded-pill" disabled>
                                 <i class="fas fa-ban me-2"></i>Sản phẩm tạm hết hàng
@@ -164,10 +166,12 @@
                                             <span class="book-price">
                                                 <?php echo number_format($rel->price, 0, ',', '.'); ?>₫
                                             </span>
-                                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3 ajax-add-to-cart"
-                                                    data-product-id="<?php echo $rel->id; ?>">
-                                                <i class="fas fa-cart-plus"></i>
-                                            </button>
+                                            <form action="<?php echo BASE_URL; ?>cart/add/<?php echo $rel->id; ?>" method="POST" class="d-inline m-0">
+                                                <?php Security::csrfField(); ?>
+                                                <button type="submit" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                                    <i class="fas fa-cart-plus"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

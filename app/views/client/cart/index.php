@@ -73,7 +73,8 @@
                                                                 <?php endif; ?>
                                                                 <div>
                                                                     <h6 class="mb-1 fw-bold">
-                                                                        <?php echo htmlspecialchars($item['name']); ?></h6>
+                                                                        <?php echo htmlspecialchars($item['name']); ?>
+                                                                    </h6>
                                                                     <?php if ($item['author']): ?>
                                                                         <small class="text-secondary">
                                                                             <i
@@ -92,18 +93,18 @@
                                                             <input type="number" name="quantities[<?php echo $id; ?>]"
                                                                 value="<?php echo $item['quantity']; ?>" min="1" max="99"
                                                                 class="form-control form-control-sm text-center mx-auto"
-                                                                style="width: 70px;">
+                                                                style="width: 70px;" onchange="this.form.submit()">
                                                         </td>
                                                         <td class="text-center fw-bold">
                                                             <?php echo number_format($item['price'] * $item['quantity'], 0, ',', '.'); ?>₫
                                                         </td>
                                                         <td class="text-center">
-                                                            <a href="<?php echo BASE_URL; ?>cart/remove/<?php echo $id; ?>"
+                                                            <button type="submit" formaction="<?php echo BASE_URL; ?>cart/remove/<?php echo $id; ?>" formmethod="POST"
                                                                 class="btn btn-sm btn-outline-danger rounded-circle"
                                                                 onclick="return confirm('Xóa sách này khỏi giỏ hàng?')"
                                                                 title="Xóa">
                                                                 <i class="fas fa-trash-alt"></i>
-                                                            </a>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
@@ -113,19 +114,16 @@
 
                                     <!-- Cart Actions -->
                                     <div class="d-flex justify-content-between align-items-center p-3 border-top">
-                                        <a href="<?php echo BASE_URL; ?>cart/clear"
+                                        <button type="submit" formaction="<?php echo BASE_URL; ?>cart/clear" formmethod="POST"
                                             class="btn btn-sm btn-outline-danger rounded-pill"
                                             onclick="return confirm('Xóa toàn bộ giỏ hàng?')">
                                             <i class="fas fa-trash me-1"></i>Xóa tất cả
-                                        </a>
+                                        </button>
                                         <div class="d-flex gap-2">
                                             <a href="<?php echo BASE_URL; ?>product"
                                                 class="btn btn-sm btn-outline-secondary rounded-pill">
                                                 <i class="fas fa-arrow-left me-1"></i>Tiếp tục mua
                                             </a>
-                                            <button type="submit" class="btn btn-sm btn-primary rounded-pill">
-                                                <i class="fas fa-sync-alt me-1"></i>Cập nhật giỏ
-                                            </button>
                                         </div>
                                     </div>
                                 </form>

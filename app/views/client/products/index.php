@@ -353,9 +353,9 @@
                             <div class="col" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
                                 <?php $delay = ($delay < 400) ? $delay + 100 : 0; ?>
                                 <div class="product-card">
-                                    <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"
-                                        class="text-decoration-none">
-                                        <div class="image-wrapper shadow-sm">
+                                    <div class="image-wrapper shadow-sm position-relative">
+                                        <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"
+                                            class="text-decoration-none">
                                             <?php if ($product->image): ?>
                                                 <img src="<?php echo BASE_URL; ?>uploads/<?php echo htmlspecialchars($product->image); ?>"
                                                     alt="<?php echo htmlspecialchars($product->name); ?>">
@@ -364,25 +364,26 @@
                                                     <i class="fas fa-book fa-3x text-muted opacity-25"></i>
                                                 </div>
                                             <?php endif; ?>
+                                        </a>
 
-                                            <?php if ($product->stock <= 0): ?>
-                                                <div class="position-absolute top-0 end-0 p-2">
-                                                    <span class="badge bg-danger rounded-pill">Out of Stock</span>
-                                                </div>
-                                            <?php endif; ?>
+                                        <?php if ($product->stock <= 0): ?>
+                                            <div class="position-absolute top-0 end-0 p-2">
+                                                <span class="badge bg-danger rounded-pill">Out of Stock</span>
+                                            </div>
+                                        <?php endif; ?>
 
-                                            <!-- Quick Add Button (Hover) -->
-                                            <?php if ($product->stock > 0): ?>
-                                                <div class="quick-add d-flex justify-content-center">
-                                                    <button type="button"
-                                                        class="btn btn-light btn-sm rounded-pill px-3 fw-bold ajax-add-to-cart"
-                                                        data-product-id="<?php echo $product->id; ?>">
+                                        <!-- Quick Add Button (Hover) -->
+                                        <?php if ($product->stock > 0): ?>
+                                            <div class="quick-add d-flex justify-content-center">
+                                                <form action="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>" method="POST" class="m-0">
+                                                    <?php Security::csrfField(); ?>
+                                                    <button type="submit" class="btn btn-light btn-sm rounded-pill px-3 fw-bold">
                                                         <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ hàng
                                                     </button>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </a>
+                                                </form>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
 
                                     <div class="text-center mt-3">
                                         <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"

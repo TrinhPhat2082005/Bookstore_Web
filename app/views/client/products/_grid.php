@@ -79,10 +79,12 @@
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <span class="book-price"><?php echo number_format($product->price, 0, ',', '.'); ?>₫</span>
                             <?php if ($product->stock > 0): ?>
-                                <button class="btn btn-primary btn-sm rounded-pill ajax-add-to-cart px-3" 
-                                        data-product-id="<?php echo $product->id; ?>">
-                                    <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ hàng
-                                </button>
+                                <form action="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>" method="POST" class="d-inline m-0">
+                                    <?php Security::csrfField(); ?>
+                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3">
+                                        <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ hàng
+                                    </button>
+                                </form>
                             <?php endif; ?>
                         </div>
                     </div>
