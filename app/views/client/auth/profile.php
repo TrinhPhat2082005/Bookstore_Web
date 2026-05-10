@@ -221,96 +221,110 @@
             </div>
         </div>
     </div>
-</main>
 
-<!-- Order Detail Modal -->
-<div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered shadow">
-        <div class="modal-content border-0 rounded-4">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="fw-bold">Chi tiết đơn hàng</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                <div id="order-items-loading" class="text-center py-4">
-                    <div class="spinner-border text-primary" role="status"></div>
+    <!-- Order Detail Modal -->
+    <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="fw-bold">Chi tiết đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div id="order-items-list" style="display: none;">
-                    <div class="table-responsive">
-                        <table class="table table-borderless align-middle">
-                            <thead class="text-muted small text-uppercase">
-                                <tr>
-                                    <th>Sản phẩm</th>
-                                    <th class="text-center">Số lượng</th>
-                                    <th class="text-end">Giá</th>
-                                </tr>
-                            </thead>
-                            <tbody id="order-items-body"></tbody>
-                        </table>
+                <div class="modal-body p-4">
+                    <div id="order-items-loading" class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status"></div>
+                    </div>
+                    <div id="order-items-list" style="display: none;">
+                        <div class="table-responsive">
+                            <table class="table table-borderless align-middle">
+                                <thead class="text-muted small text-uppercase">
+                                    <tr>
+                                        <th>Sản phẩm</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-end">Giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="order-items-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const orderDetailModal = document.getElementById('orderDetailModal');
-    const loadingEl = document.getElementById('order-items-loading');
-    const listEl = document.getElementById('order-items-list');
-    const bodyEl = document.getElementById('order-items-body');
+    <script>
+    (function() {
+        const initOrderDetails = () => {
+            const loadingEl = document.getElementById('order-items-loading');
+            const listEl = document.getElementById('order-items-list');
+            const bodyEl = document.getElementById('order-items-body');
 
-    document.querySelectorAll('.view-order-detail').forEach(button => {
-        button.addEventListener('click', async function() {
-            const orderId = this.getAttribute('data-id');
-            
-            // Reset modal
-            loadingEl.style.display = 'block';
-            listEl.style.display = 'none';
-            bodyEl.innerHTML = '';
+            if (!loadingEl || !listEl || !bodyEl) return;
 
-            try {
-                const response = await fetch(`<?php echo BASE_URL; ?>auth/orderDetail/${orderId}`);
-                const items = await response.json();
+            // Use event delegation on the document or the table container
+            const container = document.querySelector('.table-responsive');
+            if (!container) return;
+
+            container.addEventListener('click', async function(e) {
+                const button = e.target.closest('.view-order-detail');
+                if (!button) return;
+
+                const orderId = button.getAttribute('data-id');
                 
-                items.forEach(item => {
-                    const row = `
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="<?php echo BASE_URL; ?>uploads/${item.product_image}" class="rounded me-3" width="40" height="50" style="object-fit: cover;">
-                                    <div class="fw-bold small">${item.product_name}</div>
-                                </div>
-                            </td>
-                            <td class="text-center">x${item.quantity}</td>
-                            <td class="text-end fw-bold">${new Intl.NumberFormat('vi-VN').format(item.price)}đ</td>
-                        </tr>
-                    `;
-                    bodyEl.innerHTML += row;
-                });
+                // Reset modal
+                loadingEl.style.display = 'block';
+                listEl.style.display = 'none';
+                bodyEl.innerHTML = '';
 
-                loadingEl.style.display = 'none';
-                listEl.style.display = 'block';
-            } catch (error) {
-                console.error('Error fetching order details:', error);
-                bodyEl.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Có lỗi xảy ra khi tải dữ liệu.</td></tr>';
-                loadingEl.style.display = 'none';
-                listEl.style.display = 'block';
-            }
-        });
-    });
-});
-</script>
+                try {
+                    const response = await fetch(`<?php echo BASE_URL; ?>auth/orderDetail/${orderId}`);
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    
+                    const items = await response.json();
+                    
+                    if (items && Array.isArray(items)) {
+                        items.forEach(item => {
+                            const row = `
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="<?php echo BASE_URL; ?>uploads/${item.product_image}" class="rounded me-3" width="40" height="50" style="object-fit: cover;">
+                                            <div class="fw-bold small">${item.product_name}</div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">x${item.quantity}</td>
+                                    <td class="text-end fw-bold">${new Intl.NumberFormat('vi-VN').format(item.price)}đ</td>
+                                </tr>
+                            `;
+                            bodyEl.innerHTML += row;
+                        });
+                    } else {
+                        bodyEl.innerHTML = '<tr><td colspan="3" class="text-center">Không có dữ liệu sản phẩm.</td></tr>';
+                    }
+
+                    loadingEl.style.display = 'none';
+                    listEl.style.display = 'block';
+                } catch (error) {
+                    console.error('Error fetching order details:', error);
+                    bodyEl.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Có lỗi xảy ra khi tải dữ liệu.</td></tr>';
+                    loadingEl.style.display = 'none';
+                    listEl.style.display = 'block';
+                }
+            });
+        };
+
+        // Initialize on load
+        initOrderDetails();
+        
+        // Also re-init for Swup if it's available and we are in its lifecycle
+        // Note: Since this script is now INSIDE #swup, it will be re-executed by swup anyway 
+        // if swup is configured to execute scripts.
+    })();
+    </script>
+</main>
 
 <style>
-    .glass-card {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-    }
-
     .nav-pills .nav-link {
         color: #495057;
         transition: all 0.3s ease;
