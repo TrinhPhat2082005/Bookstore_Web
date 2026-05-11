@@ -33,7 +33,7 @@
                 </div>
                 <!-- Slide 2 -->
                 <div class="swiper-slide hero-slide"
-                    style="background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=2000');">
+                    style="background-image: url('<?php echo BASE_URL; ?>assets/bookstore_hero_premium_2.avif');">
                     <div class="container h-100">
                         <div class="row h-100 align-items-center">
                             <div class="col-lg-7">
