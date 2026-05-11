@@ -27,17 +27,17 @@ class AuthController extends Controller
                         $_SESSION['username'] = $loggedInUser->username;
                         $_SESSION['role'] = $loggedInUser->role;
 
+                        // Xử lý Remember Me (Áp dụng cho cả Admin và Client)
+                        if (isset($_POST['remember'])) {
+                            $token = bin2hex(random_bytes(16));
+                            $userModel->updateRememberToken($loggedInUser->id, $token);
+                            setcookie('remember_token', $token, time() + (30 * 24 * 60 * 60), '/');
+                        }
+
                         if ($loggedInUser->role === 'admin') {
                             header("Location: " . BASE_URL . "admin");
                             exit;
                         } else {
-                            // Xử lý Remember Me
-                            if (isset($_POST['remember'])) {
-                                $token = bin2hex(random_bytes(16));
-                                $userModel->updateRememberToken($loggedInUser->id, $token);
-                                setcookie('remember_token', $token, time() + (30 * 24 * 60 * 60), '/');
-                            }
-                            
                             header("Location: " . BASE_URL);
                             exit;
                         }
