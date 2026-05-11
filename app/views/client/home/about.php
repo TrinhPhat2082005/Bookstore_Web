@@ -162,7 +162,8 @@
         position: relative;
         padding: 80px 40px;
         margin: 60px -40px;
-        background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop'); /* Placeholder image */
+        background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop');
+        /* Placeholder image */
         background-attachment: fixed;
         background-position: center;
         background-size: cover;
@@ -302,7 +303,8 @@
                 <div class="timeline-section-wrapper shadow-lg">
                     <div class="timeline-content-relative">
                         <div class="text-center mb-5">
-                            <h2 class="fw-bold display-6 d-inline-block px-5 py-3 rounded-pill glass-card shadow-sm" style="background: rgba(255, 255, 255, 0.95) !important;">
+                            <h2 class="fw-bold display-6 d-inline-block px-5 py-3 rounded-pill glass-card shadow-sm"
+                                style="background: rgba(255, 255, 255, 0.95) !important;">
                                 Hành trình phát triển
                             </h2>
                         </div>
@@ -361,7 +363,9 @@
                     <div class="col-md-4 col-lg-3">
                         <div class="glass-card p-2 text-center">
                             <div class="img-placeholder img-placeholder-portrait mb-3">
-                                [ Ảnh: Manager ]
+                                <img src="<?php echo BASE_URL; ?>public/uploads/Le_Duc_Tam.jpg"
+                                    alt="Không gian nhà sách" class="img-fluid rounded-5 shadow-lg animate-in delay-1"
+                                    style="object-fit: cover; width: 100%; height: 100%; min-height: 400px;">
                             </div>
                             <h5 class="fw-bold mb-1">Lê Đức Tâm</h5>
                             <p class="text-muted small">Marketing Manager</p>
