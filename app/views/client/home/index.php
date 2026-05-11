@@ -1,18 +1,19 @@
 <?php require_once '../app/views/client/layout/header.php'; ?>
 
 <div>
-    <!-- Hero Section -->
     <!-- Hero Slider Section -->
     <section class="hero-slider-section">
         <div class="swiper hero-swiper">
             <div class="swiper-wrapper">
                 <!-- Slide 1 -->
-                <div class="swiper-slide hero-slide" style="background-image: url('<?php echo BASE_URL; ?>assets/bookstore_hero_premium.png');">
+                <div class="swiper-slide hero-slide"
+                    style="background-image: url('<?php echo BASE_URL; ?>assets/bookstore_hero_premium.png');">
                     <div class="container h-100">
                         <div class="row h-100 align-items-center">
                             <div class="col-lg-7">
                                 <div class="hero-glass-box p-4 p-md-5" data-aos="fade-right">
-                                    <span class="text-uppercase letter-spacing-2 fw-bold text-accent mb-3 d-block">Chào mừng đến với cửa hàng của chúng tôi</span>
+                                    <span class="text-uppercase letter-spacing-2 fw-bold text-accent mb-3 d-block">Chào
+                                        mừng đến với cửa hàng của chúng tôi</span>
                                     <h1 class="hero-title display-4 fw-bold mb-4">
                                         Mang cả thế giới <br> <span class="text-accent">Tri thức</span> trong tầm tay
                                     </h1>
@@ -20,8 +21,10 @@
                                         <?php echo $data['settings']['site_intro'] ?? 'Khám phá bộ sưu tập sách được tuyển chọn kỹ lưỡng, từ nghệ thuật, thiết kế đến văn học kinh điển.'; ?>
                                     </p>
                                     <div class="d-flex gap-3">
-                                        <a href="<?php echo BASE_URL; ?>product" class="btn btn-primary px-5 shadow-lg">Khám phá ngay</a>
-                                        <a href="<?php echo BASE_URL; ?>home/about" class="btn btn-outline-dark px-5">Về chúng tôi</a>
+                                        <a href="<?php echo BASE_URL; ?>product"
+                                            class="btn btn-primary px-5 shadow-lg">Khám phá ngay</a>
+                                        <a href="<?php echo BASE_URL; ?>home/about" class="btn btn-outline-dark px-5">Về
+                                            chúng tôi</a>
                                     </div>
                                 </div>
                             </div>
@@ -29,20 +32,24 @@
                     </div>
                 </div>
                 <!-- Slide 2 -->
-                <div class="swiper-slide hero-slide" style="background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=2000');">
+                <div class="swiper-slide hero-slide"
+                    style="background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=2000');">
                     <div class="container h-100">
                         <div class="row h-100 align-items-center">
                             <div class="col-lg-7">
                                 <div class="hero-glass-box p-4 p-md-5">
-                                    <span class="text-uppercase letter-spacing-2 fw-bold text-accent mb-3 d-block">Không gian văn hóa đọc</span>
+                                    <span class="text-uppercase letter-spacing-2 fw-bold text-accent mb-3 d-block">Không
+                                        gian văn hóa đọc</span>
                                     <h1 class="hero-title display-4 fw-bold mb-4">
                                         Nơi hội ngộ của <br> <span class="text-accent">Những tâm hồn</span> yêu sách
                                     </h1>
                                     <p class="hero-subtitle mb-5">
-                                        Đắm mình trong không gian yên tĩnh và khám phá những đầu sách mới nhất từ khắp nơi trên thế giới.
+                                        Đắm mình trong không gian yên tĩnh và khám phá những đầu sách mới nhất từ khắp
+                                        nơi trên thế giới.
                                     </p>
                                     <div class="d-flex gap-3">
-                                        <a href="<?php echo BASE_URL; ?>product" class="btn btn-primary px-5 shadow-lg">Xem tất cả sách</a>
+                                        <a href="<?php echo BASE_URL; ?>product"
+                                            class="btn btn-primary px-5 shadow-lg">Xem tất cả sách</a>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +101,8 @@
                                         <span
                                             class="book-price"><?php echo number_format($product->price, 0, ',', '.'); ?>₫</span>
                                         <?php if ($product->stock > 0): ?>
-                                            <form action="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>" method="POST" class="d-inline m-0">
+                                            <form action="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>" method="POST"
+                                                class="d-inline m-0">
                                                 <?php Security::csrfField(); ?>
                                                 <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3">
                                                     <i class="fas fa-cart-plus me-1"></i>
