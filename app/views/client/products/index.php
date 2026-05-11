@@ -375,12 +375,9 @@
                                         <!-- Quick Add Button (Hover) -->
                                         <?php if ($product->stock > 0): ?>
                                             <div class="quick-add d-flex justify-content-center">
-                                                <form action="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>" method="POST" class="m-0">
-                                                    <?php Security::csrfField(); ?>
-                                                    <button type="submit" class="btn btn-light btn-sm rounded-pill px-3 fw-bold">
-                                                        <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ hàng
-                                                    </button>
-                                                </form>
+                                                <button class="btn btn-light btn-sm rounded-pill px-3 fw-bold ajax-add-to-cart" data-product-id="<?php echo $product->id; ?>">
+                                                    <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ hàng
+                                                </button>
                                             </div>
                                         <?php endif; ?>
                                     </div>

@@ -101,13 +101,10 @@
                                         <span
                                             class="book-price"><?php echo number_format($product->price, 0, ',', '.'); ?>₫</span>
                                         <?php if ($product->stock > 0): ?>
-                                            <form action="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>" method="POST"
-                                                class="d-inline m-0">
-                                                <?php Security::csrfField(); ?>
-                                                <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3">
-                                                    <i class="fas fa-cart-plus me-1"></i>
-                                                </button>
-                                            </form>
+                                            <button class="btn btn-primary btn-sm rounded-pill px-3 ajax-add-to-cart"
+                                                data-product-id="<?php echo $product->id; ?>">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                            </button>
                                         <?php endif; ?>
                                     </div>
                                 </div>

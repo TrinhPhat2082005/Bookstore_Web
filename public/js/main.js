@@ -3,9 +3,13 @@
  * Handles: Swup, Theme Toggle, Vanilla Tilt, and AJAX Logic
  */
 
+// Biến toàn cục lưu số lượng giỏ hàng mới nhất (cập nhật bởi AJAX)
+let latestCartCount = null;
+let swup = null; // Biến toàn cục để các hàm khác có thể truy cập Swup
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize Swup for smooth page transitions
-    const swup = new Swup({
+    swup = new Swup({
         containers: ["#swup", "#main-nav", "#header-user-actions"],
         animationSelector: '[class*="transition-"]',
         plugins: [],
@@ -33,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initHeaderSearch();
         initHeroSlider();
         initRelatedSwiper();
+        syncCartBadge(); // Đồng bộ lại badge giỏ hàng sau khi Swup chuyển trang
         window.scrollTo(0, 0);
     });
 });
@@ -290,6 +295,24 @@ function debounce(func, timeout = 300) {
 
 
 /**
+ * Đồng bộ badge giỏ hàng sau khi Swup chuyển trang
+ * Nếu latestCartCount đã được cập nhật bởi AJAX, ghi đè lên giá trị server-rendered
+ */
+function syncCartBadge() {
+    if (latestCartCount !== null) {
+        const badge = document.querySelector('.cart-count-badge');
+        if (badge) {
+            badge.textContent = latestCartCount;
+            if (latestCartCount > 0) {
+                badge.classList.remove('d-none');
+            } else {
+                badge.classList.add('d-none');
+            }
+        }
+    }
+}
+
+/**
  * AJAX Add-to-cart Logic
  */
 function initAjaxCart() {
@@ -319,6 +342,14 @@ function initAjaxCart() {
                 const data = await response.json();
                 
                 if (data.success) {
+                    // Lưu số lượng mới nhất vào biến toàn cục
+                    latestCartCount = data.cartCount;
+                    
+                    // Xóa cache Swup để trang Cart luôn tải dữ liệu mới
+                    if (swup && swup.cache) {
+                        swup.cache.clear();
+                    }
+                    
                     // Update Cart Badge
                     const badge = document.querySelector('.cart-count-badge');
                     if (badge) {
