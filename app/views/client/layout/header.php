@@ -57,19 +57,19 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="main-nav">
                     <li class="nav-item">
-                        <a class="nav-link text-nowrap <?php echo ($data['title'] == 'Trang chủ' || empty($data['title'])) ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>">Trang chủ</a>
+                        <a class="nav-link text-nowrap <?php echo (($data['title'] ?? '') == 'Trang chủ' || empty($data['title'] ?? '')) ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>">Trang chủ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-nowrap <?php echo ($data['title'] == 'Giới thiệu') ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>home/about">Giới thiệu</a>
+                        <a class="nav-link text-nowrap <?php echo (($data['title'] ?? '') == 'Giới thiệu') ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>home/about">Giới thiệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-nowrap <?php echo ($data['title'] == 'Sản phẩm' || isset($data['product'])) ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>product">Sản phẩm</a>
+                        <a class="nav-link text-nowrap <?php echo (($data['title'] ?? '') == 'Sản phẩm' || isset($data['product'])) ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>product">Sản phẩm</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-nowrap <?php echo ($data['title'] == 'Tin tức' || isset($data['article'])) ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>news">Tin tức</a>
+                        <a class="nav-link text-nowrap <?php echo (($data['title'] ?? '') == 'Tin tức' || isset($data['article'])) ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>news">Tin tức</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-nowrap <?php echo ($data['title'] == 'Liên hệ') ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>home/contact">Liên hệ</a>
+                        <a class="nav-link text-nowrap <?php echo (($data['title'] ?? '') == 'Liên hệ') ? 'active' : ''; ?>" href="<?php echo BASE_URL; ?>home/contact">Liên hệ</a>
                     </li>
                 </ul>
 

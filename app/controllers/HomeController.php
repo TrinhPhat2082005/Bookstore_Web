@@ -49,6 +49,7 @@ class HomeController extends Controller
             // Sanitize input
             // Using Security::xssClean instead of deprecated filter_input_array
             $data = [
+                'title' => 'Liên hệ',
                 'name' => Security::xssClean(trim($_POST['name'] ?? '')),
                 'email' => Security::xssClean(trim($_POST['email'] ?? '')),
                 'subject' => Security::xssClean(trim($_POST['subject'] ?? '')),
