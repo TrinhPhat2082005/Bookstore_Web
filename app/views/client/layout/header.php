@@ -46,6 +46,7 @@
     <header class="glass-nav navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="<?php echo BASE_URL; ?>">
+                <!-- <img src="<?php echo BASE_URL; ?>uploads/<?php echo $data['settings']['site_logo']; ?>" alt="Logo" style="height: 35px;" class="me-2">  -->
                 <i class="fas fa-book-open text-accent"></i> <?php echo $data['settings']['site_name'] ?? 'BookStore'; ?>
             </a>
             
