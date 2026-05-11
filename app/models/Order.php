@@ -42,7 +42,7 @@ class Order {
         return $order_id;
     }
 
-    // [Lịch sử mua hàng - TÂM] Lấy danh sách đơn hàng theo email
+    // Lấy danh sách đơn hàng theo email
     public function getByEmail($email) {
         $this->db->query("SELECT * FROM orders WHERE customer_email = :email ORDER BY created_at DESC");
         $this->db->bind(':email', $email);
@@ -66,7 +66,7 @@ class Order {
         return $this->db->resultSet();
     }
 
-    // [Quản lý giỏ hàng và đơn hàng - TÂM] Lấy toàn bộ danh sách đơn hàng (Admin)
+    // Lấy toàn bộ danh sách đơn hàng (Admin)
     public function getAll($page = 1, $limit = 10) {
         $offset = ($page - 1) * $limit;
         $this->db->query("SELECT * FROM orders ORDER BY created_at DESC LIMIT :offset, :limit");
@@ -81,7 +81,7 @@ class Order {
         return $this->db->single()->total;
     }
 
-    // [Quản lý giỏ hàng và đơn hàng - TÂM] Cập nhật trạng thái đơn hàng
+    // Cập nhật trạng thái đơn hàng
     public function updateStatus($id, $status) {
         $this->db->query("UPDATE orders SET status = :status WHERE id = :id");
         $this->db->bind(':status', $status);

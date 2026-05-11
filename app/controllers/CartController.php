@@ -17,7 +17,7 @@ class CartController extends Controller {
         }
     }
 
-    // [Giỏ hàng - TÂM] Hiển thị danh sách sản phẩm trong giỏ hàng
+    // Hiển thị danh sách sản phẩm trong giỏ hàng
     public function index() {
         $settings = $this->settingModel->getAll();
         $cart = $_SESSION['cart'];
@@ -128,7 +128,7 @@ class CartController extends Controller {
         exit();
     }
 
-    // [Thanh toán - TÂM] Xử lý giao diện và logic đặt hàng
+    // Xử lý giao diện và logic đặt hàng
     public function checkout() {
         $settings = $this->settingModel->getAll();
         $cart = $_SESSION['cart'];

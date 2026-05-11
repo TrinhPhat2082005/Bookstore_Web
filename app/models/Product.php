@@ -91,7 +91,7 @@ class Product
         return $this->db->single();
     }
 
-    // [Tìm kiếm sản phẩm - TÂM] Tìm kiếm theo tên, tác giả hoặc mô tả
+    // Tìm kiếm theo tên, tác giả hoặc mô tả
     public function searchByKeyword($keyword)
     {
         $this->db->query("SELECT * FROM products WHERE status = 'active' AND (name LIKE :keyword OR author LIKE :keyword OR description LIKE :keyword OR category LIKE :keyword) ORDER BY created_at DESC");
@@ -114,7 +114,7 @@ class Product
         return $this->db->resultSet();
     }
 
-    // [Quản lý sản phẩm - Admin] Lấy toàn bộ danh sách sản phẩm với phân trang
+    // Lấy toàn bộ danh sách sản phẩm với phân trang
     public function getAllAdmin($page = 1, $limit = 10)
     {
         $offset = ($page - 1) * $limit;

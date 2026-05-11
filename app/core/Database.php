@@ -27,7 +27,7 @@ class Database {
         }
     }
 
-    // chuẩn bị câu truy vấn
+
     public function query($sql) {
         if ($this->dbh) {
             $this->stmt = $this->dbh->prepare($sql);
@@ -36,7 +36,7 @@ class Database {
         }
     }
 
-    // bind các giá trị
+
     public function bind($param, $value, $type = null) {
         if (is_null($type)) {
             switch (true) {
@@ -56,24 +56,24 @@ class Database {
         $this->stmt->bindValue($param, $value, $type);
     }
 
-    // thực thi câu truy vấn
+
     public function execute() {
         return $this->stmt->execute();
     }
 
-    // lấy danh sách kết quả (phát biểu select)
+
     public function resultSet() {
         $this->execute();
         return $this->stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    // lấy một bản ghi duy nhất
+
     public function single() {
         $this->execute();
         return $this->stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    // đếm số dòng
+
     public function rowCount() {
         return $this->stmt->rowCount();
     }

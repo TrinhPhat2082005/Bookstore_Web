@@ -41,12 +41,11 @@ class AdminController extends Controller
 
     public function index()
     {
-        # [Dashboard tổng quan]
+        // Dashboard tổng quan
         $userCount = $this->userModel->countAll();
         $orderCount = $this->orderModel->countAll();
         $totalRevenue = $this->orderModel->getTotalRevenue();
         
-        // Lấy thông báo mới (kết hợp user mới và đơn hàng mới)
         $latestUsers = $this->userModel->getLatest(3);
         $latestOrders = $this->orderModel->getLatest(3);
         
@@ -112,7 +111,7 @@ class AdminController extends Controller
         $this->view('admin/dashboard', $data);
     }
 
-    // --- PHẦN CHUNG ---
+    // PHẦN CHUNG
     public function manageUsers()
     {
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
@@ -148,7 +147,7 @@ class AdminController extends Controller
         $this->view('admin/users', $data);
     }
 
-    // --- PHÁT: Trang chủ, Liên hệ & Giới thiệu ---
+    // Trang chủ, Liên hệ & Giới thiệu
     public function manageInfo()
     {
         $settings = $this->settingModel->getAll();
@@ -208,7 +207,7 @@ class AdminController extends Controller
         $this->view('admin/contacts', $data);
     }
 
-    // --- TÂM: Sản phẩm & Giỏ hàng ---
+    // Sản phẩm & Giỏ hàng
     public function manageProducts()
     {
         $page    = isset($_GET['page']) ? (int) $_GET['page'] : 1;
@@ -357,7 +356,7 @@ class AdminController extends Controller
         $this->view('admin/orders/detail', $data);
     }
 
-    // --- KHANG: Tin tức, Bình luận & Hỏi/Đáp ---
+    // Tin tức, Bình luận & Hỏi/Đáp
     public function manageNews()
     {
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;

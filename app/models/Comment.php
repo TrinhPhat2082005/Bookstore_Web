@@ -12,7 +12,7 @@ class Comment
 
     public function add($data)
     {
-        # [Bình luận - KHANG]
+        // Thêm bình luận
         $this->db->query("INSERT INTO comments (article_id, name, content, status) VALUES (:article_id, :name, :content, :status)");
         $this->db->bind(':article_id', $data['article_id']);
         $this->db->bind(':name', $data['name']);
@@ -23,7 +23,7 @@ class Comment
 
     public function getByArticle($article_id)
     {
-        # [Chi tiết bài viết - KHANG]
+        // Lấy bình luận theo bài viết
         $this->db->query("SELECT * FROM comments WHERE article_id = :article_id AND status = 'approved' ORDER BY created_at DESC");
         $this->db->bind(':article_id', $article_id);
         return $this->db->resultSet();

@@ -10,7 +10,7 @@ class ProductController extends Controller {
         $this->settingModel = $this->model('Setting');
     }
 
-    // [Danh sách sản phẩm - TÂM] Hiển thị danh sách và lọc/tìm kiếm theo từ khóa
+    // Hiển thị danh sách và lọc/tìm kiếm theo từ khóa
     public function index() {
         $settings = $this->settingModel->getAll();
         

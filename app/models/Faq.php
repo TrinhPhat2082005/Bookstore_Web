@@ -12,14 +12,14 @@ class Faq
 
     public function getAll()
     {
-        # [Trang FAQ - KHANG]
+        // Lấy tất cả FAQ
         $this->db->query("SELECT * FROM faqs ORDER BY created_at DESC");
         return $this->db->resultSet();
     }
 
     public function add($data)
     {
-        # [Quản lý Hỏi/Đáp - KHANG]
+        // Thêm FAQ mới
         $this->db->query("INSERT INTO faqs (question, answer, category) VALUES (:question, :answer, :category)");
         $this->db->bind(':question', $data['question']);
         $this->db->bind(':answer', $data['answer']);
