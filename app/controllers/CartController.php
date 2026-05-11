@@ -181,6 +181,10 @@ class CartController extends Controller {
             if (empty($data['name_err']) && empty($data['email_err']) && empty($data['address_err'])) {
                 $order_id = $this->orderModel->create($data);
                 if ($order_id) {
+                    // Giảm tồn kho cho từng sản phẩm trong đơn hàng
+                    foreach ($cart as $id => $item) {
+                        $this->productModel->decreaseStock($item['product_id'], $item['quantity']);
+                    }
                     // Xóa giỏ hàng sau khi đặt thành công
                     $_SESSION['cart'] = [];
                     header('Location: ' . BASE_URL . 'cart/success/' . $order_id);

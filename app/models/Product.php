@@ -170,6 +170,14 @@ class Product
         return $this->db->execute();
     }
 
+    public function decreaseStock($product_id, $quantity)
+    {
+        $this->db->query("UPDATE products SET stock = GREATEST(0, stock - :quantity) WHERE id = :id");
+        $this->db->bind(':quantity', $quantity, PDO::PARAM_INT);
+        $this->db->bind(':id', $product_id, PDO::PARAM_INT);
+        return $this->db->execute();
+    }
+
     public function delete($id)
     {
         $this->db->query("DELETE FROM products WHERE id = :id");
