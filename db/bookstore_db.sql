@@ -28,9 +28,7 @@ ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name VARCHAR(255) AFTER status;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(20) AFTER full_name;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS address TEXT AFTER phone;
 
--- ============================================================
--- SQL for PHÁT's tasks
--- ============================================================
+
 
 -- Table for customer contacts
 CREATE TABLE IF NOT EXISTS contacts (
@@ -60,9 +58,6 @@ INSERT IGNORE INTO settings (setting_key, setting_value) VALUES
 ('site_email', 'contact@bookstore.vn'),
 ('about_content', 'Chúng tôi là cửa hàng sách lâu đời với sứ mệnh mang tri thức đến mọi người...');
 
--- ============================================================
--- SQL for KHANG's tasks
--- ============================================================
 
 -- Table for articles/news
 CREATE TABLE IF NOT EXISTS articles (
@@ -114,9 +109,6 @@ INSERT IGNORE INTO faqs (question, answer, category) VALUES
 ('Làm thế nào để đặt hàng?', 'Bạn chỉ cần chọn sản phẩm, thêm vào giỏ hàng và điền thông tin thanh toán.', 'Mua hàng'),
 ('Cửa hàng có ship tỉnh không?', 'Chúng tôi giao hàng toàn quốc với thời gian từ 2-5 ngày làm việc.', 'Giao hàng');
 
--- ============================================================
--- SQL for TÂM's tasks
--- ============================================================
 
 -- Table for products (books)
 CREATE TABLE IF NOT EXISTS products (
