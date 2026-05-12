@@ -54,33 +54,15 @@
         </div>
 
         <!-- Pagination -->
-        <?php if ($data['totalPages'] > 1): ?>
-            <nav class="mt-5 pt-4">
-                <ul class="pagination justify-content-center gap-2">
-                    <!-- Previous Page -->
-                    <li class="page-item <?php echo $data['currentPage'] <= 1 ? 'disabled' : ''; ?>">
-                        <a class="page-link border-0 rounded-circle shadow-sm" href="?page=<?php echo $data['currentPage'] - 1; ?>">
-                            <i class="fas fa-chevron-left"></i>
-                        </a>
-                    </li>
-
-                    <!-- Page Numbers -->
-                    <?php for ($i = 1; $i <= $data['totalPages']; $i++): ?>
-                        <li class="page-item <?php echo $data['currentPage'] == $i ? 'active' : ''; ?>">
-                            <a class="page-link border-0 rounded-circle shadow-sm <?php echo $data['currentPage'] == $i ? 'bg-primary text-white' : 'bg-white text-dark'; ?>" 
-                               href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                        </li>
-                    <?php endfor; ?>
-
-                    <!-- Next Page -->
-                    <li class="page-item <?php echo $data['currentPage'] >= $data['totalPages'] ? 'disabled' : ''; ?>">
-                        <a class="page-link border-0 rounded-circle shadow-sm" href="?page=<?php echo $data['currentPage'] + 1; ?>">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        <?php endif; ?>
+        <?php 
+            $paginationData = [
+                'currentPage' => $data['currentPage'],
+                'totalPages'  => $data['totalPages'],
+                'baseUrl'     => BASE_URL . 'news'
+            ];
+            extract($paginationData);
+            require '../../layout/pagination.php';
+        ?>
     </div>
 </div>
 

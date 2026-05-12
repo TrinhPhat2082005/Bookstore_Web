@@ -94,4 +94,15 @@
             </div>
         <?php endforeach; ?>
     </div>
+
+    <!-- Pagination -->
+    <?php 
+        $paginationData = [
+            'currentPage' => $data['currentPage'],
+            'totalPages'  => $data['totalPages'],
+            'baseUrl'     => BASE_URL . 'product'
+        ];
+        extract($paginationData);
+        require '../../layout/pagination.php';
+    ?>
 <?php endif; ?>

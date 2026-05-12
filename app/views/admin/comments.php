@@ -70,17 +70,15 @@
                 </table>
             </div>
 
-            <?php if ($data['total_pages'] > 1): ?>
-                <nav class="mt-4">
-                    <ul class="pagination justify-content-center">
-                        <?php for ($i = 1; $i <= $data['total_pages']; $i++): ?>
-                            <li class="page-item <?php echo $data['current_page'] == $i ? 'active' : ''; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php endfor; ?>
-                    </ul>
-                </nav>
-            <?php endif; ?>
+            <?php 
+                $paginationData = [
+                    'currentPage' => $data['current_page'],
+                    'totalPages'  => $data['total_pages'],
+                    'baseUrl'     => BASE_URL . 'admin/manageComments'
+                ];
+                extract($paginationData);
+                require '../layout/pagination.php';
+            ?>
         </div>
     </div>
 </div>

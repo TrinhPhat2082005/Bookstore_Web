@@ -67,28 +67,15 @@
             </div>
 
             <!-- Pagination -->
-            <?php if ($data['total_pages'] > 1): ?>
-                <nav class="mt-4">
-                    <ul class="pagination pagination-sm justify-content-center mb-0">
-                        <li class="page-item <?php echo $data['current_page'] == 1 ? 'disabled' : ''; ?>">
-                            <a class="page-link rounded-circle mx-1 border-0" href="?page=<?php echo $data['current_page'] - 1; ?>">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </a>
-                        </li>
-                        <?php for ($i = 1; $i <= $data['total_pages']; $i++): ?>
-                            <li class="page-item <?php echo $data['current_page'] == $i ? 'active' : ''; ?>">
-                                <a class="page-link rounded-circle mx-1 border-0 <?php echo $data['current_page'] == $i ? 'bg-primary text-white shadow-sm' : 'text-secondary'; ?>" 
-                                   href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php endfor; ?>
-                        <li class="page-item <?php echo $data['current_page'] == $data['total_pages'] ? 'disabled' : ''; ?>">
-                            <a class="page-link rounded-circle mx-1 border-0" href="?page=<?php echo $data['current_page'] + 1; ?>">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            <?php endif; ?>
+            <?php 
+                $paginationData = [
+                    'currentPage' => $data['current_page'],
+                    'totalPages'  => $data['total_pages'],
+                    'baseUrl'     => BASE_URL . 'admin/manageFaq'
+                ];
+                extract($paginationData);
+                require '../../layout/pagination.php';
+            ?>
         </div>
         </div>
     </div>

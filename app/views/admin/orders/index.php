@@ -143,22 +143,15 @@
     </div>
 
     <!-- Pagination -->
-    <?php if ($data['total_pages'] > 1): ?>
-        <div class="d-flex justify-content-center mt-4">
-            <nav aria-label="Phân trang">
-                <ul class="pagination mb-0">
-                    <?php for ($p = 1; $p <= $data['total_pages']; $p++): ?>
-                        <li class="page-item <?php echo $data['current_page'] == $p ? 'active' : ''; ?>">
-                            <a class="page-link rounded-3 mx-1"
-                                href="<?php echo BASE_URL; ?>admin/manageOrders?page=<?php echo $p; ?>">
-                                <?php echo $p; ?>
-                            </a>
-                        </li>
-                    <?php endfor; ?>
-                </ul>
-            </nav>
-        </div>
-    <?php endif; ?>
+    <?php 
+        $paginationData = [
+            'currentPage' => $data['current_page'],
+            'totalPages'  => $data['total_pages'],
+            'baseUrl'     => BASE_URL . 'admin/manageOrders'
+        ];
+        extract($paginationData);
+        require '../../layout/pagination.php';
+    ?>
 </div>
 
 <?php require_once '../app/views/admin/layout/footer.php'; ?>
