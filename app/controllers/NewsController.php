@@ -17,12 +17,21 @@ class NewsController extends Controller
     public function index()
     {
         $settings = $this->settingModel->getAll();
-        $articles = $this->articleModel->list();
+        
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+        $limit = 6;
+
+        $articles = $this->articleModel->list($page, $limit);
+        $totalArticles = $this->articleModel->countPublished();
+        $totalPages = ceil($totalArticles / $limit);
 
         $data = [
-            'settings' => $settings,
-            'articles' => $articles,
-            'title' => 'Tin tức'
+            'settings'    => $settings,
+            'articles'    => $articles,
+            'currentPage' => $page,
+            'totalPages'  => $totalPages,
+            'title'       => 'Tin tức'
         ];
 
         $this->view('client/news/index', $data);

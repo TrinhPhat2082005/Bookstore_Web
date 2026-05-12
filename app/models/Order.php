@@ -42,11 +42,20 @@ class Order {
         return $order_id;
     }
 
-    // Lấy danh sách đơn hàng theo email
-    public function getByEmail($email) {
-        $this->db->query("SELECT * FROM orders WHERE customer_email = :email ORDER BY created_at DESC");
+    // Lấy danh sách đơn hàng theo email với phân trang
+    public function getByEmail($email, $page = 1, $limit = 5) {
+        $offset = ($page - 1) * $limit;
+        $this->db->query("SELECT * FROM orders WHERE customer_email = :email ORDER BY created_at DESC LIMIT :offset, :limit");
         $this->db->bind(':email', $email);
+        $this->db->bind(':offset', $offset, PDO::PARAM_INT);
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
         return $this->db->resultSet();
+    }
+
+    public function countByEmail($email) {
+        $this->db->query("SELECT COUNT(*) as total FROM orders WHERE customer_email = :email");
+        $this->db->bind(':email', $email);
+        return $this->db->single()->total;
     }
 
     // Lấy chi tiết một đơn hàng kèm sản phẩm

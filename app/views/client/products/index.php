@@ -396,6 +396,52 @@
                             </div>
                         <?php endforeach; ?>
                     </div>
+
+                    <!-- Pagination -->
+                    <?php if ($data['totalPages'] > 1): ?>
+                        <nav class="mt-5 pt-4">
+                            <ul class="pagination justify-content-center gap-2">
+                                <?php 
+                                    $queryParams = $_GET;
+                                    $baseUrl = BASE_URL . 'product';
+                                ?>
+                                
+                                <!-- Previous Page -->
+                                <li class="page-item <?php echo $data['currentPage'] <= 1 ? 'disabled' : ''; ?>">
+                                    <?php 
+                                        $queryParams['page'] = $data['currentPage'] - 1;
+                                        $prevUrl = $baseUrl . '?' . http_build_query($queryParams);
+                                    ?>
+                                    <a class="page-link border-0 rounded-circle shadow-sm" href="<?php echo $prevUrl; ?>">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Page Numbers -->
+                                <?php for ($i = 1; $i <= $data['totalPages']; $i++): ?>
+                                    <li class="page-item <?php echo $data['currentPage'] == $i ? 'active' : ''; ?>">
+                                        <?php 
+                                            $queryParams['page'] = $i;
+                                            $pageUrl = $baseUrl . '?' . http_build_query($queryParams);
+                                        ?>
+                                        <a class="page-link border-0 rounded-circle shadow-sm <?php echo $data['currentPage'] == $i ? 'bg-primary text-white' : 'bg-white text-dark'; ?>" 
+                                           href="<?php echo $pageUrl; ?>"><?php echo $i; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+
+                                <!-- Next Page -->
+                                <li class="page-item <?php echo $data['currentPage'] >= $data['totalPages'] ? 'disabled' : ''; ?>">
+                                    <?php 
+                                        $queryParams['page'] = $data['currentPage'] + 1;
+                                        $nextUrl = $baseUrl . '?' . http_build_query($queryParams);
+                                    ?>
+                                    <a class="page-link border-0 rounded-circle shadow-sm" href="<?php echo $nextUrl; ?>">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>

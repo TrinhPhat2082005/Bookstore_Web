@@ -10,17 +10,36 @@ class Article
         $this->db = new Database();
     }
 
-    public function list()
+    public function list($page = 1, $limit = 6)
     {
-        $this->db->query("SELECT * FROM articles WHERE status = 'published' ORDER BY created_at DESC");
+        $offset = ($page - 1) * $limit;
+        $this->db->query("SELECT * FROM articles WHERE status = 'published' ORDER BY created_at DESC LIMIT :offset, :limit");
+        $this->db->bind(':offset', $offset, PDO::PARAM_INT);
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
         return $this->db->resultSet();
     }
 
-    public function search($keyword)
+    public function countPublished()
     {
-        $this->db->query("SELECT * FROM articles WHERE status = 'published' AND (title LIKE :keyword OR content LIKE :keyword) ORDER BY created_at DESC");
+        $this->db->query("SELECT COUNT(*) as total FROM articles WHERE status = 'published'");
+        return $this->db->single()->total;
+    }
+
+    public function search($keyword, $page = 1, $limit = 6)
+    {
+        $offset = ($page - 1) * $limit;
+        $this->db->query("SELECT * FROM articles WHERE status = 'published' AND (title LIKE :keyword OR content LIKE :keyword) ORDER BY created_at DESC LIMIT :offset, :limit");
         $this->db->bind(':keyword', '%' . $keyword . '%');
+        $this->db->bind(':offset', $offset, PDO::PARAM_INT);
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
         return $this->db->resultSet();
+    }
+
+    public function countSearch($keyword)
+    {
+        $this->db->query("SELECT COUNT(*) as total FROM articles WHERE status = 'published' AND (title LIKE :keyword OR content LIKE :keyword)");
+        $this->db->bind(':keyword', '%' . $keyword . '%');
+        return $this->db->single()->total;
     }
 
     public function getDetail($id)

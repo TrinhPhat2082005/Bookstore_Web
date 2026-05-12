@@ -14,6 +14,10 @@ class ProductController extends Controller {
     public function index() {
         $settings = $this->settingModel->getAll();
         
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+        $limit = 12;
+
         $filters = [
             'keyword'      => isset($_GET['keyword']) ? trim($_GET['keyword']) : '',
             'category'     => isset($_GET['category']) ? trim($_GET['category']) : '',
@@ -23,15 +27,21 @@ class ProductController extends Controller {
             'sort'         => isset($_GET['sort']) ? $_GET['sort'] : 'newest'
         ];
         
-        $products = $this->productModel->getFilteredProducts($filters);
+        $products = $this->productModel->getFilteredProducts($filters, $page, $limit);
+        $totalProducts = $this->productModel->countFilteredProducts($filters);
+        $totalPages = ceil($totalProducts / $limit);
+        
         $categories = $this->productModel->getCategories();
 
         $data = [
-            'settings'   => $settings,
-            'products'   => $products,
-            'categories' => $categories,
-            'filters'    => $filters,
-            'title'      => 'Sản phẩm'
+            'settings'       => $settings,
+            'products'       => $products,
+            'categories'     => $categories,
+            'filters'        => $filters,
+            'currentPage'    => $page,
+            'totalPages'     => $totalPages,
+            'totalProducts'  => $totalProducts,
+            'title'          => 'Sản phẩm'
         ];
 
         // AJAX handling

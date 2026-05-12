@@ -482,15 +482,22 @@ class AdminController extends Controller
 
     public function manageFaq()
     {
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $limit = 10;
+
         if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
             $this->faqModel->delete((int) $_GET['id']);
             header('Location: ' . BASE_URL . 'admin/manageFaq');
             exit();
         }
 
-        $faqs = $this->faqModel->getAll();
+        $faqs = $this->faqModel->getAll($page, $limit);
+        $total = $this->faqModel->countAll();
+
         $data = [
             'faqs' => $faqs,
+            'current_page' => $page,
+            'total_pages' => ceil($total / $limit),
             'title' => 'Quản lý Hỏi/Đáp (FAQ)'
         ];
         $this->view('admin/faq/index', $data);

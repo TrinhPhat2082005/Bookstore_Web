@@ -10,11 +10,19 @@ class Faq
         $this->db = new Database();
     }
 
-    public function getAll()
+    public function getAll($page = 1, $limit = 10)
     {
-        // Lấy tất cả FAQ
-        $this->db->query("SELECT * FROM faqs ORDER BY created_at DESC");
+        $offset = ($page - 1) * $limit;
+        $this->db->query("SELECT * FROM faqs ORDER BY created_at DESC LIMIT :offset, :limit");
+        $this->db->bind(':offset', $offset, PDO::PARAM_INT);
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
         return $this->db->resultSet();
+    }
+
+    public function countAll()
+    {
+        $this->db->query("SELECT COUNT(*) as total FROM faqs");
+        return $this->db->single()->total;
     }
 
     public function add($data)
