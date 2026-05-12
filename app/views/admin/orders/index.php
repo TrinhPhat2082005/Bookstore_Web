@@ -8,6 +8,13 @@
     </div>
 <?php endif; ?>
 
+<?php if (isset($_SESSION['error_msg'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i><?php echo $_SESSION['error_msg']; unset($_SESSION['error_msg']); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
+
 <div class="d-flex justify-content-between align-items-center mb-4">
     <p class="text-muted mb-0">Xem và quản lý trạng thái tất cả đơn hàng.</p>
 </div>
@@ -107,7 +114,8 @@
                                     <input type="hidden" name="id" value="<?php echo $order->id; ?>">
                                     <select name="status"
                                         class="form-select form-select-sm rounded-3 border-0 fw-semibold text-<?php echo $statusColor; ?>"
-                                        style="font-size: 0.8rem; background: transparent;" onchange="this.form.submit()">
+                                        style="font-size: 0.8rem; background: transparent;" onchange="this.form.submit()"
+                                        <?php echo $order->status === 'cancelled' ? 'disabled' : ''; ?>>
                                         <?php foreach ($statusMap as $val => [$label, $color]): ?>
                                             <?php $isSelected = ($order->status == $val) ? 'selected' : ''; ?>
                                             <option value="<?php echo $val; ?>" <?php echo $isSelected; ?>>

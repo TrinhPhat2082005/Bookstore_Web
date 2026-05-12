@@ -166,7 +166,7 @@
                     <?php for ($p = 1; $p <= $data['total_pages']; $p++): ?>
                         <li class="page-item <?php echo $data['current_page'] == $p ? 'active' : ''; ?>">
                             <a class="page-link rounded-3 mx-1"
-                                href="<?php echo BASE_URL; ?>admin/manageProducts?page=<?php echo $p; ?>">
+                                href="<?php echo BASE_URL; ?>admin/manageProducts?page=<?php echo $p; ?>&keyword=<?php echo urlencode($data['keyword'] ?? ''); ?>">
                                 <?php echo $p; ?>
                             </a>
                         </li>

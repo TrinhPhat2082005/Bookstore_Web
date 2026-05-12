@@ -291,211 +291,25 @@
 
             <!-- Products List -->
             <div class="col-lg-9">
-                <!-- Toolbar -->
-                <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom">
-                    <h2 class="h4 fw-bold mb-0">
-                        <?php echo count($data['products']); ?> sách được tìm thấy
-                    </h2>
-                    <div class="d-flex align-items-center gap-3">
-                        <label class="small text-muted d-none d-sm-block">Sắp xếp theo:</label>
-                        <select name="sort" class="form-select form-select-sm sort-select" form="filter-form"
-                            onchange="this.form.submit()">
-                            <option value="newest" <?php echo $data['filters']['sort'] === 'newest' ? 'selected' : ''; ?>>
-                                Mới nhất</option>
-                            <option value="price_asc" <?php echo $data['filters']['sort'] === 'price_asc' ? 'selected' : ''; ?>>Giá: Từ thấp đến cao</option>
-                            <option value="price_desc" <?php echo $data['filters']['sort'] === 'price_desc' ? 'selected' : ''; ?>>Giá: Từ cao đến thấp</option>
-                        </select>
+                <!-- Mobile Search (Visible only on < LG) -->
+                <div class="d-lg-none mb-4">
+                    <div class="input-group glass-card rounded-pill px-3 py-2 shadow-sm border-0 bg-white">
+                        <span class="input-group-text border-0 bg-transparent ps-0">
+                            <i class="fas fa-search text-muted opacity-50"></i>
+                        </span>
+                        <input type="text" name="keyword" class="form-control border-0 bg-transparent shadow-none mobile-search-input" 
+                               placeholder="Tìm kiếm sách..." value="<?php echo htmlspecialchars($data['filters']['keyword']); ?>">
                     </div>
                 </div>
 
-                <!-- Active Filters Display -->
-                <?php if (!empty(array_filter($data['filters'], fn($v) => $v !== '' && $v !== 'newest'))): ?>
-                    <div class="d-flex flex-wrap gap-2 mb-4">
-                        <?php foreach ($data['filters'] as $key => $value): ?>
-                            <?php if (($value !== '' && $value !== null) && $key !== 'sort'): ?>
-                                <span class="badge bg-white text-dark border rounded-pill px-3 py-2 fw-normal">
-                                    <?php
-                                    if ($key === 'availability')
-                                        echo $value === 'in_stock' ? 'In Stock' : 'Out of Stock';
-                                    elseif ($key === 'min_price') {
-                                        $displayVal = $value;
-                                        if ($displayVal > 0 && $displayVal < 1000)
-                                            $displayVal *= 1000;
-                                        echo 'Min: ' . number_format($displayVal) . '₫';
-                                    } elseif ($key === 'max_price') {
-                                        $displayVal = $value;
-                                        if ($displayVal > 0 && $displayVal < 1000)
-                                            $displayVal *= 1000;
-                                        echo 'Max: ' . number_format($displayVal) . '₫';
-                                    } else
-                                        echo htmlspecialchars($value);
-                                    ?>
-                                </span>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (empty($data['products'])): ?>
-                    <div class="text-center py-5 my-5">
-                        <div class="mb-4">
-                            <i class="fas fa-search fa-4x text-muted opacity-25"></i>
-                        </div>
-                        <h3 class="fw-bold">No books match your criteria</h3>
-                        <p class="text-secondary">Try adjusting your filters or search term.</p>
-                        <a href="<?php echo BASE_URL; ?>product" class="btn btn-primary rounded-pill px-5 py-2 mt-3">Reset
-                            All Filters</a>
-                    </div>
-                <?php else: ?>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 g-xl-5">
-                        <?php $delay = 0;
-                        foreach ($data['products'] as $product): ?>
-                            <div class="col" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
-                                <?php $delay = ($delay < 400) ? $delay + 100 : 0; ?>
-                                <div class="product-card">
-                                    <div class="image-wrapper shadow-sm position-relative">
-                                        <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"
-                                            class="text-decoration-none">
-                                            <?php if ($product->image): ?>
-                                                <img src="<?php echo BASE_URL; ?>uploads/<?php echo htmlspecialchars($product->image); ?>"
-                                                    alt="<?php echo htmlspecialchars($product->name); ?>">
-                                            <?php else: ?>
-                                                <div class="h-100 d-flex align-items-center justify-content-center bg-light">
-                                                    <i class="fas fa-book fa-3x text-muted opacity-25"></i>
-                                                </div>
-                                            <?php endif; ?>
-                                        </a>
-
-                                        <?php if ($product->stock <= 0): ?>
-                                            <div class="position-absolute top-0 end-0 p-2">
-                                                <span class="badge bg-danger rounded-pill">Out of Stock</span>
-                                            </div>
-                                        <?php endif; ?>
-
-                                        <!-- Quick Add Button (Hover) -->
-                                        <?php if ($product->stock > 0): ?>
-                                            <div class="quick-add d-flex justify-content-center">
-                                                <button class="btn btn-light btn-sm rounded-pill px-3 fw-bold ajax-add-to-cart" data-product-id="<?php echo $product->id; ?>">
-                                                    <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ hàng
-                                                </button>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-
-                                    <div class="text-center mt-3">
-                                        <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"
-                                            class="text-decoration-none">
-                                            <h3 class="product-title"><?php echo htmlspecialchars($product->name); ?></h3>
-                                        </a>
-                                        <p class="product-author">
-                                            <?php echo htmlspecialchars($product->author ?? 'Unknown Author'); ?>
-                                        </p>
-                                        <p class="product-price"><?php echo number_format($product->price, 0, ',', '.'); ?>₫</p>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-
-                    <!-- Pagination -->
-                    <?php if ($data['totalPages'] > 1): ?>
-                        <nav class="mt-5 pt-4">
-                            <ul class="pagination justify-content-center gap-2">
-                                <?php 
-                                    $queryParams = $_GET;
-                                    $baseUrl = BASE_URL . 'product';
-                                ?>
-                                
-                                <!-- Previous Page -->
-                                <li class="page-item <?php echo $data['currentPage'] <= 1 ? 'disabled' : ''; ?>">
-                                    <?php 
-                                        $queryParams['page'] = $data['currentPage'] - 1;
-                                        $prevUrl = $baseUrl . '?' . http_build_query($queryParams);
-                                    ?>
-                                    <a class="page-link border-0 rounded-circle shadow-sm" href="<?php echo $prevUrl; ?>">
-                                        <i class="fas fa-chevron-left"></i>
-                                    </a>
-                                </li>
-
-                                <!-- Page Numbers -->
-                                <?php for ($i = 1; $i <= $data['totalPages']; $i++): ?>
-                                    <li class="page-item <?php echo $data['currentPage'] == $i ? 'active' : ''; ?>">
-                                        <?php 
-                                            $queryParams['page'] = $i;
-                                            $pageUrl = $baseUrl . '?' . http_build_query($queryParams);
-                                        ?>
-                                        <a class="page-link border-0 rounded-circle shadow-sm <?php echo $data['currentPage'] == $i ? 'bg-primary text-white' : 'bg-white text-dark'; ?>" 
-                                           href="<?php echo $pageUrl; ?>"><?php echo $i; ?></a>
-                                    </li>
-                                <?php endfor; ?>
-
-                                <!-- Next Page -->
-                                <li class="page-item <?php echo $data['currentPage'] >= $data['totalPages'] ? 'disabled' : ''; ?>">
-                                    <?php 
-                                        $queryParams['page'] = $data['currentPage'] + 1;
-                                        $nextUrl = $baseUrl . '?' . http_build_query($queryParams);
-                                    ?>
-                                    <a class="page-link border-0 rounded-circle shadow-sm" href="<?php echo $nextUrl; ?>">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    <?php endif; ?>
-                <?php endif; ?>
+                <div id="product-grid">
+                    <?php require '_grid.php'; ?>
+                </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const categoryItems = document.querySelectorAll('.category-item');
-        const categoryInput = document.getElementById('category-input');
-        const filterForm = document.getElementById('filter-form');
-
-        // Handle Category selection
-        categoryItems.forEach(item => {
-            item.addEventListener('click', function (e) {
-                e.preventDefault();
-                categoryInput.value = this.getAttribute('data-value');
-                filterForm.submit();
-            });
-        });
-
-        // Handle Min/Max Price Validation
-        if (filterForm) {
-            filterForm.addEventListener('submit', function (e) {
-                const minInput = document.getElementById('min_price');
-                const maxInput = document.getElementById('max_price');
-
-                if (minInput && maxInput) {
-                    const min = parseFloat(minInput.value) || 0;
-                    const max = parseFloat(maxInput.value) || Infinity;
-
-                    if (max < min && max !== Infinity) {
-                        e.preventDefault();
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Lỗi khoảng giá',
-                            text: 'Giá tối đa phải lớn hơn hoặc bằng giá tối thiểu.',
-                            confirmButtonColor: '#6366f1'
-                        });
-                    }
-                }
-            });
-        }
-
-        // Handle tilt effect (if VanillaTilt is loaded)
-        if (typeof VanillaTilt !== 'undefined') {
-            VanillaTilt.init(document.querySelectorAll(".image-wrapper"), {
-                max: 10,
-                speed: 400,
-                glare: true,
-                "max-glare": 0.3,
-            });
-        }
-    });
-</script>
 
 <?php require_once '../app/views/client/layout/footer.php'; ?>

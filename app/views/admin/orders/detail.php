@@ -96,11 +96,15 @@
 
         <!-- Update Status -->
         <div class="admin-card">
-            <h5 class="fw-bold mb-3">Cập nhật trạng thái</h5>
+            <?php if ($order->status === 'cancelled'): ?>
+                <div class="alert alert-danger py-2 small mb-3">
+                    <i class="fas fa-ban me-1"></i> Đơn hàng đã bị hủy và không thể thay đổi.
+                </div>
+            <?php endif; ?>
             <form action="<?php echo BASE_URL; ?>admin/manageOrders" method="GET">
                 <input type="hidden" name="action" value="update_status">
                 <input type="hidden" name="id" value="<?php echo $order->id; ?>">
-                <select name="status" class="form-select rounded-3 mb-3">
+                <select name="status" class="form-select rounded-3 mb-3" <?php echo $order->status === 'cancelled' ? 'disabled' : ''; ?>>
                     <?php
                     $statusMap = [
                         'pending' => 'Chờ xử lý',
@@ -116,7 +120,7 @@
                         </option>
                     <?php endforeach; ?>
                 </select>
-                <button type="submit" class="btn btn-primary w-100 rounded-3">
+                <button type="submit" class="btn btn-primary w-100 rounded-3" <?php echo $order->status === 'cancelled' ? 'disabled' : ''; ?>>
                     <i class="fas fa-save me-1"></i>Lưu trạng thái
                 </button>
             </form>

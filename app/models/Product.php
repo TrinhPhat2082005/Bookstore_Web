@@ -193,19 +193,35 @@ class Product
     }
 
     // Lấy toàn bộ danh sách sản phẩm với phân trang
-    public function getAllAdmin($page = 1, $limit = 10)
+    public function getAllAdmin($page = 1, $limit = 10, $keyword = '')
     {
         $offset = ($page - 1) * $limit;
-        $this->db->query("SELECT * FROM products ORDER BY created_at DESC LIMIT :offset, :limit");
+        $sql = "SELECT * FROM products";
+        if (!empty($keyword)) {
+            $sql .= " WHERE name LIKE :keyword OR author LIKE :keyword OR category LIKE :keyword";
+        }
+        $sql .= " ORDER BY created_at DESC LIMIT :offset, :limit";
+        
+        $this->db->query($sql);
+        if (!empty($keyword)) {
+            $this->db->bind(':keyword', '%' . $keyword . '%');
+        }
         $this->db->bind(':offset', $offset, PDO::PARAM_INT);
         $this->db->bind(':limit', $limit, PDO::PARAM_INT);
         return $this->db->resultSet();
     }
 
     // Đếm tổng số sản phẩm
-    public function countAll()
+    public function countAll($keyword = '')
     {
-        $this->db->query("SELECT COUNT(*) as total FROM products");
+        $sql = "SELECT COUNT(*) as total FROM products";
+        if (!empty($keyword)) {
+            $sql .= " WHERE name LIKE :keyword OR author LIKE :keyword OR category LIKE :keyword";
+        }
+        $this->db->query($sql);
+        if (!empty($keyword)) {
+            $this->db->bind(':keyword', '%' . $keyword . '%');
+        }
         return $this->db->single()->total;
     }
 
@@ -251,6 +267,14 @@ class Product
     public function decreaseStock($product_id, $quantity)
     {
         $this->db->query("UPDATE products SET stock = GREATEST(0, stock - :quantity) WHERE id = :id");
+        $this->db->bind(':quantity', $quantity, PDO::PARAM_INT);
+        $this->db->bind(':id', $product_id, PDO::PARAM_INT);
+        return $this->db->execute();
+    }
+
+    public function increaseStock($product_id, $quantity)
+    {
+        $this->db->query("UPDATE products SET stock = stock + :quantity WHERE id = :id");
         $this->db->bind(':quantity', $quantity, PDO::PARAM_INT);
         $this->db->bind(':id', $product_id, PDO::PARAM_INT);
         return $this->db->execute();

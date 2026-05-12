@@ -46,12 +46,14 @@
     </div>
 <?php else: ?>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 g-xl-5">
-        <?php $delay = 0; foreach ($data['products'] as $product): ?>
+        <?php $delay = 0;
+        foreach ($data['products'] as $product): ?>
             <div class="col" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
-                <div class="book-card product-card">
-<?php $delay = ($delay < 400) ? $delay + 100 : 0; ?>
-                    <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>" class="text-decoration-none">
-                        <div class="book-frame shadow-sm">
+                <?php $delay = ($delay < 400) ? $delay + 100 : 0; ?>
+                <div class="product-card">
+                    <div class="image-wrapper shadow-sm position-relative">
+                        <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"
+                            class="text-decoration-none">
                             <?php if ($product->image): ?>
                                 <img src="<?php echo BASE_URL; ?>uploads/<?php echo htmlspecialchars($product->image); ?>"
                                     alt="<?php echo htmlspecialchars($product->name); ?>">
@@ -60,33 +62,33 @@
                                     <i class="fas fa-book fa-3x text-muted opacity-25"></i>
                                 </div>
                             <?php endif; ?>
-
-                            <?php if ($product->stock <= 0): ?>
-                                <div class="position-absolute top-0 end-0 p-2">
-                                    <span class="badge bg-danger rounded-pill">Hết hàng</span>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                    </a>
-
-                    <div class="book-info text-center mt-3">
-                        <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>" class="text-decoration-none">
-                            <h3 class="book-title"><?php echo htmlspecialchars($product->name); ?></h3>
                         </a>
-                        <p class="book-author text-secondary small">
+
+                        <?php if ($product->stock <= 0): ?>
+                            <div class="position-absolute top-0 end-0 p-2">
+                                <span class="badge bg-danger rounded-pill">Hết hàng</span>
+                            </div>
+                        <?php endif; ?>
+
+                        <!-- Quick Add Button (Hover) -->
+                        <?php if ($product->stock > 0): ?>
+                            <div class="quick-add d-flex justify-content-center">
+                                <button class="btn btn-light btn-sm rounded-pill px-3 fw-bold ajax-add-to-cart" data-product-id="<?php echo $product->id; ?>">
+                                    <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ hàng
+                                </button>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <a href="<?php echo BASE_URL; ?>product/detail/<?php echo $product->id; ?>"
+                            class="text-decoration-none">
+                            <h3 class="product-title"><?php echo htmlspecialchars($product->name); ?></h3>
+                        </a>
+                        <p class="product-author">
                             <?php echo htmlspecialchars($product->author ?? 'Unknown Author'); ?>
                         </p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <span class="book-price"><?php echo number_format($product->price, 0, ',', '.'); ?>₫</span>
-                            <?php if ($product->stock > 0): ?>
-                                <form action="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>" method="POST" class="d-inline m-0">
-                                    <?php Security::csrfField(); ?>
-                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3">
-                                        <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ hàng
-                                    </button>
-                                </form>
-                            <?php endif; ?>
-                        </div>
+                        <p class="product-price"><?php echo number_format($product->price, 0, ',', '.'); ?>₫</p>
                     </div>
                 </div>
             </div>

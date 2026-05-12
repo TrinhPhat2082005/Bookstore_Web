@@ -10,6 +10,23 @@
                     <i class="fa-solid fa-plus me-2"></i> Viết bài mới
                 </a>
             </div>
+            
+            <!-- Search Bar -->
+            <div class="mb-4">
+                <form method="GET" action="<?php echo BASE_URL; ?>admin/manageNews" class="row g-2">
+                    <div class="col-md-10">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-search text-muted"></i></span>
+                            <input type="text" name="keyword" class="form-control border-start-0 ps-0" 
+                                   placeholder="Tìm kiếm theo tiêu đề, tác giả..." 
+                                   value="<?php echo htmlspecialchars($data['keyword'] ?? ''); ?>">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-outline-primary w-100">Tìm kiếm</button>
+                    </div>
+                </form>
+            </div>
 
             <?php if (isset($_GET['success'])): ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -96,7 +113,7 @@
                     <ul class="pagination justify-content-center">
                         <?php for ($i = 1; $i <= $data['total_pages']; $i++): ?>
                             <li class="page-item <?php echo $data['current_page'] == $i ? 'active' : ''; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                <a class="page-link" href="?page=<?php echo $i; ?>&keyword=<?php echo urlencode($data['keyword'] ?? ''); ?>"><?php echo $i; ?></a>
                             </li>
                         <?php endfor; ?>
                     </ul>

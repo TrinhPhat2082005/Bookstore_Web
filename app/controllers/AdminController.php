@@ -221,8 +221,8 @@ class AdminController extends Controller
             exit();
         }
 
-        $products    = $this->productModel->getAllAdmin($page, $limit);
-        $total       = $this->productModel->countAll();
+        $products    = $this->productModel->getAllAdmin($page, $limit, $keyword);
+        $total       = $this->productModel->countAll($keyword);
 
         $data = [
             'products'     => $products,
@@ -322,7 +322,31 @@ class AdminController extends Controller
 
         // Cập nhật trạng thái đơn hàng
         if (isset($_GET['action']) && $_GET['action'] == 'update_status' && isset($_GET['id']) && isset($_GET['status'])) {
-            $this->orderModel->updateStatus((int) $_GET['id'], $_GET['status']);
+            $orderId = (int) $_GET['id'];
+            $newStatus = $_GET['status'];
+            
+            // Lấy thông tin đơn hàng hiện tại để kiểm tra trạng thái cũ
+            $order = $this->orderModel->getDetail($orderId);
+            
+            if ($order && $order->status !== $newStatus) {
+                // Nếu đơn hàng hiện tại đã bị Hủy, không cho phép đổi sang trạng thái khác
+                if ($order->status === 'cancelled') {
+                    $_SESSION['error_msg'] = "Không thể thay đổi trạng thái của đơn hàng đã bị hủy.";
+                    header('Location: ' . BASE_URL . 'admin/manageOrders');
+                    exit();
+                }
+
+                // Nếu chuyển sang trạng thái Cancelled, cộng lại tồn kho
+                if ($newStatus === 'cancelled') {
+                    $items = $this->orderModel->getItems($orderId);
+                    foreach ($items as $item) {
+                        $this->productModel->increaseStock($item->product_id, $item->quantity);
+                    }
+                }
+                
+                $this->orderModel->updateStatus($orderId, $newStatus);
+            }
+            
             header('Location: ' . BASE_URL . 'admin/manageOrders?success=1');
             exit();
         }
@@ -361,6 +385,7 @@ class AdminController extends Controller
     {
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $limit = 10;
+        $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
 
         // Xử lý Xóa bài viết
         if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
@@ -369,13 +394,14 @@ class AdminController extends Controller
             exit();
         }
 
-        $articles = $this->articleModel->getAllAdmin($page, $limit);
-        $total = $this->articleModel->countAllAdmin();
+        $articles = $this->articleModel->getAllAdmin($page, $limit, $keyword);
+        $total = $this->articleModel->countAllAdmin($keyword);
 
         $data = [
             'articles' => $articles,
             'current_page' => $page,
             'total_pages' => ceil($total / $limit),
+            'keyword' => $keyword,
             'title' => 'Quản lý Tin tức'
         ];
         $this->view('admin/news/index', $data);

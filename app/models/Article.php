@@ -49,18 +49,34 @@ class Article
         return $this->db->single();
     }
 
-    public function getAllAdmin($page = 1, $limit = 10)
+    public function getAllAdmin($page = 1, $limit = 10, $keyword = '')
     {
         $offset = ($page - 1) * $limit;
-        $this->db->query("SELECT * FROM articles ORDER BY created_at DESC LIMIT :offset, :limit");
+        $sql = "SELECT * FROM articles";
+        if (!empty($keyword)) {
+            $sql .= " WHERE title LIKE :keyword OR content LIKE :keyword OR author LIKE :keyword";
+        }
+        $sql .= " ORDER BY created_at DESC LIMIT :offset, :limit";
+        
+        $this->db->query($sql);
+        if (!empty($keyword)) {
+            $this->db->bind(':keyword', '%' . $keyword . '%');
+        }
         $this->db->bind(':offset', $offset, PDO::PARAM_INT);
         $this->db->bind(':limit', $limit, PDO::PARAM_INT);
         return $this->db->resultSet();
     }
 
-    public function countAllAdmin()
+    public function countAllAdmin($keyword = '')
     {
-        $this->db->query("SELECT COUNT(*) as total FROM articles");
+        $sql = "SELECT COUNT(*) as total FROM articles";
+        if (!empty($keyword)) {
+            $sql .= " WHERE title LIKE :keyword OR content LIKE :keyword OR author LIKE :keyword";
+        }
+        $this->db->query($sql);
+        if (!empty($keyword)) {
+            $this->db->bind(':keyword', '%' . $keyword . '%');
+        }
         return $this->db->single()->total;
     }
 
