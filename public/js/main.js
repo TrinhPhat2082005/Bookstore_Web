@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeaderSearch();
     initHeroSlider();
     initRelatedSwiper();
+    initHamburgerClose();
 
     // 3. Robust lifecycle handling
     swup.hooks.on('page:view', () => {
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initHeaderSearch();
         initHeroSlider();
         initRelatedSwiper();
+        initHamburgerClose();
         syncCartBadge(); // Đồng bộ lại badge giỏ hàng sau khi Swup chuyển trang
         window.scrollTo(0, 0);
     });
@@ -261,6 +263,16 @@ function initProductFilters() {
         input.addEventListener('input', handleFilterChange);
     });
 
+    // Handle Mobile Search Sync
+    const mobileSearch = document.querySelector('.mobile-search-input');
+    const mainSearch = filterForm.querySelector('input[name="keyword"]');
+    if (mobileSearch && mainSearch) {
+        mobileSearch.addEventListener('input', (e) => {
+            mainSearch.value = e.target.value;
+            handleFilterChange();
+        });
+    }
+
     // Handle Category Items (Special Case)
     categoryItems.forEach(item => {
         item.addEventListener('click', (e) => {
@@ -275,8 +287,23 @@ function initProductFilters() {
         });
     });
 
-    // Prevent default form submit
+    // Price Range Validation
     filterForm.addEventListener('submit', (e) => {
+        const minInput = document.getElementById('min_price');
+        const maxInput = document.getElementById('max_price');
+        if (minInput && maxInput) {
+            const min = parseFloat(minInput.value) || 0;
+            const max = parseFloat(maxInput.value) || Infinity;
+            if (max < min && max !== Infinity) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Lỗi khoảng giá',
+                    text: 'Giá tối đa phải lớn hơn hoặc bằng giá tối thiểu.'
+                });
+                return;
+            }
+        }
         e.preventDefault();
         handleFilterChange();
     });
@@ -383,4 +410,23 @@ function initAjaxCart() {
             }
         });
     });
+}
+
+/**
+ * Auto-close hamburger menu on link click (for Swup transitions)
+ */
+function initHamburgerClose() {
+    const navbarCollapse = document.getElementById('navbarNav');
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link, .dropdown-item');
+    
+    if (navbarCollapse && navLinks.length > 0) {
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (navbarCollapse.classList.contains('show')) {
+                    const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse) || new bootstrap.Collapse(navbarCollapse);
+                    bsCollapse.hide();
+                }
+            });
+        });
+    }
 }
