@@ -61,7 +61,7 @@
                 'baseUrl'     => BASE_URL . 'news'
             ];
             extract($paginationData);
-            require '../../layout/pagination.php';
+            require __DIR__ . '/../../layout/pagination.php';
         ?>
     </div>
 </div>

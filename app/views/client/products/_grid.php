@@ -103,6 +103,6 @@
             'baseUrl'     => BASE_URL . 'product'
         ];
         extract($paginationData);
-        require '../../layout/pagination.php';
+        require __DIR__ . '/../../layout/pagination.php';
     ?>
 <?php endif; ?>

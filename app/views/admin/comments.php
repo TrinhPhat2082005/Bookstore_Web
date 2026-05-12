@@ -77,7 +77,7 @@
                     'baseUrl'     => BASE_URL . 'admin/manageComments'
                 ];
                 extract($paginationData);
-                require '../layout/pagination.php';
+                require __DIR__ . '/../layout/pagination.php';
             ?>
         </div>
     </div>

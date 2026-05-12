@@ -150,7 +150,7 @@
             'baseUrl'     => BASE_URL . 'admin/manageOrders'
         ];
         extract($paginationData);
-        require '../../layout/pagination.php';
+        require __DIR__ . '/../../layout/pagination.php';
     ?>
 </div>
 
