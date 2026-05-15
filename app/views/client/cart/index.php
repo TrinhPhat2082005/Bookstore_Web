@@ -1,7 +1,6 @@
 <?php require_once '../app/views/client/layout/header.php'; ?>
 
 <main>
-    <!-- Page Header -->
     <div class="bg-light py-3 border-bottom">
         <div class="container">
             <nav aria-label="breadcrumb">
@@ -25,7 +24,6 @@
             </h1>
 
             <?php if (empty($data['cart'])): ?>
-                <!-- Empty Cart -->
                 <div class="text-center py-5">
                     <div class="mb-4">
                         <i class="fas fa-shopping-cart fa-5x text-secondary opacity-25"></i>
@@ -38,7 +36,6 @@
                 </div>
             <?php else: ?>
                 <div class="row g-4">
-                    <!-- Cart Items -->
                     <div class="col-lg-8">
                         <div class="card border-0 shadow-sm rounded-4">
                             <div class="card-body p-0">
@@ -111,8 +108,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-
-                                    <!-- Cart Actions -->
                                     <div class="d-flex justify-content-between align-items-center p-3 border-top">
                                         <button type="submit" formaction="<?php echo BASE_URL; ?>cart/clear" formmethod="POST"
                                             class="btn btn-sm btn-outline-danger rounded-pill"
@@ -130,8 +125,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Order Summary -->
                     <div class="col-lg-4">
                         <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 90px;">
                             <div class="card-body p-4">
@@ -157,8 +150,6 @@
                                     class="btn btn-primary w-100 btn-lg rounded-3 fw-semibold">
                                     <i class="fas fa-credit-card me-2"></i>Tiến hành thanh toán
                                 </a>
-
-                                <!-- Secure Badges -->
                                 <div class="text-center mt-3">
                                     <small class="text-secondary">
                                         <i class="fas fa-lock me-1"></i>Thanh toán an toàn &amp; bảo mật

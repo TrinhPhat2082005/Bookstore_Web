@@ -24,8 +24,6 @@
         <i class="fas fa-plus me-1"></i>Thêm sách mới
     </a>
 </div>
-
-<!-- Search & Filter -->
 <div class="admin-card mb-4">
     <form method="GET" action="<?php echo BASE_URL; ?>admin/manageProducts" class="row g-3 align-items-end">
         <div class="col-md-8">
@@ -48,8 +46,6 @@
         </div>
     </form>
 </div>
-
-<!-- Products Table -->
 <div class="admin-card">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h6 class="mb-0 fw-bold">
@@ -157,8 +153,6 @@
             </tbody>
         </table>
     </div>
-
-    <!-- Pagination -->
     <?php 
         $paginationData = [
             'currentPage' => $data['current_page'],

@@ -1,4 +1,3 @@
-<!-- Sidebar -->
 <div id="sidebar-wrapper">
     <div class="sidebar-heading">
         <a href="<?php echo BASE_URL; ?>admin" class="text-decoration-none text-white">
@@ -46,11 +45,7 @@
         </a>
     </div>
 </div>
-<!-- /#sidebar-wrapper -->
-
-<!-- Page Content -->
 <div id="page-content-wrapper">
-    <!-- Top Navbar -->
     <nav class="navbar navbar-expand-lg top-navbar">
         <div class="container-fluid">
             <button class="btn btn-outline-secondary d-lg-block" id="sidebarToggle"><i
@@ -75,8 +70,6 @@
             </div>
         </div>
     </nav>
-
-    <!-- Page Breadcrumb -->
     <div class="page-breadcrumb">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="breadcrumb-title"><?php echo $title ? $title : 'Dashboard'; ?></h5>
@@ -90,6 +83,4 @@
             </nav>
         </div>
     </div>
-
-    <!-- Main Dynamic Content Starts Here -->
     <div class="container-fluid px-4 pb-5">

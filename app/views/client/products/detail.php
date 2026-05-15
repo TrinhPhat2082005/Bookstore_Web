@@ -2,7 +2,6 @@
 <?php $product = $data['product']; ?>
 
 <main>
-    <!-- Breadcrumb -->
     <div class="bg-light py-3 border-bottom">
         <div class="container">
             <nav aria-label="breadcrumb">
@@ -16,12 +15,9 @@
             </nav>
         </div>
     </div>
-
-    <!-- Product Detail -->
     <section class="py-5">
         <div class="container">
             <div class="row g-5">
-                <!-- Book Image -->
                 <div class="col-lg-4 text-center">
                     <div class="sticky-top" style="top: 100px;">
                         <div class="book-frame shadow-lg mx-auto" style="max-width: 350px;">
@@ -45,8 +41,6 @@
                         <?php endif; ?>
                     </div>
                 </div>
-
-                <!-- Book Info -->
                 <div class="col-lg-8">
                     <h1 class="display-5 fw-bold mb-3 text-main"><?php echo htmlspecialchars($product->name); ?></h1>
 
@@ -56,8 +50,6 @@
                             <span class="fw-medium"><?php echo htmlspecialchars($product->author); ?></span>
                         </p>
                     <?php endif; ?>
-
-                    <!-- Price & Stock -->
                     <div class="glass-card p-4 mb-5 d-flex align-items-center gap-5 flex-wrap">
                         <div>
                             <div class="text-muted small mb-1">Giá bán</div>
@@ -81,8 +73,6 @@
                             <?php endif; ?>
                         </div>
                     </div>
-
-                    <!-- Description -->
                     <?php if ($product->description): ?>
                         <div class="mb-5">
                             <h5 class="fw-bold mb-4 text-main border-bottom pb-3">Giới thiệu nội dung</h5>
@@ -91,8 +81,6 @@
                             </div>
                         </div>
                     <?php endif; ?>
-
-                    <!-- Action Buttons -->
                     <div class="d-flex flex-wrap gap-3 pb-5 border-bottom">
                         <?php if ($product->stock > 0): ?>
                             <form action="<?php echo BASE_URL; ?>cart/add/<?php echo $product->id; ?>" method="POST" class="d-inline m-0">
@@ -110,8 +98,6 @@
                             <i class="fas fa-arrow-left me-2"></i>Quay lại
                         </a>
                     </div>
-
-                    <!-- Trust Badges -->
                     <div class="row g-4 mt-4">
                         <div class="col-sm-4">
                             <div class="d-flex align-items-center gap-3">
@@ -142,8 +128,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Related Products -->
     <?php if (!empty($data['related'])): ?>
         <section class="py-5 bg-body">
             <div class="container">
@@ -178,7 +162,6 @@
                             </div>
                         <?php endforeach; ?>
                     </div>
-                    <!-- Add Pagination & Navigation -->
                     <div class="swiper-pagination"></div>
                 </div>
             </div>

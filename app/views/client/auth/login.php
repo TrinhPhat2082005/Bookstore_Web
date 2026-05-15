@@ -68,12 +68,8 @@
             }
         });
     });
-
-    // Hàm kiểm tra form đăng nhập
     document.querySelector('form').addEventListener('submit', function(e) {
         const password = document.querySelector('input[name="password"]').value;
-        
-        // Regex kiểm tra mật khẩu: 5-20 ký tự, ít nhất 1 chữ cái và 1 chữ số
         const pwdRegex = /^(?=.*[a-zA-Z])(?=.*\d).{5,20}$/;
         if (!pwdRegex.test(password)) {
             e.preventDefault();

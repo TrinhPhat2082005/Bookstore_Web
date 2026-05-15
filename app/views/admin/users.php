@@ -91,8 +91,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- Custom Pagination -->
             <?php 
                 $paginationData = [
                     'currentPage' => $data['current_page'],

@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/core/Controller.php
 
 class Controller {
     public function model($model) {

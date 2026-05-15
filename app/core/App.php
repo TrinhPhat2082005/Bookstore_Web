@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/core/App.php
 
 class App
 {

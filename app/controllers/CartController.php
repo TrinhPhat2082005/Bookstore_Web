@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/controllers/CartController.php
 
 class CartController extends Controller {
     private $productModel;
@@ -10,14 +9,10 @@ class CartController extends Controller {
         $this->productModel = $this->model('Product');
         $this->orderModel   = $this->model('Order');
         $this->settingModel = $this->model('Setting');
-
-        // Đảm bảo giỏ hàng luôn tồn tại trong session
         if (!isset($_SESSION['cart'])) {
             $_SESSION['cart'] = [];
         }
     }
-
-    // Hiển thị danh sách sản phẩm trong giỏ hàng
     public function index() {
         $settings = $this->settingModel->getAll();
         $cart = $_SESSION['cart'];
@@ -35,8 +30,6 @@ class CartController extends Controller {
 
         $this->view('client/cart/index', $data);
     }
-
-    // Thêm sản phẩm vào giỏ hàng (session)
     public function add($id) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
@@ -58,10 +51,8 @@ class CartController extends Controller {
         }
 
         if (isset($_SESSION['cart'][$id])) {
-            // Tăng số lượng nếu đã có trong giỏ
             $_SESSION['cart'][$id]['quantity']++;
         } else {
-            // Thêm mới vào giỏ
             $_SESSION['cart'][$id] = [
                 'product_id' => $product->id,
                 'name'       => $product->name,
@@ -81,14 +72,10 @@ class CartController extends Controller {
             ]);
             exit();
         }
-
-        // Redirect về trang trước hoặc giỏ hàng
         $referer = $_SERVER['HTTP_REFERER'] ?? BASE_URL . 'cart';
         header('Location: ' . $referer . '?added=1');
         exit();
     }
-
-    // Cập nhật số lượng sản phẩm trong giỏ
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
@@ -111,8 +98,6 @@ class CartController extends Controller {
         header('Location: ' . BASE_URL . 'cart');
         exit();
     }
-
-    // Xóa sản phẩm khỏi giỏ hàng
     public function remove($id) {
         if (isset($_SESSION['cart'][$id])) {
             unset($_SESSION['cart'][$id]);
@@ -120,15 +105,11 @@ class CartController extends Controller {
         header('Location: ' . BASE_URL . 'cart');
         exit();
     }
-
-    // Xóa toàn bộ giỏ hàng
     public function clear() {
         $_SESSION['cart'] = [];
         header('Location: ' . BASE_URL . 'cart');
         exit();
     }
-
-    // Xử lý giao diện và logic đặt hàng
     public function checkout() {
         $settings = $this->settingModel->getAll();
         $cart = $_SESSION['cart'];
@@ -155,13 +136,10 @@ class CartController extends Controller {
                 'note'             => trim($_POST['note'] ?? ''),
                 'total_amount'     => $total,
                 'items'            => [],
-                // form values for re-display
                 'name_err'    => '',
                 'email_err'   => '',
                 'address_err' => '',
             ];
-
-            // Build items list
             foreach ($cart as $id => $item) {
                 $data['items'][] = [
                     'product_id' => $item['product_id'],
@@ -169,8 +147,6 @@ class CartController extends Controller {
                     'price'      => $item['price']
                 ];
             }
-
-            // Validation
             if (empty($data['customer_name']))
                 $data['name_err'] = 'Vui lòng nhập họ tên.';
             if (empty($data['customer_email']) || !filter_var($data['customer_email'], FILTER_VALIDATE_EMAIL))
@@ -181,31 +157,25 @@ class CartController extends Controller {
             if (empty($data['name_err']) && empty($data['email_err']) && empty($data['address_err'])) {
                 $order_id = $this->orderModel->create($data);
                 if ($order_id) {
-                    // Giảm tồn kho cho từng sản phẩm trong đơn hàng
                     foreach ($cart as $id => $item) {
                         $this->productModel->decreaseStock($item['product_id'], $item['quantity']);
                     }
-                    // Xóa giỏ hàng sau khi đặt thành công
                     $_SESSION['cart'] = [];
                     header('Location: ' . BASE_URL . 'cart/success/' . $order_id);
                     exit();
                 }
             }
-
-            // Có lỗi - hiện lại form
             $data['settings'] = $settings;
             $data['cart']     = $cart;
             $data['total']    = $total;
             $data['title']    = 'Thanh toán';
             $this->view('client/cart/checkout', $data);
 
-        } else { // First time access to checkout page
+        } else {
             $customer_name = '';
             $customer_email = '';
             $customer_phone = '';
             $customer_address = '';
-
-            // Nếu đã đăng nhập, tự động điền thông tin từ profile
             if (isset($_SESSION['user_id'])) {
                 $userModel = $this->model('User');
                 $user = $userModel->getUserById($_SESSION['user_id']);
@@ -234,8 +204,6 @@ class CartController extends Controller {
             $this->view('client/cart/checkout', $data);
         }
     }
-
-    // Trang xác nhận đặt hàng thành công
     public function success($order_id) {
         $settings = $this->settingModel->getAll();
         $order    = $this->orderModel->getDetail($order_id);

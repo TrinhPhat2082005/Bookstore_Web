@@ -1,11 +1,9 @@
 <?php require_once '../app/views/client/layout/header.php'; ?>
 
 <div>
-    <!-- Hero Slider Section -->
     <section class="hero-slider-section">
         <div class="swiper hero-swiper">
             <div class="swiper-wrapper">
-                <!-- Slide 1 -->
                 <div class="swiper-slide hero-slide"
                     style="background-image: url('<?php echo BASE_URL; ?>assets/bookstore_hero_premium.png');">
                     <div class="container h-100">
@@ -31,7 +29,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Slide 2 -->
                 <div class="swiper-slide hero-slide"
                     style="background-image: url('<?php echo BASE_URL; ?>assets/bookstore_hero_premium_2.avif');">
                     <div class="container h-100">
@@ -57,14 +54,11 @@
                     </div>
                 </div>
             </div>
-            <!-- Add Pagination & Navigation -->
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next d-none d-md-flex"></div>
             <div class="swiper-button-prev d-none d-md-flex"></div>
         </div>
     </section>
-
-    <!-- Featured Products Section -->
     <section class="py-5 bg-white">
         <div class="container">
             <div class="d-flex justify-content-between align-items-end mb-5" data-aos="fade-up">
@@ -122,8 +116,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Services Section -->
     <section class="py-5 bg-body">
         <div class="container">
             <div class="row g-4">

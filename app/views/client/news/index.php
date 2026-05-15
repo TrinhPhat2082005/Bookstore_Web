@@ -52,8 +52,6 @@
                 </div>
             <?php endforeach; ?>
         </div>
-
-        <!-- Pagination -->
         <?php 
             $paginationData = [
                 'currentPage' => $data['currentPage'],

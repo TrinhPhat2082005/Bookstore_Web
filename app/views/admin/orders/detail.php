@@ -9,9 +9,7 @@
 </div>
 
 <div class="row g-4">
-    <!-- Order Details -->
     <div class="col-lg-8">
-        <!-- Items -->
         <div class="admin-card mb-4">
             <h5 class="fw-bold mb-4 pb-2 border-bottom">
                 <i class="fas fa-box text-primary me-2"></i>Sản phẩm trong đơn
@@ -64,8 +62,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Order Info & Status -->
     <div class="col-lg-4">
         <div class="admin-card mb-4">
             <h5 class="fw-bold mb-4 pb-2 border-bottom">
@@ -93,8 +89,6 @@
                 <dd class="col-7"><?php echo date('d/m/Y H:i', strtotime($order->created_at)); ?></dd>
             </dl>
         </div>
-
-        <!-- Update Status -->
         <div class="admin-card">
             <?php if ($order->status === 'cancelled'): ?>
                 <div class="alert alert-danger py-2 small mb-3">

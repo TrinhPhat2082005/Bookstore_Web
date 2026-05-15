@@ -7,8 +7,6 @@
             <h1 class="display-4 fw-bold text-dark">Câu hỏi thường gặp</h1>
             <p class="lead text-secondary mx-auto" style="max-width: 600px;">Chúng tôi luôn sẵn sàng giải đáp mọi thắc mắc của bạn để mang lại trải nghiệm mua sắm tốt nhất.</p>
         </div>
-
-        <!-- FAQ Search -->
         <div class="row justify-content-center mb-5">
             <div class="col-md-6">
                 <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden bg-white border-0">
@@ -49,8 +47,6 @@
                 <?php endif; ?>
             </div>
         </div>
-
-        <!-- Contact CTA -->
         <div class="row justify-content-center mt-5 pt-4">
             <div class="col-lg-9">
                 <div class="p-5 text-center rounded-5 glass-card position-relative overflow-hidden">

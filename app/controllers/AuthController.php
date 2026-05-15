@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/controllers/AuthController.php
 
 class AuthController extends Controller
 {
@@ -26,8 +25,6 @@ class AuthController extends Controller
                         $_SESSION['user_id'] = $loggedInUser->id;
                         $_SESSION['username'] = $loggedInUser->username;
                         $_SESSION['role'] = $loggedInUser->role;
-
-                        // Xử lý Remember Me (Áp dụng cho cả Admin và Client)
                         if (isset($_POST['remember'])) {
                             $token = bin2hex(random_bytes(16));
                             $userModel->updateRememberToken($loggedInUser->id, $token);
@@ -70,14 +67,11 @@ class AuthController extends Controller
                 $_SESSION['error_msg'] = "Mật khẩu không khớp.";
             } else if (!empty($username) && !empty($password) && !empty($email)) {
                 $userModel = $this->model('User');
-
-                // Check if username already exists
                 if ($userModel->findUserByUsername($username)) {
                     $_SESSION['error_msg'] = "Tên đăng nhập đã tồn tại.";
                 } else if ($userModel->findUserByEmail($email)) {
-                    // Check if email already exists
                     $_SESSION['error_msg'] = "Email này đã được đăng ký. Vui lòng sử dụng email khác.";
-                    $_SESSION['duplicate_email'] = true; // Flag for UI to show a popup window
+                    $_SESSION['duplicate_email'] = true;
                 } else {
                     $data = [
                         'username' => $username,
@@ -192,14 +186,12 @@ class AuthController extends Controller
 
     public function logout()
     {
-        // Xóa token trong database nếu có cookie
         if (isset($_COOKIE['remember_token'])) {
             $userModel = $this->model('User');
             $user = $userModel->getUserByRememberToken($_COOKIE['remember_token']);
             if ($user) {
                 $userModel->updateRememberToken($user->id, null);
             }
-            // Xóa cookie trình duyệt
             setcookie('remember_token', '', time() - 3600, '/');
         }
 

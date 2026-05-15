@@ -10,8 +10,6 @@
                     <i class="fa-solid fa-plus me-2"></i> Viết bài mới
                 </a>
             </div>
-            
-            <!-- Search Bar -->
             <div class="mb-4">
                 <form method="GET" action="<?php echo BASE_URL; ?>admin/manageNews" class="row g-2">
                     <div class="col-md-10">

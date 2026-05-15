@@ -25,7 +25,6 @@
                     <tbody>
                         <?php foreach ($data['contacts'] as $contact): ?>
                             <tr>
-                                <!-- $contact -> name: OOP -->
                                 <td>
                                     <div class="fw-bold"><?php echo $contact->name; ?></div>
                                 </td>
@@ -102,8 +101,6 @@
         </div>
     </div>
 </div>
-
-<!-- Contact Detail Modal -->
 <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">

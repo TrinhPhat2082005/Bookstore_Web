@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/models/Product.php
 
 class Product
 {
@@ -36,7 +35,6 @@ class Product
 
         if (isset($filters['min_price']) && $filters['min_price'] !== '') {
             $min = floatval($filters['min_price']);
-            // Smart VND handle: if user enters 80, assume 80,000
             if ($min > 0 && $min < 1000) $min *= 1000;
             $sql .= " AND price >= :min_price";
             $params[':min_price'] = $min;
@@ -44,7 +42,6 @@ class Product
 
         if (isset($filters['max_price']) && $filters['max_price'] !== '') {
             $max = floatval($filters['max_price']);
-            // Smart VND handle: if user enters 200, assume 200,000
             if ($max > 0 && $max < 1000) $max *= 1000;
             $sql .= " AND price <= :max_price";
             $params[':max_price'] = $max;
@@ -57,8 +54,6 @@ class Product
                 $sql .= " AND stock = 0";
             }
         }
-
-        // Sorting
         $sort = $filters['sort'] ?? 'newest';
         switch ($sort) {
             case 'price_asc':
@@ -72,19 +67,13 @@ class Product
                 $sql .= " ORDER BY created_at DESC";
                 break;
         }
-
-        // Pagination
         $offset = ($page - 1) * $limit;
         $sql .= " LIMIT :offset, :limit";
 
         $this->db->query($sql);
-        
-        // Bind basic params
         foreach ($params as $key => $val) {
             $this->db->bind($key, $val);
         }
-        
-        // Bind pagination params as integers
         $this->db->bind(':offset', $offset, PDO::PARAM_INT);
         $this->db->bind(':limit', $limit, PDO::PARAM_INT);
 
@@ -148,8 +137,6 @@ class Product
         $this->db->bind(':id', $id);
         return $this->db->single();
     }
-
-    // Tìm kiếm theo tên, tác giả hoặc mô tả với phân trang
     public function searchByKeyword($keyword, $page = 1, $limit = 12)
     {
         $offset = ($page - 1) * $limit;
@@ -166,8 +153,6 @@ class Product
         $this->db->bind(':keyword', '%' . $keyword . '%');
         return $this->db->single()->total;
     }
-
-    // Lấy sản phẩm theo danh mục với phân trang
     public function getByCategory($category, $page = 1, $limit = 12)
     {
         $offset = ($page - 1) * $limit;
@@ -184,15 +169,11 @@ class Product
         $this->db->bind(':category', $category);
         return $this->db->single()->total;
     }
-
-    // Lấy danh sách danh mục
     public function getCategories()
     {
         $this->db->query("SELECT DISTINCT category FROM products WHERE status = 'active' AND category IS NOT NULL ORDER BY category");
         return $this->db->resultSet();
     }
-
-    // Lấy toàn bộ danh sách sản phẩm với phân trang
     public function getAllAdmin($page = 1, $limit = 10, $keyword = '')
     {
         $offset = ($page - 1) * $limit;
@@ -210,8 +191,6 @@ class Product
         $this->db->bind(':limit', $limit, PDO::PARAM_INT);
         return $this->db->resultSet();
     }
-
-    // Đếm tổng số sản phẩm
     public function countAll($keyword = '')
     {
         $sql = "SELECT COUNT(*) as total FROM products";

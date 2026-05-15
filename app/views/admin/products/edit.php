@@ -55,8 +55,6 @@
                 </select>
             </div>
         </div>
-
-        <!-- Current Image Preview & Upload -->
         <div class="mb-4">
             <label class="form-label fw-semibold">Ảnh bìa sách</label>
             <div class="d-flex flex-wrap gap-3 mb-3">

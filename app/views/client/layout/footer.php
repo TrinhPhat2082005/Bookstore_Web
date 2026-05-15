@@ -1,4 +1,4 @@
-</main> <!-- End of #swup -->
+</main>
 
 <footer class="bg-dark text-white pt-5 pb-3 mt-5">
     <div class="container">
@@ -14,7 +14,6 @@
                             class="text-secondary text-decoration-none">Giới thiệu</a></li>
                     <li class="mb-2"><a href="<?php echo BASE_URL; ?>home/contact"
                             class="text-secondary text-decoration-none">Liên hệ</a></li>
-                    <!-- <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Điều khoản dịch vụ</a></li> -->
                 </ul>
             </div>
             <div class="col-md-4">
@@ -36,8 +35,6 @@
         </div>
     </div>
 </footer>
-
-<!-- Core Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 <script src="https://unpkg.com/swup@4"></script>
@@ -52,8 +49,6 @@
         offset: 100
     });
 </script>
-
-<!-- Custom Logic -->
 <script src="<?php echo BASE_URL; ?>js/main.js"></script>
 </body>
 

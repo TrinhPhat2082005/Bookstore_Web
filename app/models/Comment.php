@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/models/Comment.php
 
 class Comment
 {
@@ -12,18 +11,16 @@ class Comment
 
     public function add($data)
     {
-        // Thêm bình luận
         $this->db->query("INSERT INTO comments (article_id, name, content, status) VALUES (:article_id, :name, :content, :status)");
         $this->db->bind(':article_id', $data['article_id']);
         $this->db->bind(':name', $data['name']);
         $this->db->bind(':content', $data['content']);
-        $this->db->bind(':status', 'pending'); // Default status is pending
+        $this->db->bind(':status', 'pending');
         return $this->db->execute();
     }
 
     public function getByArticle($article_id)
     {
-        // Lấy bình luận theo bài viết
         $this->db->query("SELECT * FROM comments WHERE article_id = :article_id AND status = 'approved' ORDER BY created_at DESC");
         $this->db->bind(':article_id', $article_id);
         return $this->db->resultSet();

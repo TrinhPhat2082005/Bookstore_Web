@@ -38,8 +38,6 @@
                             <p class="text-secondary mb-0"><?php echo $data['settings']['site_email']; ?></p>
                         </div>
                     </div>
-
-                    <!-- Quick Help / FAQ CTA -->
                     <div class="mt-5 p-4 rounded-4 bg-light border border-2 border-white shadow-sm" data-aos="fade-up">
                         <h5 class="fw-bold mb-3"><i class="fas fa-question-circle text-primary me-2"></i>Tìm câu trả lời ngay?</h5>
                         <p class="small text-secondary mb-4">Bạn có thể tìm thấy giải pháp nhanh chóng trong phần Câu hỏi thường gặp của chúng tôi.</p>
@@ -113,8 +111,6 @@
         const name = document.getElementById('name');
         const email = document.getElementById('email');
         const message = document.getElementById('message');
-
-        // Reset
         [name, email, message].forEach(el => el.classList.remove('is-invalid'));
 
         if (!name.value.trim()) {

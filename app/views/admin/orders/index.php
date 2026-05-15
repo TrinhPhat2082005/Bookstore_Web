@@ -18,8 +18,6 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <p class="text-muted mb-0">Xem và quản lý trạng thái tất cả đơn hàng.</p>
 </div>
-
-<!-- Stats Row -->
 <div class="row g-3 mb-4">
     <?php
     $statuses = [
@@ -45,8 +43,6 @@
         </div>
     <?php endforeach; ?>
 </div>
-
-<!-- Orders Table -->
 <div class="admin-card">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h6 class="mb-0 fw-bold">
@@ -141,8 +137,6 @@
             </tbody>
         </table>
     </div>
-
-    <!-- Pagination -->
     <?php 
         $paginationData = [
             'currentPage' => $data['current_page'],

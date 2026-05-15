@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/controllers/HomeController.php
 
 class HomeController extends Controller
 {
@@ -46,8 +45,6 @@ class HomeController extends Controller
             if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
                 die('Lỗi bảo mật: CSRF token không hợp lệ.');
             }
-            // Sanitize input
-            // Using Security::xssClean instead of deprecated filter_input_array
             $data = [
                 'title' => 'Liên hệ',
                 'name' => Security::xssClean(trim($_POST['name'] ?? '')),
@@ -59,8 +56,6 @@ class HomeController extends Controller
                 'email_err' => '',
                 'message_err' => ''
             ];
-
-            // Server-side Validation
             if (empty($data['name']))
                 $data['name_err'] = 'Vui lòng nhập tên.';
             if (empty($data['email']))
@@ -71,7 +66,6 @@ class HomeController extends Controller
             if (empty($data['name_err']) && empty($data['email_err']) && empty($data['message_err'])) {
                 if ($this->contactModel->add($data)) {
                     $data['success'] = 'Cảm ơn bạn! Tin nhắn của bạn đã được gửi.';
-                    // Clear form
                     $data['name'] = $data['email'] = $data['subject'] = $data['message'] = '';
                 } else {
                     die('Đã xảy ra lỗi.');

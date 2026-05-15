@@ -1,4 +1,3 @@
-<!-- Toolbar -->
 <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom">
     <h2 class="h4 fw-bold mb-0 text-main">
         <?php echo count($data['products']); ?> sách được tìm thấy
@@ -12,8 +11,6 @@
         </select>
     </div>
 </div>
-
-<!-- Active Filters Display -->
 <?php if (!empty(array_filter($data['filters'], fn($v) => $v !== '' && $v !== 'newest'))): ?>
     <div class="d-flex flex-wrap gap-2 mb-4">
         <?php foreach ($data['filters'] as $key => $value): ?>
@@ -69,8 +66,6 @@
                                 <span class="badge bg-danger rounded-pill">Hết hàng</span>
                             </div>
                         <?php endif; ?>
-
-                        <!-- Quick Add Button (Hover) -->
                         <?php if ($product->stock > 0): ?>
                             <div class="quick-add d-flex justify-content-center">
                                 <button class="btn btn-light btn-sm rounded-pill px-3 fw-bold ajax-add-to-cart" data-product-id="<?php echo $product->id; ?>">
@@ -94,8 +89,6 @@
             </div>
         <?php endforeach; ?>
     </div>
-
-    <!-- Pagination -->
     <?php 
         $paginationData = [
             'currentPage' => $data['currentPage'],

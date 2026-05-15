@@ -145,8 +145,6 @@
         background-color: white;
         border: 1px solid #eee;
     }
-
-    /* Custom Scrollbar for Sidebar */
     .sidebar-sticky::-webkit-scrollbar {
         width: 4px;
     }
@@ -184,12 +182,10 @@
 <div class="products-container py-5">
     <div class="container">
         <div class="row g-5">
-            <!-- Sidebar Filters -->
             <div class="col-lg-3 d-none d-lg-block">
                 <div class="sidebar-sticky">
                     <div class="glass-sidebar p-4 shadow-sm">
                         <form action="<?php echo BASE_URL; ?>product" method="GET" id="filter-form">
-                            <!-- Availability -->
                             <div class="filter-section">
                                 <div class="filter-title" data-bs-toggle="collapse" data-bs-target="#avail-collapse">
                                     Tình trạng <i class="fas fa-chevron-down small"></i>
@@ -212,8 +208,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Categories -->
                             <div class="filter-section">
                                 <div class="filter-title" data-bs-toggle="collapse" data-bs-target="#cat-collapse">
                                     Danh mục <i class="fas fa-chevron-down small"></i>
@@ -235,8 +229,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Price Range -->
                             <div class="filter-section">
                                 <div class="filter-title" data-bs-toggle="collapse" data-bs-target="#price-collapse">
                                     Giá <i class="fas fa-chevron-down small"></i>
@@ -259,8 +251,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Search Keyword -->
                             <div class="filter-section">
                                 <div class="filter-title">
                                     Tìm kiếm
@@ -288,10 +278,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Products List -->
             <div class="col-lg-9">
-                <!-- Mobile Search (Visible only on < LG) -->
                 <div class="d-lg-none mb-4">
                     <div class="input-group glass-card rounded-pill px-3 py-2 shadow-sm border-0 bg-white">
                         <span class="input-group-text border-0 bg-transparent ps-0">

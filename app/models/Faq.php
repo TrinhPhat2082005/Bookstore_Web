@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/models/Faq.php
 
 class Faq
 {
@@ -27,7 +26,6 @@ class Faq
 
     public function add($data)
     {
-        // Thêm FAQ mới
         $this->db->query("INSERT INTO faqs (question, answer, category) VALUES (:question, :answer, :category)");
         $this->db->bind(':question', $data['question']);
         $this->db->bind(':answer', $data['answer']);

@@ -12,8 +12,6 @@
         color: #1e293b;
         overflow-x: hidden;
     }
-
-    /* Hero Section */
     .hero-about {
         padding: 100px 0;
         background: var(--primary-gradient);
@@ -31,8 +29,6 @@
         letter-spacing: -2px;
         margin-bottom: 20px;
     }
-
-    /* Floating Cards */
     .glass-card {
         background: var(--glass-bg);
         backdrop-filter: blur(12px);
@@ -48,8 +44,6 @@
         transform: translateY(-10px);
         box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
     }
-
-    /* Stats Section */
     .stat-box {
         text-align: center;
     }
@@ -62,8 +56,6 @@
         -webkit-text-fill-color: transparent;
         margin-bottom: 5px;
     }
-
-    /* Image Placeholder */
     .img-placeholder {
         background: #e2e8f0;
         border-radius: 30px;
@@ -79,8 +71,6 @@
     .img-placeholder-portrait {
         aspect-ratio: 3/4;
     }
-
-    /* Timeline */
     .timeline {
         position: relative;
         max-width: 800px;
@@ -131,8 +121,6 @@
     .right::after {
         left: -10px;
     }
-
-    /* Animations */
     @keyframes fadeInUp {
         from {
             opacity: 0;
@@ -156,14 +144,11 @@
     .delay-2 {
         animation-delay: 0.4s;
     }
-
-    /* Timeline Section Background */
     .timeline-section-wrapper {
         position: relative;
         padding: 80px 40px;
         margin: 60px -40px;
         background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop');
-        /* Placeholder image */
         background-attachment: fixed;
         background-position: center;
         background-size: cover;
@@ -197,7 +182,6 @@
 </style>
 
 <div class="about-page">
-    <!-- Hero Section -->
     <section class="hero-about">
         <div class="container animate-in">
             <span class="badge bg-white text-primary rounded-pill px-4 py-2 mb-3 fw-bold shadow-sm">Khát vọng của chúng
@@ -208,11 +192,8 @@
             </p>
         </div>
     </section>
-
-    <!-- Main Content -->
     <div class="container" style="margin-top: -30px; position: relative; z-index: 2;">
         <div class="row g-4">
-            <!-- Our Story -->
             <div class="col-12">
                 <div class="glass-card animate-in delay-1">
                     <div class="row align-items-center g-5">
@@ -235,8 +216,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Stats -->
             <div class="col-md-4">
                 <div class="glass-card text-center animate-in delay-2">
                     <div class="stat-number">5k+</div>
@@ -255,8 +234,6 @@
                     <div class="fw-bold text-uppercase small tracking-wider text-secondary">Hỗ trợ tận tâm</div>
                 </div>
             </div>
-
-            <!-- Our Values -->
             <div class="col-12 my-5">
                 <div class="text-center mb-5">
                     <h2 class="fw-bold display-6">Giá trị cốt lõi</h2>
@@ -297,8 +274,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Timeline Section -->
             <div class="col-12 my-5">
                 <div class="timeline-section-wrapper shadow-lg">
                     <div class="timeline-content-relative">
@@ -331,8 +306,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Team Section -->
             <div class="col-12 my-5">
                 <div class="text-center mb-5">
                     <h2 class="fw-bold display-6">Đội ngũ sáng lập</h2>
@@ -373,8 +346,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Call to Action -->
             <div class="col-12 my-5 text-center">
                 <div class="p-5 rounded-5 shadow-lg animate-in"
                     style="background: var(--primary-gradient); color: white;">

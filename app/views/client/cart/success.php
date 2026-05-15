@@ -6,7 +6,6 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <!-- Success Card -->
                     <div class="card border-0 shadow-sm rounded-4 text-center p-5 mb-4">
                         <div class="mb-4">
                             <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10"
@@ -25,8 +24,6 @@
                             <strong><?php echo htmlspecialchars($order->customer_email); ?></strong> để xác nhận.
                         </p>
                     </div>
-
-                    <!-- Order Info -->
                     <div class="card border-0 shadow-sm rounded-4 mb-4">
                         <div class="card-body p-4">
                             <h5 class="fw-bold mb-4 pb-2 border-bottom">
@@ -69,8 +66,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Order Items -->
                     <div class="card border-0 shadow-sm rounded-4 mb-4">
                         <div class="card-body p-4">
                             <h5 class="fw-bold mb-4 pb-2 border-bottom">
@@ -109,8 +104,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- CTA Buttons -->
                     <div class="d-flex flex-wrap gap-3 justify-content-center">
                         <a href="<?php echo BASE_URL; ?>product" class="btn btn-primary px-5 rounded-pill">
                             <i class="fas fa-book me-2"></i>Tiếp tục mua sắm

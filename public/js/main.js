@@ -1,25 +1,15 @@
-/**
- * Bookstore Premium Core JS
- * Handles: Swup, Theme Toggle, Vanilla Tilt, and AJAX Logic
- */
-
-// Biến toàn cục lưu số lượng giỏ hàng mới nhất (cập nhật bởi AJAX)
 let latestCartCount = null;
-let swup = null; // Biến toàn cục để các hàm khác có thể truy cập Swup
+let swup = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize Swup for smooth page transitions
     swup = new Swup({
         containers: ["#swup", "#main-nav", "#header-user-actions"],
         animationSelector: '[class*="transition-"]',
         plugins: [],
         ignoreVisit: (url, { el } = {}) => {
-            // Ignore if clicking same page
             return url === window.location.href;
         }
     });
-
-    // 2. Initial Run
     initPremiumEffects();
     initAjaxCart();
     initProductFilters();
@@ -28,8 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroSlider();
     initRelatedSwiper();
     initHamburgerClose();
-
-    // 3. Robust lifecycle handling
     swup.hooks.on('page:view', () => {
         initPremiumEffects();
         initAjaxCart();
@@ -39,14 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         initHeroSlider();
         initRelatedSwiper();
         initHamburgerClose();
-        syncCartBadge(); // Đồng bộ lại badge giỏ hàng sau khi Swup chuyển trang
+        syncCartBadge();
         window.scrollTo(0, 0);
     });
 });
-
-/**
- * Related Products Swiper
- */
 function initRelatedSwiper() {
     if (document.querySelector('.related-swiper')) {
         new Swiper('.related-swiper', {
@@ -68,10 +52,6 @@ function initRelatedSwiper() {
         });
     }
 }
-
-/**
- * Hero Slider initialization
- */
 function initHeroSlider() {
     if (document.querySelector('.hero-swiper')) {
         new Swiper('.hero-swiper', {
@@ -95,10 +75,6 @@ function initHeroSlider() {
         });
     }
 }
-
-/**
- * Header Live Search with instant results
- */
 function initHeaderSearch() {
     const searchInput = document.getElementById('header-search');
     const resultsPanel = document.getElementById('search-results');
@@ -153,25 +129,17 @@ function initHeaderSearch() {
     }, 300);
 
     searchInput.addEventListener('input', handleSearch);
-
-    // Close on click outside
     document.addEventListener('click', (e) => {
         if (!searchInput.contains(e.target) && !resultsPanel.contains(e.target)) {
             resultsPanel.classList.add('d-none');
         }
     });
-
-    // Re-show on focus if has value
     searchInput.addEventListener('focus', () => {
         if (searchInput.value.trim().length >= 2) {
             resultsPanel.classList.remove('d-none');
         }
     });
 }
-
-/**
- * Reading Progress Bar for articles
- */
 function initReadingProgress() {
     const progressBar = document.getElementById('progress-bar');
     if (!progressBar) return;
@@ -184,14 +152,8 @@ function initReadingProgress() {
     };
 
     window.addEventListener('scroll', updateProgress);
-    // Cleanup event on page change if needed or just let it overwrite
 }
-
-/**
- * Re-initializes 3D Tilt and other visual effects
- */
 function initPremiumEffects() {
-    // 3D Tilt for Book Covers
     const tiltElements = document.querySelectorAll('.book-frame');
     if (tiltElements.length > 0) {
         VanillaTilt.init(tiltElements, {
@@ -203,14 +165,10 @@ function initPremiumEffects() {
             scale: 1.03
         });
     }
-
-    // Initialize Bootstrap Tooltips
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
-
-    // Refresh AOS for new elements
     if (typeof AOS !== 'undefined') {
         AOS.init({
             duration: 800,
@@ -219,10 +177,6 @@ function initPremiumEffects() {
         });
     }
 }
-
-/**
- * AJAX Product Filtering
- */
 function initProductFilters() {
     const filterForm = document.getElementById('filter-form');
     const productGrid = document.getElementById('product-grid');
@@ -230,13 +184,9 @@ function initProductFilters() {
     const categoryInput = document.getElementById('category-input');
     
     if (!filterForm || !productGrid) return;
-
-    // Handle Input Changes (Instant Filter)
     const handleFilterChange = debounce(() => {
         const formData = new FormData(filterForm);
         const params = new URLSearchParams(formData);
-        
-        // Show Loading State (Skeleton)
         productGrid.style.opacity = '0.5';
         productGrid.style.pointerEvents = 'none';
 
@@ -248,22 +198,14 @@ function initProductFilters() {
             productGrid.innerHTML = html;
             productGrid.style.opacity = '1';
             productGrid.style.pointerEvents = 'auto';
-            
-            // Re-init Effects for new items
             initPremiumEffects();
             initAjaxCart();
-            
-            // Update URL without reload
             window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
         });
     }, 300);
-
-    // Bind inputs
     filterForm.querySelectorAll('input, select').forEach(input => {
         input.addEventListener('input', handleFilterChange);
     });
-
-    // Handle Mobile Search Sync
     const mobileSearch = document.querySelector('.mobile-search-input');
     const mainSearch = filterForm.querySelector('input[name="keyword"]');
     if (mobileSearch && mainSearch) {
@@ -272,22 +214,16 @@ function initProductFilters() {
             handleFilterChange();
         });
     }
-
-    // Handle Category Items (Special Case)
     categoryItems.forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
             categoryInput.value = item.getAttribute('data-value');
-            
-            // Update Active Class
             categoryItems.forEach(i => i.classList.remove('active'));
             item.classList.add('active');
             
             handleFilterChange();
         });
     });
-
-    // Price Range Validation
     filterForm.addEventListener('submit', (e) => {
         const minInput = document.getElementById('min_price');
         const maxInput = document.getElementById('max_price');
@@ -308,10 +244,6 @@ function initProductFilters() {
         handleFilterChange();
     });
 }
-
-/**
- * Debounce utility to limit rapid function calls
- */
 function debounce(func, timeout = 300) {
     let timer;
     return (...args) => {
@@ -319,12 +251,6 @@ function debounce(func, timeout = 300) {
         timer = setTimeout(() => { func.apply(this, args); }, timeout);
     };
 }
-
-
-/**
- * Đồng bộ badge giỏ hàng sau khi Swup chuyển trang
- * Nếu latestCartCount đã được cập nhật bởi AJAX, ghi đè lên giá trị server-rendered
- */
 function syncCartBadge() {
     if (latestCartCount !== null) {
         const badge = document.querySelector('.cart-count-badge');
@@ -338,10 +264,6 @@ function syncCartBadge() {
         }
     }
 }
-
-/**
- * AJAX Add-to-cart Logic
- */
 function initAjaxCart() {
     const addBtn = document.querySelectorAll('.ajax-add-to-cart');
     
@@ -350,8 +272,6 @@ function initAjaxCart() {
             e.preventDefault();
             const productId = btn.getAttribute('data-product-id');
             const quantity = btn.getAttribute('data-qty') || 1;
-            
-            // Visual feedback on button
             const originalContent = btn.innerHTML;
             btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Đang thêm...';
             btn.disabled = true;
@@ -369,22 +289,15 @@ function initAjaxCart() {
                 const data = await response.json();
                 
                 if (data.success) {
-                    // Lưu số lượng mới nhất vào biến toàn cục
                     latestCartCount = data.cartCount;
-                    
-                    // Xóa cache Swup để trang Cart luôn tải dữ liệu mới
                     if (swup && swup.cache) {
                         swup.cache.clear();
                     }
-                    
-                    // Update Cart Badge
                     const badge = document.querySelector('.cart-count-badge');
                     if (badge) {
                         badge.textContent = data.cartCount;
                         badge.classList.remove('d-none');
                     }
-                    
-                    // Success Toast
                     Swal.fire({
                         icon: 'success',
                         title: 'Đã thêm vào giỏ hàng!',
@@ -411,10 +324,6 @@ function initAjaxCart() {
         });
     });
 }
-
-/**
- * Auto-close hamburger menu on link click (for Swup transitions)
- */
 function initHamburgerClose() {
     const navbarCollapse = document.getElementById('navbarNav');
     const navLinks = document.querySelectorAll('.navbar-nav .nav-link, .dropdown-item');

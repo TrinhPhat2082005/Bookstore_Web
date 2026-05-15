@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/models/Article.php
 
 class Article
 {

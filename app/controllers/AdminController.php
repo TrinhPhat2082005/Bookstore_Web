@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/controllers/AdminController.php
 
 class AdminController extends Controller
 {
@@ -14,7 +13,6 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        // Kiểm tra quyền Admin
         if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             header('Location: ' . BASE_URL . 'auth/login');
             exit();
@@ -27,10 +25,7 @@ class AdminController extends Controller
         $this->productModel = $this->model('Product');
         $this->orderModel   = $this->model('Order');
         $this->userModel    = $this->model('User');
-
-        // Global CSRF Check for Admin POST requests
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Skip check for Dropzone AJAX uploads if needed, but for standard forms it's required
             if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
                 $_SESSION['error_msg'] = "Lỗi bảo mật: CSRF token không hợp lệ.";
                 header('Location: ' . BASE_URL . 'admin');
@@ -41,7 +36,6 @@ class AdminController extends Controller
 
     public function index()
     {
-        // Dashboard tổng quan
         $userCount = $this->userModel->countAll();
         $orderCount = $this->orderModel->countAll();
         $totalRevenue = $this->orderModel->getTotalRevenue();
@@ -75,18 +69,12 @@ class AdminController extends Controller
                 'icon' => $icon
             ];
         }
-        
-        // Sắp xếp thông báo theo thời gian mới nhất
         usort($notifications, function($a, $b) {
             return strtotime($b['time']) - strtotime($a['time']);
         });
-
-        // Lấy dữ liệu biểu đồ (7 ngày qua)
         $chartData = $this->orderModel->getRevenueLast7Days();
         $chartLabels = [];
         $chartValues = [];
-        
-        // Tạo map dữ liệu để đảm bảo đủ 7 ngày (kể cả ngày không có đơn)
         $dataMap = [];
         foreach($chartData as $row) {
             $dataMap[$row->date] = $row->total;
@@ -110,14 +98,10 @@ class AdminController extends Controller
         
         $this->view('admin/dashboard', $data);
     }
-
-    // PHẦN CHUNG
     public function manageUsers()
     {
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $limit = 10;
-
-        // Xử lý các hành động quản lý
         if (isset($_GET['action']) && isset($_GET['id'])) {
             $id = (int) $_GET['id'];
             $action = $_GET['action'];
@@ -146,8 +130,6 @@ class AdminController extends Controller
         ];
         $this->view('admin/users', $data);
     }
-
-    // Trang chủ, Liên hệ & Giới thiệu
     public function manageInfo()
     {
         $settings = $this->settingModel->getAll();
@@ -158,8 +140,6 @@ class AdminController extends Controller
                     $this->settingModel->update($key, trim($value));
                 }
             }
-
-            // Xử lý upload Logo (Nếu có)
             if (!empty($_FILES['site_logo']['name'])) {
                 $filename = time() . '_' . $_FILES['site_logo']['name'];
                 $destination = 'uploads/' . $filename;
@@ -183,8 +163,6 @@ class AdminController extends Controller
     {
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $limit = 1;
-
-        // Xử lý xóa/đánh dấu
         if (isset($_GET['action'])) {
             $id = (int) $_GET['id'];
             if ($_GET['action'] == 'read')
@@ -206,15 +184,11 @@ class AdminController extends Controller
         ];
         $this->view('admin/contacts', $data);
     }
-
-    // Sản phẩm & Giỏ hàng
     public function manageProducts()
     {
         $page    = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $limit   = 10;
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
-
-        // Xử lý xóa sản phẩm
         if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
             $this->productModel->delete((int) $_GET['id']);
             header('Location: ' . BASE_URL . 'admin/manageProducts?success=deleted');
@@ -253,7 +227,6 @@ class AdminController extends Controller
             if ($data['price'] <= 0)  $data['price_err'] = 'Giá phải lớn hơn 0.';
 
             if (empty($data['name_err']) && empty($data['price_err'])) {
-                // Xử lý upload ảnh
                 if (!empty($_FILES['image']['name'])) {
                     $filename = time() . '_' . basename($_FILES['image']['name']);
                     if (move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $filename)) {
@@ -293,8 +266,6 @@ class AdminController extends Controller
                 'status'      => $_POST['status'],
                 'image'       => $product->image
             ];
-
-            // Xử lý upload ảnh mới (nếu có)
             if (!empty($_FILES['image']['name'])) {
                 $filename = time() . '_' . basename($_FILES['image']['name']);
                 if (move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $filename)) {
@@ -319,24 +290,17 @@ class AdminController extends Controller
     {
         $page  = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $limit = 10;
-
-        // Cập nhật trạng thái đơn hàng
         if (isset($_GET['action']) && $_GET['action'] == 'update_status' && isset($_GET['id']) && isset($_GET['status'])) {
             $orderId = (int) $_GET['id'];
             $newStatus = $_GET['status'];
-            
-            // Lấy thông tin đơn hàng hiện tại để kiểm tra trạng thái cũ
             $order = $this->orderModel->getDetail($orderId);
             
             if ($order && $order->status !== $newStatus) {
-                // Nếu đơn hàng hiện tại đã bị Hủy, không cho phép đổi sang trạng thái khác
                 if ($order->status === 'cancelled') {
                     $_SESSION['error_msg'] = "Không thể thay đổi trạng thái của đơn hàng đã bị hủy.";
                     header('Location: ' . BASE_URL . 'admin/manageOrders');
                     exit();
                 }
-
-                // Nếu chuyển sang trạng thái Cancelled, cộng lại tồn kho
                 if ($newStatus === 'cancelled') {
                     $items = $this->orderModel->getItems($orderId);
                     foreach ($items as $item) {
@@ -379,15 +343,11 @@ class AdminController extends Controller
         ];
         $this->view('admin/orders/detail', $data);
     }
-
-    // Tin tức, Bình luận & Hỏi/Đáp
     public function manageNews()
     {
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $limit = 10;
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
-
-        // Xử lý Xóa bài viết
         if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
             $this->articleModel->delete((int) $_GET['id']);
             header('Location: ' . BASE_URL . 'admin/manageNews');
@@ -419,8 +379,6 @@ class AdminController extends Controller
                 'seo_description' => trim($_POST['seo_description']),
                 'status' => $_POST['status']
             ];
-
-            // Xử lý upload ảnh
             if (!empty($_FILES['image']['name'])) {
                 $filename = time() . '_' . $_FILES['image']['name'];
                 if (move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $filename)) {
@@ -482,8 +440,6 @@ class AdminController extends Controller
     {
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $limit = 10;
-
-        // Xử lý Duyệt/Xóa
         if (isset($_GET['action']) && isset($_GET['id'])) {
             $id = (int) $_GET['id'];
             if ($_GET['action'] == 'approve')

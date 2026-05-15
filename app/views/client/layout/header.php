@@ -1,4 +1,4 @@
-<?php // session is started in public/index.php ?>
+<?php ?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -23,21 +23,13 @@
             echo ($data['title'] ?? 'Trang chủ') . ' | ' . ($data['settings']['site_name'] ?? 'BookStore');
         }
     ?></title>
-    <!-- Security CSRF -->
     <meta name="csrf-token" content="<?php echo Security::generateCSRFToken(); ?>">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- AOS Animate On Scroll -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Bootstrap 5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <!-- Custom Styles -->
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/main.css">
     
 </head>
@@ -46,7 +38,6 @@
     <header class="glass-nav navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="<?php echo BASE_URL; ?>">
-                <!-- <img src="<?php echo BASE_URL; ?>uploads/<?php echo $data['settings']['site_logo']; ?>" alt="Logo" style="height: 35px;" class="me-2">  -->
                 <i class="fas fa-book-open text-accent"></i> <?php echo $data['settings']['site_name'] ?? 'BookStore'; ?>
             </a>
             
@@ -84,7 +75,6 @@
                                        placeholder="Tìm kiếm..." autocomplete="off">
                             </div>
                         </form>
-                        <!-- Live Search Results Dropdown -->
                         <div id="search-results" class="glass-card position-absolute w-100 mt-2 shadow-lg d-none overflow-hidden" 
                              style="z-index: 1000; max-height: 400px; overflow-y: auto; border-radius: 1.5rem;">
                         </div>
@@ -121,6 +111,4 @@
             </div>
         </div>
     </header>
-
-    <!-- Main Content for Swup -->
     <main id="swup" class="transition-fade">

@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/core/Database.php
 
 class Database {
     private $host = DB_HOST;

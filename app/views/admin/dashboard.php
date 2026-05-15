@@ -1,7 +1,5 @@
 <?php require_once '../app/views/admin/layout/header.php'; ?>
 <?php require_once '../app/views/admin/layout/sidebar.php'; ?>
-
-<!-- Statistics Section -->
 <div class="row g-4 mb-4">
     <div class="col-md-4">
         <div class="admin-card">
@@ -33,7 +31,6 @@
 </div>
 
 <div class="row g-4">
-    <!-- Chart Placeholder -->
     <div class="col-lg-8">
         <div class="admin-card">
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -50,8 +47,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Right Column Placeholder (Most Active etc) -->
     <div class="col-lg-4">
         <div class="admin-card">
             <h5 class="mb-4">Thông báo mới</h5>
@@ -82,8 +77,6 @@
         </div>
     </div>
 </div>
-
-<!-- All Notifications Modal -->
 <div class="modal fade" id="notificationsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 rounded-4 shadow-lg">
@@ -112,14 +105,10 @@
         </div>
     </div>
 </div>
-
-<!-- Chart.js Library -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('revenueChart').getContext('2d');
-    
-    // Create Gradient
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, 'rgba(99, 102, 241, 0.2)');
     gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');

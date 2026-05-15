@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/core/Security.php
 
 class Security
 {

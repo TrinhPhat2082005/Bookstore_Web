@@ -1,7 +1,6 @@
 <?php require_once '../app/views/client/layout/header.php'; ?>
 
 <main>
-    <!-- Breadcrumb -->
     <div class="bg-light py-3 border-bottom">
         <div class="container">
             <nav aria-label="breadcrumb">
@@ -21,8 +20,6 @@
             <h1 class="fw-bold mb-5">
                 <i class="fas fa-credit-card text-primary me-2"></i>Thanh toán
             </h1>
-
-            <!-- Progress Steps -->
             <div class="d-flex align-items-center justify-content-center gap-2 mb-5">
                 <div class="d-flex align-items-center gap-2 text-secondary">
                     <span class="badge rounded-circle d-flex align-items-center justify-content-center bg-success"
@@ -46,7 +43,6 @@
             </div>
 
             <div class="row g-5">
-                <!-- Checkout Form -->
                 <div class="col-lg-7">
                     <div class="card border-0 shadow-sm rounded-4">
                         <div class="card-body p-4 p-md-5">
@@ -106,8 +102,6 @@
                                     <textarea id="note" name="note" class="form-control rounded-3" rows="3"
                                         placeholder="Ghi chú cho người giao hàng (tùy chọn)..."><?php echo htmlspecialchars($data['note'] ?? ''); ?></textarea>
                                 </div>
-
-                                <!-- Payment Method (Display Only) -->
                                 <div class="mb-4">
                                     <label class="form-label fw-semibold">Phương thức thanh toán</label>
                                     <div class="form-check p-3 border rounded-3 bg-light">
@@ -134,8 +128,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Order Summary Sidebar -->
                 <div class="col-lg-5">
                     <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 90px;">
                         <div class="card-body p-4">
@@ -145,8 +137,6 @@
                                     <?php echo count($data['cart']); ?>
                                 </span>
                             </h5>
-
-                            <!-- Cart Items Summary -->
                             <div class="mb-4" style="max-height: 320px; overflow-y: auto;">
                                 <?php foreach ($data['cart'] as $id => $item): ?>
                                     <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
@@ -175,8 +165,6 @@
                                     </div>
                                 <?php endforeach; ?>
                             </div>
-
-                            <!-- Price Summary -->
                             <div class="d-flex justify-content-between mb-2 text-secondary small">
                                 <span>Tạm tính</span>
                                 <span><?php echo number_format($data['total'], 0, ',', '.'); ?>₫</span>

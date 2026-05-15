@@ -1,12 +1,7 @@
-/* Bookstore Main Stylesheet - Premium Modern Edition */
-
 :root {
-    /* Fixed Accents */
     --accent-color: #6366f1;
     --accent-hover: #4f46e5;
     --accent-glow: rgba(99, 102, 241, 0.2);
-    
-    /* Theme - Light (Default) */
     --bg-main: #ffffff;
     --bg-body: #f8fafc;
     --bg-secondary: #f1f5f9;
@@ -36,10 +31,6 @@ body {
     color: var(--text-secondary);
     opacity: 0.7;
 }
-
-
-
-/* Hero Slider & Glass Box */
 .hero-slider-section {
     position: relative;
     overflow: hidden;
@@ -83,9 +74,6 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
 }
-
-
-/* Glassmorphism Utilities */
 .glass-card {
     background: var(--bg-glass);
     backdrop-filter: blur(12px);
@@ -101,8 +89,6 @@ body {
     -webkit-backdrop-filter: blur(15px);
     border-bottom: 1px solid var(--border-color);
 }
-
-/* Navbar Modern */
 .navbar {
     padding: 0.75rem 0;
     transition: var(--transition-base);
@@ -132,12 +118,6 @@ body {
 .nav-link:hover, .nav-link.active {
     color: var(--accent-color) !important;
 }
-
-
-
-
-
-/* Buttons - Modern & Smooth */
 .btn {
     border-radius: 12px;
     padding: 0.75rem 1.75rem;
@@ -161,8 +141,6 @@ body {
     transform: translateY(-3px);
     box-shadow: 0 15px 25px -5px var(--accent-glow);
 }
-
-/* Book Card Premium */
 .book-card {
     border: none;
     background: var(--bg-main);
@@ -223,8 +201,6 @@ body {
     font-weight: 800;
     color: var(--accent-color);
 }
-
-/* Skeleton Loading Shimmer */
 .skeleton {
     background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--border-color) 50%, var(--bg-secondary) 75%);
     background-size: 200% 100%;
@@ -235,11 +211,6 @@ body {
 @keyframes shimmer {
     to { background-position: -200% 0; }
 }
-
-/* Smooth Page Transition Overlay */
-/* We rely on AOS and individual element transitions for the premium feel */
-
-/* Responsive */
 @media (max-width: 991.98px) {
     .navbar {
         background: var(--bg-main) !important;
@@ -249,8 +220,6 @@ body {
         padding: 60px 0;
     }
 }
-
-/* Custom Pagination Modern Style */
 .pagination-container {
     margin-top: 3rem;
     margin-bottom: 2rem;
@@ -282,8 +251,7 @@ body {
     font-weight: 500;
     font-size: 0.9rem;
     transition: all 0.2s ease;
-    margin-left: -1px; /* Overlap borders */
-}
+    margin-left: -1px; }
 
 .pagination-modern .page-item:first-child .page-link {
     border-top-left-radius: 6px;
@@ -297,8 +265,7 @@ body {
 }
 
 .pagination-modern .page-item.active .page-link {
-    background-color: #a3a3a3 !important; /* Grey active state */
-    border-color: #a3a3a3 !important;
+    background-color: #a3a3a3 !important; border-color: #a3a3a3 !important;
     color: #fff !important;
     z-index: 3;
 }

@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/models/User.php
 
 class User
 {
@@ -31,11 +30,9 @@ class User
 
         $this->db->bind(':username', $data['username']);
         $this->db->bind(':email', $data['email']);
-
-        // Hash password before saving
         $hashed_password = password_hash($data['password'], PASSWORD_DEFAULT);
         $this->db->bind(':password', $hashed_password);
-        $this->db->bind(':role', 'client'); // Default to client on register
+        $this->db->bind(':role', 'client');
 
         if ($this->db->execute()) {
             return true;

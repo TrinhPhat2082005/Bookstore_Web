@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/models/Contact.php
 
 class Contact {
     private $db;

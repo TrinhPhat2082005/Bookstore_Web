@@ -65,8 +65,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- Pagination -->
             <?php 
                 $paginationData = [
                     'currentPage' => $data['current_page'],

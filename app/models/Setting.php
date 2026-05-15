@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/models/Setting.php
 
 class Setting {
     private $db;

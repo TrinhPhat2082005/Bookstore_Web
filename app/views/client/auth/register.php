@@ -76,21 +76,15 @@
             }
         });
     });
-
-    // Hàm kiểm tra form đăng ký
     document.querySelector('form').addEventListener('submit', function(e) {
         const email = document.querySelector('input[name="email"]').value;
         const password = document.querySelector('input[name="password"]').value;
-        
-        // Regex kiểm tra định dạng email (mặc dù type="email" đã hỗ trợ 1 phần)
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             e.preventDefault();
             alert('Vui lòng nhập đúng định dạng Email (ví dụ: abc@gmail.com)!');
             return;
         }
-        
-        // Regex kiểm tra mật khẩu: 5-20 ký tự, ít nhất 1 chữ cái và 1 chữ số
         const pwdRegex = /^(?=.*[a-zA-Z])(?=.*\d).{5,20}$/;
         if (!pwdRegex.test(password)) {
             e.preventDefault();

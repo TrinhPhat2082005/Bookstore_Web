@@ -1,7 +1,5 @@
 CREATE DATABASE IF NOT EXISTS bookstore_db;
 USE bookstore_db;
-
--- Table for users
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
@@ -16,21 +14,13 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
--- Default admin user (password: admin123)
 INSERT IGNORE INTO users (username, email, password, role) VALUES 
 ('admin', 'admin@bookstore.vn', '$2y$10$J7/pFo7LDOao.aYIaMrodOaQoo9.8OpzQw9.Nd/KBMKBAZsYARn.K', 'admin');
-
--- Ensure missing columns are added if table already exists
 ALTER TABLE users ADD COLUMN IF NOT EXISTS remember_token VARCHAR(255) NULL AFTER role;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS status ENUM('active', 'banned') DEFAULT 'active' AFTER remember_token;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name VARCHAR(255) AFTER status;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(20) AFTER full_name;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS address TEXT AFTER phone;
-
-
-
--- Table for customer contacts
 CREATE TABLE IF NOT EXISTS contacts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -40,15 +30,11 @@ CREATE TABLE IF NOT EXISTS contacts (
     status ENUM('unread', 'read', 'replied') DEFAULT 'unread',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- Table for website settings (Logo, Address, Phone, Intro)
 CREATE TABLE IF NOT EXISTS settings (
     setting_key VARCHAR(50) PRIMARY KEY,
     setting_value TEXT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
--- Initial settings
 INSERT IGNORE INTO settings (setting_key, setting_value) VALUES
 ('site_name', 'BookStore Premium'),
 ('site_logo', 'logo.png'),
@@ -57,9 +43,6 @@ INSERT IGNORE INTO settings (setting_key, setting_value) VALUES
 ('site_phone', '0123 456 789'),
 ('site_email', 'contact@bookstore.vn'),
 ('about_content', 'Chúng tôi là cửa hàng sách lâu đời với sứ mệnh mang tri thức đến mọi người...');
-
-
--- Table for articles/news
 CREATE TABLE IF NOT EXISTS articles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -73,8 +56,6 @@ CREATE TABLE IF NOT EXISTS articles (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
--- Table for article comments
 CREATE TABLE IF NOT EXISTS comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     article_id INT NOT NULL,
@@ -84,8 +65,6 @@ CREATE TABLE IF NOT EXISTS comments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
 );
-
--- Table for FAQ
 CREATE TABLE IF NOT EXISTS faqs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     question TEXT NOT NULL,
@@ -93,8 +72,6 @@ CREATE TABLE IF NOT EXISTS faqs (
     category VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- Sample articles
 INSERT IGNORE INTO articles (title, content, summary, author, seo_keywords, seo_description, image) VALUES
 ('Top 10 Sách Nên Đọc Năm 2024', 'Nội dung chi tiết về danh sách 10 cuốn sách hay nhất hội tụ đủ các yếu tố từ cốt truyện đến bài học nhân sinh...', 'Danh sách những cuốn sách không thể bỏ qua trong năm nay.', 'Khang Admin', 'sách hay 2024, top sách, review sách', 'Khám phá top 10 cuốn sách đáng đọc nhất năm 2024 tại BookStore Premium.', '1778335770_sachgiay.jpg'),
 ('Lợi ích của việc đọc sách mỗi ngày', 'Đọc sách không chỉ giúp chúng ta mở mang kiến thức mà còn giúp giảm căng thẳng, cải thiện trí nhớ...', 'Tại sao bạn nên dành ít nhất 30 phút mỗi ngày để đọc sách?', 'Khang Admin', 'lợi ích đọc sách, thói quen đọc sách', 'Tìm hiểu những lợi ích bất ngờ của việc duy trì thói quen đọc sách mỗi ngày.', '1777903462_z7772420522673_90661c8200ee13cf110dda294d934fea.jpg'),
@@ -103,14 +80,9 @@ INSERT IGNORE INTO articles (title, content, summary, author, seo_keywords, seo_
 ('Xu hướng "Cozy Fantasy" - Khi độc giả tìm kiếm sự bình yên qua những trang sách', 'Khác với những cuộc chiến khốc liệt hay những âm mưu đen tối trong các bộ sử thi đồ sộ, Cozy Fantasy mang đến những câu chuyện về tình bạn, những quán trà nhỏ trong thế giới phép thuật hay những chuyến phiêu lưu nhẹ nhàng với kết thúc có hậu...', 'Tìm hiểu về dòng sách giả tưởng nhẹ nhàng đang chiếm trọn trái tim của hàng triệu độc giả trên toàn thế giới.', 'Phat Admin', 'Cozy Fantasy, sách giả tưởng nhẹ nhàng, xu hướng sách 2025', 'Khám phá sức hút của dòng sách Cozy Fantasy - liều thuốc tinh thần cho độc giả hiện đại.', '1778336417_Cozy_Fantasy_Romance_Book_List_F.webp'),
 ('Top 5 cuốn sách đáng mong chờ nhất năm 2025', 'Năm 2025 hứa hẹn sẽ là một năm bùng nổ của thị trường sách với sự trở lại của nhiều tên tuổi lớn. Đứng đầu danh sách là tác phẩm mới của Katie Kitamura mang tên "Audition", một tiểu thuyết đầy ám ảnh về danh tính và sự thật...', 'Danh sách những "siêu phẩm" văn học sắp ra mắt mà bạn không thể bỏ qua trong năm nay.', 'Phat Admin', 'sách hay 2025, top sách 2025, sách mới ra mắt', 'Điểm mặt 5 cuốn sách đình đám nhất dự kiến sẽ làm mưa làm gió trên các bảng xếp hạng năm 2025.', '1778336451_2025.webp'),
 ('Sách nói (Audiobook) - Giải pháp đọc sách cho người bận rộn', 'Với sự phát triển của các nền tảng phát trực tuyến và công nghệ giọng nói nhân tạo, sách nói đã trở thành một phần không thể thiếu trong cuộc sống hiện đại. Bạn có thể "đọc" sách khi đang lái xe, tập gym hay làm việc nhà...', 'Cách mà công nghệ âm thanh đang giúp chúng ta tiếp cận tri thức mọi lúc mọi nơi.', 'Phat Admin', 'audiobook, sách nói, công nghệ đọc sách', 'Khám phá lợi ích và sự phát triển vượt bậc của sách nói trong đời sống hiện đại.', '1778336492_sach-noi-mien-phi-1.webp');
-
--- Sample FAQ
 INSERT IGNORE INTO faqs (question, answer, category) VALUES
 ('Làm thế nào để đặt hàng?', 'Bạn chỉ cần chọn sản phẩm, thêm vào giỏ hàng và điền thông tin thanh toán.', 'Mua hàng'),
 ('Cửa hàng có ship tỉnh không?', 'Chúng tôi giao hàng toàn quốc với thời gian từ 2-5 ngày làm việc.', 'Giao hàng');
-
-
--- Table for products (books)
 CREATE TABLE IF NOT EXISTS products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -124,8 +96,6 @@ CREATE TABLE IF NOT EXISTS products (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
--- Table for orders
 CREATE TABLE IF NOT EXISTS orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     customer_name VARCHAR(255) NOT NULL,
@@ -138,8 +108,6 @@ CREATE TABLE IF NOT EXISTS orders (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
--- Table for order items
 CREATE TABLE IF NOT EXISTS order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
@@ -149,8 +117,6 @@ CREATE TABLE IF NOT EXISTS order_items (
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
-
--- Sample products data
 INSERT IGNORE INTO products (name, author, description, price, stock, category, image) VALUES
 ('Đắc Nhân Tâm', 'Dale Carnegie', 'Cuốn sách kinh điển về nghệ thuật giao tiếp và ảnh hưởng đến người khác. Được xem là một trong cuốn sách hay nhất mọi thời đại.', 89000, 50, 'Kỹ năng sống', 'dac_nhan_tam.jpg'),
 ('Nhà Giả Kim', 'Paulo Coelho', 'Tiểu thuyết triết học nổi tiếng thế giới về hành trình tìm kiếm kho báu và khám phá bản thân.', 79000, 35, 'Văn học', 'nha_gia_kim.jpg'),

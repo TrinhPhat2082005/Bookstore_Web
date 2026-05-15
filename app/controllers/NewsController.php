@@ -1,5 +1,4 @@
 <?php
-// bookstore_web/app/controllers/NewsController.php
 
 class NewsController extends Controller
 {
@@ -43,7 +42,6 @@ class NewsController extends Controller
         $article = $this->articleModel->getDetail($id);
 
         if (!$article) {
-            // Handle not found
             header('Location: ' . BASE_URL . 'news');
             exit;
         }
@@ -74,7 +72,6 @@ class NewsController extends Controller
 
             if (!empty($data['name']) && !empty($data['content'])) {
                 if ($this->commentModel->add($data)) {
-                    // Success, redirect back
                     header('Location: ' . BASE_URL . 'news/detail/' . $id . '?success=1');
                     exit;
                 }

@@ -4,7 +4,6 @@
     style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); min-height: 80vh;">
     <div class="container">
         <div class="row g-4">
-            <!-- Sidebar Navigation -->
             <div class="col-lg-4">
                 <div class="glass-card p-4 rounded-4 shadow-sm h-100 sticky-top" style="top: 100px;">
                     <div class="text-center mb-4">
@@ -37,8 +36,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Main Content Area -->
             <div class="col-lg-8">
                 <div class="glass-card p-4 p-md-5 rounded-4 shadow-sm min-vh-50">
 
@@ -63,7 +60,6 @@
                     <?php endif; ?>
 
                     <div class="tab-content" id="profile-tabs-content">
-                        <!-- Personal Info Tab -->
                         <div class="tab-pane fade show active" id="info-pane" role="tabpanel">
                             <h3 class="fw-bold mb-4">Thông tin cá nhân</h3>
                             <form action="<?php echo BASE_URL; ?>auth/profile" method="POST">
@@ -106,8 +102,6 @@
                                 </div>
                             </form>
                         </div>
-
-                        <!-- Change Password Tab -->
                         <div class="tab-pane fade" id="password-pane" role="tabpanel">
                             <h3 class="fw-bold mb-4">Đổi mật khẩu</h3>
                             <form action="<?php echo BASE_URL; ?>auth/profile" method="POST">
@@ -138,8 +132,6 @@
                                 </div>
                             </form>
                         </div>
-
-                        <!-- Order History Tab -->
                         <div class="tab-pane fade" id="orders-pane" role="tabpanel">
                             <h3 class="fw-bold mb-4">Lịch sử đơn hàng</h3>
                             <?php if (empty($data['orders'])): ?>
@@ -221,8 +213,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Order Detail Modal -->
     <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 rounded-4 shadow-lg">
@@ -261,8 +251,6 @@
             const bodyEl = document.getElementById('order-items-body');
 
             if (!loadingEl || !listEl || !bodyEl) return;
-
-            // Use event delegation on the document or the table container
             const container = document.querySelector('.table-responsive');
             if (!container) return;
 
@@ -271,8 +259,6 @@
                 if (!button) return;
 
                 const orderId = button.getAttribute('data-id');
-                
-                // Reset modal
                 loadingEl.style.display = 'block';
                 listEl.style.display = 'none';
                 bodyEl.innerHTML = '';
@@ -313,13 +299,7 @@
                 }
             });
         };
-
-        // Initialize on load
         initOrderDetails();
-        
-        // Also re-init for Swup if it's available and we are in its lifecycle
-        // Note: Since this script is now INSIDE #swup, it will be re-executed by swup anyway 
-        // if swup is configured to execute scripts.
     })();
     </script>
 </main>

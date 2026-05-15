@@ -1,6 +1,4 @@
 <?php require_once '../app/views/client/layout/header.php'; ?>
-
-<!-- Reading Progress Bar -->
 <div id="reading-progress" class="fixed-top shadow-sm" style="height: 4px; background: rgba(var(--bs-primary-rgb), 0.1); z-index: 1050;">
     <div id="progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-color) 0%, #8918fe 100%); transition: width 0.1s ease;"></div>
 </div>
@@ -18,10 +16,7 @@
                 </nav>
 
                 <article class="bg-white p-4 p-md-5 rounded-5 shadow-lg border-0 overflow-hidden position-relative">
-                    <!-- Top Gradient Decoration -->
                     <div class="position-absolute top-0 start-0 end-0" style="height: 6px; background: linear-gradient(90deg, var(--bs-primary) 0%, #8918fe 100%);"></div>
-
-                    <!-- Header -->
                     <header class="mb-5">
                         <div class="d-flex align-items-center gap-3 text-secondary small mb-3">
                             <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">Blog Post</span>
@@ -33,29 +28,21 @@
                         <h1 class="display-4 fw-bold text-dark mb-4" style="letter-spacing: -0.02em;"><?php echo $data['article']->title; ?></h1>
                         <p class="lead text-secondary fw-normal"><?php echo strip_tags($data['article']->summary); ?></p>
                     </header>
-
-                    <!-- Featured Image -->
                     <?php if ($data['article']->image): ?>
                         <div class="mb-5 rounded-5 overflow-hidden shadow-sm position-relative card-image-container">
                             <img src="<?php echo BASE_URL ?>uploads/<?php echo $data['article']->image; ?>"
                                 class="img-fluid w-100" alt="<?php echo $data['article']->title; ?>" style="max-height: 500px; object-fit: cover;">
                         </div>
                     <?php endif; ?>
-
-                    <!-- Content -->
                     <div class="article-body fs-5 text-dark mb-5 content-rendered" style="line-height: 1.9; font-family: 'Inter', sans-serif;">
                         <?php echo $data['article']->content; ?>
                     </div>
-
-                    <!-- Social Share -->
                     <div class="d-flex align-items-center gap-3 py-4 border-top border-bottom border-light mb-5">
                         <span class="fw-bold text-dark small text-uppercase">Chia sẻ bài viết:</span>
                         <a href="#" class="btn btn-sm btn-light rounded-circle shadow-sm"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="btn btn-sm btn-light rounded-circle shadow-sm"><i class="fab fa-twitter"></i></a>
                         <a href="#" class="btn btn-sm btn-light rounded-circle shadow-sm"><i class="fab fa-linkedin-in"></i></a>
                     </div>
-
-                    <!-- Comment Section -->
                     <section class="comments-section" id="comments">
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <h3 class="fw-bold mb-0">Bình luận (<?php echo count($data['comments']); ?>)</h3>
@@ -68,8 +55,6 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php endif; ?>
-
-                        <!-- Comment List -->
                         <div class="mb-5">
                             <?php if (empty($data['comments'])): ?>
                                 <div class="text-center py-5 bg-light rounded-5 border border-dashed">
@@ -96,9 +81,6 @@
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </div>
-
-                        <!-- Comment Form -->
-                        <!-- Comment Form Section -->
                         <div class="glass-card rounded-5 p-4 p-md-5 mb-5 shadow-lg" id="comment-form">
                             <h4 class="fw-bold mb-4">Để lại suy nghĩ của bạn</h4>
                             <form action="<?php echo BASE_URL . 'news/comment/' . $data['article']->id; ?>" method="POST">
