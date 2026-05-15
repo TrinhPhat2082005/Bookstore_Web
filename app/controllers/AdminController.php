@@ -182,7 +182,7 @@ class AdminController extends Controller
     public function manageContacts()
     {
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-        $limit = 10;
+        $limit = 1;
 
         // Xử lý xóa/đánh dấu
         if (isset($_GET['action'])) {

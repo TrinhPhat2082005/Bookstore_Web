@@ -19,7 +19,7 @@ class HomeController extends Controller
     public function index()
     {
         $settings = $this->settingModel->getAll();
-        $products = $this->productModel->getLatest(8); // Lấy 8 sản phẩm mới nhất
+        $products = $this->productModel->getLatest(8); 
         $data = [
             'settings' => $settings,
             'products' => $products,
